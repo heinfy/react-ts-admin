@@ -1,14 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from './assets/logo.svg';
+import './App.scss';
 
-function App() {
+const App = () => {
+  const obj = {
+    name: '学习 React'
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          编辑 <code>src/App.tsx</code> 代码，接下来就可以看到它了。
         </p>
         <a
           className="App-link"
@@ -16,11 +20,11 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          {obj.name}
         </a>
       </header>
     </div>
   );
-}
+};
 
 export default App;
