@@ -1,0 +1,39 @@
+// https://blog.csdn.net/Snow_GX/article/details/92089358
+// https://www.jianshu.com/p/dd07cca0a48e
+// https://blog.csdn.net/qq_29055201/article/details/89248572
+// https://zhuanlan.zhihu.com/p/80574300
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "arrow-parens": 0, // 箭头函数用小括号括起来
+    "quotes": [1, "single"],
+    "semi": [2, "always"], // 语句强制分号结尾
+    // 数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号, always参数：必须带末尾的逗号，
+    // always-multiline： 多行模式必须带逗号，单行模式不能带逗号
+    "comma-dangle": [2, "never"],
+    // 控制逗号前后的空格
+    "comma-spacing": [2, { "before": false, "after": true }]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.ts?(x)"
+      ],
+      "rules": {
+        "quotes": [1, "single"]
+      }
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  }
+}

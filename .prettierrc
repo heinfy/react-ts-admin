@@ -1,0 +1,9 @@
+{
+  "endOfLine": "auto",
+  "trailingComma": "none",
+  "semi": true,
+  "arrowParens": "always",
+  "singleQuote": true,
+  "bracketSpacing": true,
+  "tabWidth": 2
+}
