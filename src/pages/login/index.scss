@@ -1,0 +1,67 @@
+.login {
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  .particles {
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff;
+  }
+}
+.login .login-form {
+  padding: 20px 40px;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  position: absolute;
+  left: 50%;
+  top: 20vh;
+  transform: translateX(-50%);
+  width: 320px;
+  .title {
+    height: 42px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+    vertical-align: text-bottom;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    .title__logo {
+      width: 40px;
+      height: 40px;
+    }
+    h5 {
+      margin: 0;
+      padding: 0;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .title__logo {
+        animation: title__logo infinite 10s linear;
+      }
+    }
+
+    @keyframes title__logo {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+  .login-form-forgot {
+    float: right;
+  }
+  .ant-col-rtl .login-form-forgot {
+    float: left;
+  }
+  .login-form-button {
+    width: 100%;
+  }
+  .register {
+    display: block;
+    margin-top: 10px;
+  }
+}
