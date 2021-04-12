@@ -5,8 +5,9 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
-import NotFound from './components/NotFound';
 import Layout from './layout';
+import Login from './pages/login';
+import NotFound from './components/NotFound';
 import './App.scss';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           render={() => <Redirect to="/app/dashboard/index" push />}
         />
         <Route path="/app" component={Layout} />
+        <Route path="/login" component={Login} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
