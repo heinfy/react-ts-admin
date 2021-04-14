@@ -14,15 +14,15 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route
+        {/* <Route
           exact
           path="/"
-          render={() => <Redirect to="/app/dashboard/index" push />}
-        />
+          render={() => <Redirect to="/app/dashboard" push />}
+        /> */}
+        <Redirect from="/" exact to="/app" />
         <Route path="/app" component={Layout} />
         <Route path="/login" component={Login} />
-        <Route path="/404" component={NotFound} />
-        <Route component={NotFound} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </Router>
   );

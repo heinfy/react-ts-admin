@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layout, Breadcrumb } from 'antd';
+import Admin from '../../pages/admin';
 
 const Content = () => {
   return (
@@ -10,63 +11,9 @@ const Content = () => {
       </Breadcrumb>
       <div
         className="site-layout-background"
-        style={{ padding: 24, minHeight: 360 }}
+        style={{ padding: 24, minHeight: 800 }}
       >
-        Bill is a cat.
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
-        <p>Bill is a cat.</p>
+        <Admin />
       </div>
     </Layout.Content>
   );

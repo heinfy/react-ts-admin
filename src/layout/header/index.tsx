@@ -15,6 +15,7 @@ class Header extends React.Component<IProps> {
       <Layout.Header
         className="site-layout-background"
         style={{
+          backgroundColor: 'white',
           overflow: 'auto',
           padding: 0,
           width: '100%'
