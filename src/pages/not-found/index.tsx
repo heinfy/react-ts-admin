@@ -1,27 +1,21 @@
 import React, { Component } from 'react';
-import { Button, Row, Col } from 'antd';
+import { RouteComponentProps } from 'react-router';
 import './index.scss';
-/*
-前台404页面
- */
-export default class NotFound extends Component {
+
+export default class NotFound extends Component<RouteComponentProps> {
   render() {
     return (
-      <Row className="not-found">
-        <Col span={12} className="left"></Col>
-        <Col span={12} className="right">
-          <h1>404</h1>
-          <h2>抱歉，你访问的页面不存在</h2>
-          <div>
-            <Button
-              type="primary"
-              // onClick={() => this.props.history.replace('/home')}
-            >
-              回到首页
-            </Button>
-          </div>
-        </Col>
-      </Row>
+      <section className="not-found">
+        <div className="number">404</div>
+        <div className="text">
+          <span>
+            Ooops...{' '}
+            <a onClick={() => this.props.history.replace('/app')}>回到首页</a>
+          </span>
+          <br />
+          PAGE NOT FUNOD
+        </div>
+      </section>
     );
   }
 }
