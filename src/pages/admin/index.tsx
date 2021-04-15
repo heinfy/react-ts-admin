@@ -6,6 +6,7 @@ import Home from '../home';
 // import Line from '../../pages/charts/line';
 // import Pie from '../../pages/charts/pie';
 // import Order from '../../pages/order/order';
+import Store from '../../pages/store';
 import NotFound from '../not-found';
 
 const Admin = () => {
@@ -24,6 +25,7 @@ const Admin = () => {
           <Route path="/charts/line" component={Line} />
           <Route path="/order" component={Order} />
         <Route component={NotFound} /> */}
+      <Route path="/store" component={Store} />
       <Route path="*" component={NotFound} />
     </Switch>
   );
