@@ -1,5 +1,5 @@
 .not-found {
-  padding-top: 80px;
+  padding-top: 40px;
 
   div {
     width: 100%;
@@ -43,11 +43,5 @@
     to {
       background-position: 100vmin 20vmin, -100vmin -25vmin;
     }
-  }
-  .text {
-    font: 400 10vmin 'Courgette';
-  }
-  .text span {
-    font-size: 14px;
   }
 }

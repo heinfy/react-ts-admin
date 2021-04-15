@@ -3,19 +3,6 @@ import { combineReducers } from 'redux';
 import { INCREMENT, DECREMENT } from './action-types';
 
 function count(state = 0, action) {
-  console.log('count()', state, action);
-  switch (action.type) {
-    case INCREMENT:
-      return state + action.number;
-    case DECREMENT:
-      return state - action.number;
-    default:
-      return state;
-  }
-}
-
-function hahaha(state = 0, action) {
-  console.log('count()', state, action);
   switch (action.type) {
     case INCREMENT:
       return state + action.number;
@@ -27,6 +14,5 @@ function hahaha(state = 0, action) {
 }
 
 export default combineReducers({
-  count,
-  hahaha
+  count
 });

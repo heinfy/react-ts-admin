@@ -11,7 +11,7 @@ const Content = () => {
       </Breadcrumb>
       <div
         className="site-layout-background"
-        style={{ padding: 24, minHeight: 800 }}
+        style={{ padding: 24, minHeight: 600 }}
       >
         <Admin />
       </div>

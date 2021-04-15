@@ -25,7 +25,7 @@ const Admin = () => {
           <Route path="/charts/line" component={Line} />
           <Route path="/order" component={Order} />
         <Route component={NotFound} /> */}
-      <Route path="/store" component={Store} />
+      <Route path="/app/store" component={Store} />
       <Route path="*" component={NotFound} />
     </Switch>
   );
