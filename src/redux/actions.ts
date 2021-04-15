@@ -2,12 +2,12 @@
 
 import { INCREMENT, DECREMENT } from './action-types';
 
-export const increment = (number) => ({ type: INCREMENT, number });
+export const increment = (number: number) => ({ type: INCREMENT, number });
 
-export const decrement = (number) => ({ type: DECREMENT, number });
+export const decrement = (number: number) => ({ type: DECREMENT, number });
 
 // 异步增加的异步 action
-export const incrementAsync = (number) => {
+export const incrementAsync = (number: number) => {
   // 返回一个带 dispatch 参数的函数
   return (dispatch) => {
     // 执行异步操作
