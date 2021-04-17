@@ -64,30 +64,27 @@ const Login = (props: LoginProps) => {
         </div>
         <Item
           name="username"
-          initialValue="admin"
           rules={[{ required: true, message: 'Please input your Username~' }]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
+            placeholder="用户名为admin或guest"
           />
         </Item>
         <Item
           name="password"
-          initialValue="admin"
           rules={[{ required: true, message: 'Please input your Password~' }]}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
-            placeholder="Password"
+            placeholder="密码随便填！"
           />
         </Item>
         <Item>
           <Item name="remember" valuePropName="checked" noStyle>
             <Checkbox>记住账号</Checkbox>
           </Item>
-
           <a className="login-form-forgot" href="/forget">
             忘记密码
           </a>

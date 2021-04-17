@@ -5,8 +5,8 @@ const tokens = {
   admin: {
     token: 'admin-token'
   },
-  editor: {
-    token: 'editor-token'
+  guest: {
+    token: 'guest-token'
   }
 };
 
@@ -22,16 +22,16 @@ const users = {
     },
     auths: authsConfig
   },
-  'editor-token': {
+  'guest-token': {
     userInfo: {
       uid: '123456',
-      role: 'admin',
-      introduction: '我是一般用户',
+      role: 'guest',
+      introduction: '我是游客',
       avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4',
-      roleName: '用户',
-      nickname: '用户'
+      roleName: '游客',
+      nickname: '游客'
     },
-    auths: authsConfig.map((item) => item.id !== 5)
+    auths: authsConfig.filter((item) => item.id !== 5)
   }
 };
 
