@@ -1,9 +1,16 @@
-import React from 'react';
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { FormProps } from 'antd/lib/form';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import Particles from 'react-particles-js';
+
+import { IStore } from '../../redux/interface';
+import { setToken } from '../../redux/actions';
+
 import particlesConfig from '../../json/particlesConfig.json';
 import logo from '../../assets/logo.svg';
 import { login } from '../../api';
@@ -16,17 +23,24 @@ interface ILogin {
 }
 
 type LoginProps = {
-  setAlitaState: () => void;
-  auth: string;
+  token: string;
+  setToken: (string) => void;
 } & RouteComponentProps &
   FormProps;
 
 const Login = (props: LoginProps) => {
-  const { history } = props;
+  const history = useHistory();
+  const { token, setToken } = props;
+
+  useEffect(() => {
+    if (token) history.push('/');
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const onFinish = async (values: ILogin) => {
     const result = await login(values);
     console.log('Received values of login: ', result);
     if (result.code === '20000') {
+      setToken(result.data.token);
       history.push('/');
     } else {
       message.error(result.message);
@@ -96,4 +110,11 @@ const Login = (props: LoginProps) => {
   );
 };
 
-export default Login;
+export default connect(
+  (state: IStore) => ({
+    token: state.token
+  }),
+  {
+    setToken
+  }
+)(Login);
