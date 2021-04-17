@@ -1,6 +1,19 @@
-// action creator 模块 包含 n 个 action creator 函数
+/* action creator 模块 包含 n 个 action creator 函数 */
 
-import { INCREMENT, DECREMENT } from './action-types';
+import { TOKEN, AUTHS, USERINFO, INCREMENT, DECREMENT } from './action-types';
+import { IUserInfo, IAuths } from './interface';
+
+export const setToken = (token: string) => ({ type: TOKEN, token });
+
+export const setUserInfo = (userInfo: IUserInfo) => ({
+  type: USERINFO,
+  userInfo
+});
+
+export const setAuths = (auths: IAuths[]) => ({
+  type: AUTHS,
+  auths
+});
 
 export const increment = (number: number) => ({ type: INCREMENT, number });
 
