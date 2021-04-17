@@ -1,25 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from 'antd';
+import Interceptor from '../components/interceptor';
 import Nav from './nav';
 import Header from './header';
 import Footer from './footer';
 import Content from './content';
 import './index.scss';
 
-class Layouts extends React.Component {
-  state = {
-    collapsed: false
-  };
+const Layouts = () => {
+  const [collapsed, setcCllapsed] = useState<boolean>(false);
 
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  };
+  const toggle = () => setcCllapsed(!collapsed);
 
-  render() {
-    const { collapsed } = this.state;
-    return (
+  return (
+    <Interceptor>
       <Layout>
         <Nav collapsed={collapsed} />
         <Layout
@@ -28,13 +22,13 @@ class Layouts extends React.Component {
             paddingLeft: collapsed ? '80px' : '200px'
           }}
         >
-          <Header collapsed={collapsed} toggle={this.toggle} />
+          <Header collapsed={collapsed} toggle={toggle} />
           <Content />
           <Footer />
         </Layout>
       </Layout>
-    );
-  }
-}
+    </Interceptor>
+  );
+};
 
 export default Layouts;
