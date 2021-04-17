@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Layout, LayoutProps, message, Spin } from 'antd';
 
-import { IStore, IUserInfo, IAuths } from '../redux/interface';
+import { IStore, IUserInfo } from '../redux/interface';
 import { setUserInfo, setAuths } from '../redux/actions';
 import { getInfo } from '../api';
-import { formateDataTree } from '../utils/utils';
 
 import Nav from './nav';
 import Header from './header';
@@ -23,21 +22,11 @@ type Props = {
 } & RouteComponentProps &
   LayoutProps;
 
-interface IRoutes {
-  title: string;
-  key: string;
-  icon: string;
-  id: number;
-  pid: number;
-  childen?: IRoutes;
-}
-
 const Layouts = (props: Props) => {
   const history = useHistory();
   const { token, userInfo, setUserInfo, setAuths } = props;
   const [spinning, setSpinning] = useState<boolean>(true);
   const [collapsed, setCllapsed] = useState<boolean>(false);
-  const [routes, setRoutes] = useState<IRoutes[]>([]);
 
   useEffect(() => {
     if (token) {
@@ -45,7 +34,6 @@ const Layouts = (props: Props) => {
         getUserInfo();
       }
     } else {
-      console.log(111);
       history.push('/login');
     }
   }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -56,8 +44,6 @@ const Layouts = (props: Props) => {
     if (result.code === '20000') {
       setUserInfo(result.data.userInfo);
       setAuths(result.data.auths);
-      const routes = formateDataTree(result.data.auths);
-      setRoutes(routes);
       setSpinning(false);
     } else {
       message.error(result.message);
@@ -69,7 +55,7 @@ const Layouts = (props: Props) => {
   return (
     <Spin spinning={spinning}>
       <Layout>
-        <Nav collapsed={collapsed} routes={routes} />
+        <Nav collapsed={collapsed} />
         <Layout
           className="site-layout"
           style={{

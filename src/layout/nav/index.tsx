@@ -1,37 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Layout, Menu, SubMenuProps, MenuItemProps } from 'antd';
 import { withRouter, Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+
+import { IStore } from '../../redux/interface';
+import { formateDataTree } from '../../utils/utils';
 import * as Icon from '@ant-design/icons';
 import './index.scss';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-interface IRoutes {
-  title: string;
-  key: string;
-  icon: string;
-  id: number;
-  pid: number;
-  childen?: IRoutes;
-}
-
 type IProps = {
   collapsed: boolean;
   openKey: string[];
-  routes: IRoutes[];
 } & RouteComponentProps;
 
 const Nav = (props: IProps) => {
   const [openKey, setOpenKey] = useState<string[]>([]);
-  const [menuNodes, setMenuNodes] = useState<
-    (SubMenuProps & MenuItemProps) | null
-  >(null);
-
-  useEffect(() => {
-    setMenuNodes(getMenuNodes(props.routes));
-  }, [props.routes]);
 
   const getIcon = (iconname: string) => React.createElement(Icon[iconname]);
 
@@ -51,9 +38,9 @@ const Nav = (props: IProps) => {
         const cItem = item.children.find((cItem) => {
           return path.indexOf(cItem.key) === 0;
         });
-        // 如果存在, 说明当前item的子列表需要打开 TODO bug
-        if (cItem) {
-          setOpenKey(item.key);
+        // 如果存在, 说明当前item的子列表需要打开
+        if (cItem && openKey.length === 0) {
+          setOpenKey([item.key]);
         }
         pre.push(
           <SubMenu key={item.key} icon={getIcon(item.icon)} title={item.title}>
@@ -61,17 +48,15 @@ const Nav = (props: IProps) => {
           </SubMenu>
         );
       }
-
       return pre;
     }, []);
   };
 
-  const { collapsed } = props;
-  let path = props.location.pathname;
-  // 如果访问 /products'，想要自动跳转到默认子路由
-  if (path.indexOf('/products') === 0) {
-    path = '/product';
-  }
+  const { collapsed, auths } = props,
+    { pathname } = props.location,
+    menuNodes: (SubMenuProps[] & MenuItemProps[]) | [] = getMenuNodes(
+      formateDataTree(auths)
+    );
 
   return (
     <Sider
@@ -87,16 +72,25 @@ const Nav = (props: IProps) => {
       collapsed={collapsed}
     >
       <div className="logo" />
-      <Menu
-        mode="inline"
-        theme="dark"
-        selectedKeys={[path]}
-        defaultOpenKeys={openKey}
-      >
-        {menuNodes}
-      </Menu>
+      {menuNodes.length > 0 && (
+        <Menu
+          mode="inline"
+          theme="dark"
+          selectedKeys={[pathname]}
+          defaultOpenKeys={openKey}
+        >
+          {menuNodes}
+        </Menu>
+      )}
     </Sider>
   );
 };
 
-export default withRouter(Nav);
+export default withRouter(
+  connect(
+    (state: IStore) => ({
+      auths: state.auths
+    }),
+    {}
+  )(Nav)
+);

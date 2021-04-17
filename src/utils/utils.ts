@@ -1,8 +1,14 @@
 import { IAuths } from '../redux/interface';
 
-interface IAuthsArray extends IAuths {
-  children?: IAuthsArray;
+interface IRoutes {
+  title: string;
+  key: string;
+  icon: string;
+  id: number;
+  pid: number;
+  childen?: IRoutes[];
 }
+
 /**
  * 列表转换为树形结构
  * @param {Object[]} auths - 权限项
@@ -13,7 +19,9 @@ interface IAuthsArray extends IAuths {
  * @param {number} auths[].pid - 权限父id
  * @returns {Array} 树形结构
  */
-export const formateDataTree: (IAuths) => IAuthsArray[] = (data: IAuths[]) => {
+export const formateDataTree: (data: IAuths[]) => IRoutes[] = (
+  data: IAuths[]
+) => {
   const _data = JSON.parse(JSON.stringify(data));
   return _data.filter((p) => {
     const _arr = _data.filter((c) => c.pid === p.id);
