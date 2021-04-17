@@ -1,4 +1,5 @@
 import { responseData } from './utils';
+import authsConfig from './authsConfig.json';
 
 const tokens = {
   admin: {
@@ -11,16 +12,26 @@ const tokens = {
 
 const users = {
   'admin-token': {
-    roles: ['admin'],
-    introduction: '我是超级管理员',
-    avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4',
-    name: '超级管理员'
+    userInfo: {
+      uid: '123456',
+      role: 'admin',
+      introduction: '我是超级管理员',
+      avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4',
+      roleName: '超级管理员',
+      nickname: '侯飞'
+    },
+    auths: authsConfig
   },
   'editor-token': {
-    roles: ['editor'],
-    introduction: '我是编辑',
-    avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4',
-    name: '编辑'
+    userInfo: {
+      uid: '123456',
+      role: 'admin',
+      introduction: '我是一般用户',
+      avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4',
+      roleName: '用户',
+      nickname: '用户'
+    },
+    auths: authsConfig.map((item) => item.id !== 5)
   }
 };
 
