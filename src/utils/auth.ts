@@ -1,15 +1,20 @@
 import Cookies from 'js-cookie';
 
-const TOKEN = 'react_admin_template_token';
+// set Cookies
+export const getCookies = (key: string) => Cookies.get(key);
 
-export function getToken() {
-  return Cookies.get(TOKEN);
-}
+export const setCookies = (key: string, value: string) =>
+  Cookies.set(key, value);
 
-export function setToken(token) {
-  return Cookies.set(TOKEN, token);
-}
+export const removeCookies = (key: string) => Cookies.remove(key);
 
-export function removeToken() {
-  return Cookies.remove(TOKEN);
-}
+// set localStorage
+export const getStorage = (key: string) => localStorage.getItem(key);
+
+// eslint-disable-next-line
+export const setStorage = (key: string, value: any) =>
+  localStorage.setItem(key, JSON.stringify(value));
+
+export const removeStorage = (key: string) => localStorage.removeItem(key);
+
+export const clearStorage = () => localStorage.clear();

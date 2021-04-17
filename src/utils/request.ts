@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { message, Modal } from 'antd';
-import { getToken } from './auth';
+
+import store from '../redux/store';
+import { TOKEN } from '../redux/action-types';
+import { getCookies } from './auth';
 
 // create an axios instance
 const service = axios.create({
@@ -12,13 +15,13 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   (config) => {
+    const token = store.getState()[TOKEN] || getCookies(TOKEN);
     // 判断 token 是否存在
-    if (true) {
-      // if (getToken()) {
+    if (token) {
       // let each request carry token
-      // ['X-Token'] is a custom headers key
+      // ['token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken();
+      config.headers[TOKEN] = token;
     }
     return config;
   },
