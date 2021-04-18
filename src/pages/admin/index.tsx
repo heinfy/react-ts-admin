@@ -1,34 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { RouteComponentProps } from 'react-router';
 import { Redirect, Switch, Route } from 'react-router-dom';
-import Home from '../home';
-// import User from '../../pages/user/user';
-// import Bar from '../../pages/charts/bar';
-// import Line from '../../pages/charts/line';
-// import Pie from '../../pages/charts/pie';
-// import Order from '../../pages/order/order';
-import Store from '../../pages/store';
+import { connect } from 'react-redux';
+
+import { IStore, IRoutes, IAuths } from '../../redux/interface';
+import { rRoutes } from './routes';
 import NotFound from '../not-found';
 
-const Admin = () => {
+type Props = {
+  routes: IRoutes[];
+} & RouteComponentProps;
+
+const Admin = (props: Props) => {
+  const [renderRoutes, setRenderRoutes] = useState<IAuths[]>([]);
+  const filterRoutes = (rts: IRoutes[]) => {
+    const rRoutes: IAuths[] = [];
+    const fileterAuths = (subRoutes: IRoutes[]) => {
+      subRoutes.forEach((r) => {
+        if (r.children) {
+          fileterAuths(r.children);
+        } else {
+          rRoutes.push(r);
+        }
+      });
+    };
+    fileterAuths(rts);
+    return rRoutes;
+  };
+  useEffect(() => {
+    setRenderRoutes(filterRoutes(props.routes));
+  }, [props.routes]);
   return (
     <Switch>
-      {/* <Redirect from="/app" exact to="/app/dashboard" push /> */}
       <Route
         exact
         path="/app"
         render={() => <Redirect to="/app/dashboard" push />}
       />
-      <Route path="/app/dashboard" component={Home} />
-      {/* <Route path="/user" component={User} />
-          <Route path="/charts/bar" component={Bar} />
-          <Route path="/charts/pie" component={Pie} />
-          <Route path="/charts/line" component={Line} />
-          <Route path="/order" component={Order} />
-        <Route component={NotFound} /> */}
-      <Route path="/app/store" component={Store} />
+      {renderRoutes.map((route) => (
+        <Route
+          key={route.key}
+          path={route.key}
+          component={rRoutes[route.key]}
+        />
+      ))}
       <Route path="*" component={NotFound} />
     </Switch>
   );
 };
 
-export default Admin;
+export default connect(
+  (state: IStore) => ({
+    routes: state.routes
+  }),
+  {}
+)(Admin);

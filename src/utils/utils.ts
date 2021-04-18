@@ -1,16 +1,7 @@
-import { IAuths } from '../redux/interface';
-
-interface IRoutes {
-  title: string;
-  key: string;
-  icon: string;
-  id: number;
-  pid: number;
-  childen?: IRoutes[];
-}
+import { IAuths, IRoutes } from '../redux/interface';
 
 /**
- * 列表转换为树形结构
+ * 路由权限列表转换为树形结构
  * @param {Object[]} auths - 权限项
  * @param {string} auths[].title - 权限名称
  * @param {string} auths[].key - 权限键值
@@ -22,7 +13,9 @@ interface IRoutes {
 export const formateDataTree: (data: IAuths[]) => IRoutes[] = (
   data: IAuths[]
 ) => {
-  const _data = JSON.parse(JSON.stringify(data));
+  const _data = JSON.parse(JSON.stringify(data)).filter(
+    (item: IAuths) => item.isMenu === 1
+  );
   return _data.filter((p) => {
     const _arr = _data.filter((c) => c.pid === p.id);
     _arr.length && (p.children = _arr);

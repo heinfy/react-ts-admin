@@ -4,8 +4,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 
-import { IStore } from '../../redux/interface';
-import { formateDataTree } from '../../utils/utils';
+import { IStore, IRoutes } from '../../redux/interface';
 import * as Icon from '@ant-design/icons';
 import './index.scss';
 
@@ -15,6 +14,7 @@ const { SubMenu } = Menu;
 type IProps = {
   collapsed: boolean;
   openKey: string[];
+  routes: IRoutes;
 } & RouteComponentProps;
 
 const Nav = (props: IProps) => {
@@ -52,11 +52,9 @@ const Nav = (props: IProps) => {
     }, []);
   };
 
-  const { collapsed, auths } = props,
+  const { collapsed, routes } = props,
     { pathname } = props.location,
-    menuNodes: (SubMenuProps[] & MenuItemProps[]) | [] = getMenuNodes(
-      formateDataTree(auths)
-    );
+    menuNodes: (SubMenuProps[] & MenuItemProps[]) | [] = getMenuNodes(routes);
 
   return (
     <Sider
@@ -89,7 +87,7 @@ const Nav = (props: IProps) => {
 export default withRouter(
   connect(
     (state: IStore) => ({
-      auths: state.auths
+      routes: state.routes
     }),
     {}
   )(Nav)

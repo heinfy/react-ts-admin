@@ -6,6 +6,9 @@ export const TOKEN = 'token';
 // auths action
 export const AUTHS = 'auths';
 
+// routes action
+export const ROUTES = 'routes';
+
 // token action
 export const USERINFO = 'userInfo';
 

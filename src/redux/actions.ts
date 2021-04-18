@@ -1,7 +1,14 @@
 /* action creator 模块 包含 n 个 action creator 函数 */
 
-import { TOKEN, AUTHS, USERINFO, INCREMENT, DECREMENT } from './action-types';
-import { IUserInfo, IAuths } from './interface';
+import {
+  TOKEN,
+  AUTHS,
+  ROUTES,
+  USERINFO,
+  INCREMENT,
+  DECREMENT
+} from './action-types';
+import { IUserInfo, IAuths, IRoutes } from './interface';
 
 export const setToken = (token: string) => ({ type: TOKEN, token });
 
@@ -13,6 +20,11 @@ export const setUserInfo = (userInfo: IUserInfo) => ({
 export const setAuths = (auths: IAuths[]) => ({
   type: AUTHS,
   auths
+});
+
+export const setRoutes = (routes: IRoutes[]) => ({
+  type: ROUTES,
+  routes
 });
 
 export const increment = (number: number) => ({ type: INCREMENT, number });

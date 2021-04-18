@@ -5,7 +5,8 @@ import { useHistory } from 'react-router-dom';
 import { Layout, LayoutProps, message, Spin } from 'antd';
 
 import { IStore, IUserInfo } from '../redux/interface';
-import { setUserInfo, setAuths } from '../redux/actions';
+import { setUserInfo, setAuths, setRoutes } from '../redux/actions';
+import { formateDataTree } from '../utils/utils';
 import { getInfo } from '../api';
 
 import Nav from './nav';
@@ -19,12 +20,13 @@ type Props = {
   userInfo: IUserInfo;
   setUserInfo: (IUserInfo) => void;
   setAuths: (IAuths) => void;
+  setRoutes: (IAuths) => void;
 } & RouteComponentProps &
   LayoutProps;
 
 const Layouts = (props: Props) => {
   const history = useHistory();
-  const { token, userInfo, setUserInfo, setAuths } = props;
+  const { token, userInfo, setUserInfo, setAuths, setRoutes } = props;
   const [spinning, setSpinning] = useState<boolean>(true);
   const [collapsed, setCllapsed] = useState<boolean>(false);
 
@@ -42,8 +44,10 @@ const Layouts = (props: Props) => {
     const result = await getInfo(token);
     console.log('getUserInfo：', result);
     if (result.code === '20000') {
-      setUserInfo(result.data.userInfo);
-      setAuths(result.data.auths);
+      const { userInfo, auths } = result.data;
+      setUserInfo(userInfo);
+      setAuths(auths);
+      setRoutes(formateDataTree(auths));
       setSpinning(false);
     } else {
       message.error(result.message);
@@ -76,5 +80,5 @@ export default connect(
     token: state.token,
     userInfo: state.userInfo
   }),
-  { setUserInfo, setAuths }
+  { setUserInfo, setAuths, setRoutes }
 )(Layouts);

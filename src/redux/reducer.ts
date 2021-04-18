@@ -1,6 +1,13 @@
 /* reducer 函数: 根据旧的 state 和指定的 action 处理返回新的 state */
 import { combineReducers } from 'redux';
-import { TOKEN, AUTHS, USERINFO, INCREMENT, DECREMENT } from './action-types';
+import {
+  TOKEN,
+  AUTHS,
+  ROUTES,
+  USERINFO,
+  INCREMENT,
+  DECREMENT
+} from './action-types';
 import { setCookies, getCookies } from '../utils/auth';
 
 function token(state = null, action) {
@@ -31,6 +38,15 @@ function auths(state = [], action) {
   }
 }
 
+function routes(state = [], action) {
+  switch (action.type) {
+    case ROUTES:
+      return action.routes;
+    default:
+      return state;
+  }
+}
+
 function count(state = 0, action) {
   switch (action.type) {
     case INCREMENT:
@@ -46,5 +62,6 @@ export default combineReducers({
   token,
   userInfo,
   auths,
+  routes,
   count
 });

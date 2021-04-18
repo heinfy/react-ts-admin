@@ -2,6 +2,7 @@ export interface IStore {
   token: string;
   userInfo: IUserInfo;
   auths: IAuths[];
+  routes: IRoutes[];
   count: number;
 }
 
@@ -18,6 +19,12 @@ export interface IAuths {
   title: string;
   key: string;
   icon: string;
+  isPublic?: boolean;
+  isMenu: 0 | 1;
   id: number;
   pid: number;
+}
+
+export interface IRoutes extends IAuths {
+  children?: IRoutes[];
 }
