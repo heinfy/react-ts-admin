@@ -75,6 +75,7 @@ const user = [
     url: '/api/user/logout',
     type: 'post',
     response: (_) => {
+      console.log('logout uid：', _.body.uid);
       return responseData('20000', 'success');
     }
   }

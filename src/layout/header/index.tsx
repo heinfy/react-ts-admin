@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import MyCenter from '../../components/MyCenter';
 import './index.scss';
 
 interface IProps {
@@ -13,13 +14,14 @@ class Header extends React.Component<IProps> {
     const { collapsed, toggle } = this.props;
     return (
       <Layout.Header
-        className="site-layout-background"
         style={{
           backgroundColor: 'white',
+          padding: '0',
           overflow: 'auto',
-          padding: 0,
-          width: '100%'
+          width: '100%',
+          boxSizing: 'border-box'
         }}
+        className="site-layout-header"
       >
         {React.createElement(
           collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
@@ -28,6 +30,9 @@ class Header extends React.Component<IProps> {
             onClick: toggle
           }
         )}
+        <div className="header-userinfo">
+          <MyCenter></MyCenter>
+        </div>
       </Layout.Header>
     );
   }

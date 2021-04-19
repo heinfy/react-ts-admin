@@ -14,8 +14,9 @@ export const getInfo = (token) =>
     params: { token }
   });
 
-export const logout = () =>
+export const logout = (data) =>
   request({
     url: '/user/logout',
-    method: 'post'
+    method: 'post',
+    data
   });

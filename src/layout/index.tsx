@@ -27,7 +27,7 @@ type Props = {
 const Layouts = (props: Props) => {
   const history = useHistory();
   const { token, userInfo, setUserInfo, setAuths, setRoutes } = props;
-  const [spinning, setSpinning] = useState<boolean>(true);
+  const [spinning, setSpinning] = useState<boolean>(false);
   const [collapsed, setCllapsed] = useState<boolean>(false);
 
   useEffect(() => {
@@ -41,6 +41,7 @@ const Layouts = (props: Props) => {
   }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getUserInfo = async () => {
+    setSpinning(true);
     const result = await getInfo(token);
     console.log('getUserInfo：', result);
     if (result.code === '20000') {
@@ -48,10 +49,10 @@ const Layouts = (props: Props) => {
       setUserInfo(userInfo);
       setAuths(auths);
       setRoutes(formateDataTree(auths));
-      setSpinning(false);
     } else {
       message.error(result.message);
     }
+    setSpinning(false);
   };
 
   const toggle = () => setCllapsed(!collapsed);

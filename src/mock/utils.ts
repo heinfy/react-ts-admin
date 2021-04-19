@@ -27,7 +27,7 @@ export function param2Obj(url) {
  * @returns {Object}
  */
 // eslint-disable-next-line
-export const responseData = (code, message, data: any = '') => ({
+export const responseData = (code, message, data: any = null) => ({
   code,
   message,
   data

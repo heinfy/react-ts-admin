@@ -10,7 +10,7 @@ import {
 } from './action-types';
 import { IUserInfo, IAuths, IRoutes } from './interface';
 
-export const setToken = (token: string) => ({ type: TOKEN, token });
+export const setToken = (token: string | null) => ({ type: TOKEN, token });
 
 export const setUserInfo = (userInfo: IUserInfo) => ({
   type: USERINFO,
