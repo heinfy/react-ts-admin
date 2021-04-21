@@ -5,6 +5,7 @@ import { Avatar, Dropdown, Menu, message, Modal } from 'antd';
 import { IStore, IUserInfo } from '../redux/interface';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
+import UserInfoModel from './UserInfoModel';
 import { logout } from '../api';
 import { TOKEN } from '../redux/action-types';
 import { setToken } from '../redux/actions';
@@ -15,7 +16,7 @@ type TToken = string | null;
 
 type IProps = {
   userInfo: IUserInfo;
-  setToken: (TToken) => void;
+  setToken: (token: TToken) => void;
 };
 
 const { Item } = Menu;
@@ -23,12 +24,16 @@ const { Item } = Menu;
 const MyCenter = (props: IProps) => {
   const history = useHistory();
   const { setToken } = props;
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [myInfo, setmyInfo] = useState<IUserInfo | null>(null);
   useEffect(() => {
     if (props.userInfo && props.userInfo.uid) {
       setmyInfo(props.userInfo);
     }
   }, [props.userInfo]);
+  const editUserInfo = () => {
+    setIsModalVisible(true);
+  };
   const removeUser = () => {
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
@@ -50,7 +55,10 @@ const MyCenter = (props: IProps) => {
   };
   const menu = (
     <Menu>
-      <Item key="myCenter">个人中心</Item>
+      <Item key="myCenter" onClick={editUserInfo}>
+        个人中心
+      </Item>
+      <Menu.Divider />
       <Item key="logout" onClick={removeUser}>
         退出
       </Item>
@@ -58,15 +66,22 @@ const MyCenter = (props: IProps) => {
   );
   return (
     <>
-      <Dropdown placement="bottomRight" arrow overlay={menu}>
-        <Avatar
-          size={40}
-          style={{
-            borderRadius: '50%',
-            marginRight: '20px'
-          }}
-          src={(myInfo && myInfo.avatar) || errorImage}
-        />
+      <UserInfoModel
+        visible={isModalVisible}
+        setVisible={setIsModalVisible}
+        userInfo={myInfo}
+      />
+      <Dropdown placement="bottomCenter" arrow overlay={menu}>
+        <div>
+          <span>你好，{myInfo && myInfo.nickname}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <Avatar
+            size={40}
+            style={{
+              borderRadius: '50%'
+            }}
+            src={(myInfo && myInfo.avatar) || errorImage}
+          />
+        </div>
       </Dropdown>
     </>
   );
