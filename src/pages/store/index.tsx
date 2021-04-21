@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { IStore } from '../../redux/interface';
 
 import { increment, decrement, incrementAsync } from '../../redux/actions';
 
@@ -102,8 +103,7 @@ const mapDispatchToProps = { increment, decrement }
 export default connect(mapStateToProps, mapDispatchToProps)(ReactRedux)
 */
 
-// eslint-disable-next-line
-export default connect((state: any) => ({ count: state.count }), {
+export default connect((state: IStore) => ({ count: state.count }), {
   increment,
   decrement,
   incrementAsync
