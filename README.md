@@ -2,6 +2,20 @@
 
 此项目是用[Create React App](https://create-react-app.dev/)创建的，采用 `typescript + less`。
 
+## 启动配置
+
+- `antd` 版本 `4.15.0`
+- `create-react-app` 版本 `4.0.3`
+
+在 `node_modules` 下的 `antd/lib/upload/interface` 添加：
+
+```js
+export interface RcFile extends OriRcFile {
+    originFileObj: RcFile; // 新加配置
+    readonly lastModifiedDate: Date;
+}
+```
+
 ## 可用脚本
 
 ```bash
