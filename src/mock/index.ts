@@ -3,8 +3,9 @@ import { param2Obj } from './utils';
 
 import user from './user';
 import table from './table';
+import upload from './upload';
 
-const mocks = [...user, ...table];
+const mocks = [...user, ...table, ...upload];
 
 function XHR2ExpressReqWrap(respond) {
   return function (options) {

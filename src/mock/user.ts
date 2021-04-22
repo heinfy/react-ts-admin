@@ -13,23 +13,27 @@ const tokens = {
 const users = {
   'admin-token': {
     userInfo: {
-      uid: '123456',
-      role: 'admin',
-      introduction: '我是超级管理员',
-      avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4',
+      uid: '358479',
+      name: '崔斯特',
+      gender: 1,
+      nickname: '卡牌大师',
+      introduction: '我是卡牌大师',
+      roleId: '523',
       roleName: '超级管理员',
-      nickname: '侯飞'
+      avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4'
     },
     auths: authsConfig
   },
   'guest-token': {
     userInfo: {
-      uid: '123456',
-      role: 'guest',
-      introduction: '我是游客',
-      avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4',
+      uid: '653215',
+      name: '菲兹',
+      gender: 2,
+      nickname: '小鱼人',
+      introduction: '我是小鱼人',
+      roleId: '524',
       roleName: '游客',
-      nickname: '游客'
+      avatar: 'https://avatars.githubusercontent.com/u/39523094?s=400&v=4'
     },
     auths: authsConfig.filter((item) => item.id !== 5)
   }
