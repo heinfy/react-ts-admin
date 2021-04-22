@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Avatar, Dropdown, Menu, message, Modal } from 'antd';
@@ -23,14 +23,7 @@ const { Item } = Menu;
 
 const MyCenter = (props: IProps) => {
   const history = useHistory();
-  const { setToken } = props;
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [myInfo, setmyInfo] = useState<IUserInfo | null>(null);
-  useEffect(() => {
-    if (props.userInfo && props.userInfo.uid) {
-      setmyInfo(props.userInfo);
-    }
-  }, [props.userInfo]);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const editUserInfo = () => {
     setIsModalVisible(true);
   };
@@ -40,7 +33,7 @@ const MyCenter = (props: IProps) => {
       content: 'Do you want to log out?',
       async onOk() {
         const result = await logout({
-          uid: myInfo && myInfo.uid
+          uid: userInfo && userInfo.uid
         });
         if (result.code === '20000') {
           setToken(null);
@@ -64,22 +57,27 @@ const MyCenter = (props: IProps) => {
       </Item>
     </Menu>
   );
+  const { userInfo, setToken } = props;
   return (
     <>
-      <UserInfoModel
-        visible={isModalVisible}
-        setVisible={setIsModalVisible}
-        userInfo={myInfo}
-      />
+      {userInfo && (
+        <UserInfoModel
+          visible={isModalVisible}
+          setVisible={setIsModalVisible}
+          userInfo={userInfo}
+        />
+      )}
       <Dropdown placement="bottomCenter" arrow overlay={menu}>
         <div>
-          <span>你好，{myInfo && myInfo.nickname}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span>
+            你好 {userInfo && userInfo.nickname}&nbsp;&nbsp;&nbsp;&nbsp;
+          </span>
           <Avatar
             size={40}
             style={{
               borderRadius: '50%'
             }}
-            src={(myInfo && myInfo.avatar) || errorImage}
+            src={(userInfo && userInfo.avatar) || errorImage}
           />
         </div>
       </Dropdown>
