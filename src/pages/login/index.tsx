@@ -3,9 +3,9 @@ import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import { Form, Input, Button, Checkbox, message, notification } from 'antd';
 import { FormProps } from 'antd/lib/form';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, SmileOutlined } from '@ant-design/icons';
 import Particles from 'react-particles-js';
 
 import { IStore } from '../../redux/interface';
@@ -16,6 +16,7 @@ import logo from '../../assets/logo.svg';
 import { login } from '../../api';
 import './index.scss';
 
+const { Item } = Form;
 interface ILogin {
   username: string;
   password: string;
@@ -34,6 +35,7 @@ const Login = (props: LoginProps) => {
 
   useEffect(() => {
     if (token) history.push('/');
+    openNotification();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onFinish = async (values: ILogin) => {
@@ -46,7 +48,27 @@ const Login = (props: LoginProps) => {
       message.error(result.message);
     }
   };
-  const { Item } = Form;
+  const openNotification = () => {
+    const args = {
+      message: 'Welcome To My Nest',
+      description: (
+        <span>
+          This is a react-admin system. If you want to get more, place visite my{' '}
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href="https://github.com/houfeii/react-ts-admin"
+          >
+            github.
+          </a>
+        </span>
+      ),
+      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+      duration: 60
+    };
+    notification.open(args);
+  };
+
   // eslint-disable-next-line
   const config: any = particlesConfig;
   return (
