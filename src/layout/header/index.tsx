@@ -26,16 +26,13 @@ class Header extends React.Component<IProps, IState> {
   state = {
     isFullscreen: false
   };
-  handleClick = (e) => {
-    console.log('click ', e);
-    if (e.key === 'screenfull') {
-      if (screenfull.isEnabled) {
-        const { isFullscreen } = this.state;
-        this.setState({
-          isFullscreen: !isFullscreen
-        });
-        screenfull.toggle();
-      }
+  handleScreenfull = () => {
+    if (screenfull.isEnabled) {
+      const { isFullscreen } = this.state;
+      this.setState({
+        isFullscreen: !isFullscreen
+      });
+      screenfull.toggle();
     }
   };
   render() {
@@ -61,8 +58,9 @@ class Header extends React.Component<IProps, IState> {
           }
         )}
         <div className="header-userinfo">
-          <Menu onClick={this.handleClick} mode="horizontal">
+          <Menu mode="horizontal">
             <Menu.Item
+              onClick={this.handleScreenfull}
               key="screenfull"
               icon={
                 isFullscreen ? (
