@@ -20,3 +20,10 @@ export const logout = (data) =>
     method: 'post',
     data
   });
+
+export const upload = (data) =>
+  request({
+    url: '/logout',
+    method: 'post',
+    data
+  });
