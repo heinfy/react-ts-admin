@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Upload, Modal, message } from 'antd';
+import { Form, Input, Upload, Modal, Select, message } from 'antd';
 import { IUserInfo } from '../redux/interface';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { GENDER_LIST } from '../utils/constant';
 
-import errorImage from '../assets/images/error-image.png';
 import { RcFile, UploadChangeParam } from 'antd/lib/upload';
 
 type IProps = {
@@ -17,11 +17,30 @@ const layout = {
   wrapperCol: { span: 16 }
 };
 
+const autoSize = { minRows: 2, maxRows: 6 };
+// eslint-disable-next-line
+const normFile = (e: any) => {
+  console.log('Upload event:', e);
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e && e.fileList;
+};
+
+// 将上传的图片转换为 base64
+// function getBase64(img, callback) {
+//   const reader = new FileReader();
+//   reader.addEventListener('load', () => callback(reader.result));
+//   reader.readAsDataURL(img);
+// }
+
 const { Item } = Form;
+const { Option } = Select;
 
 const UserInfoModel = (props: IProps) => {
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [imageUrl, setImageUrl] = useState<string>(errorImage);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [userInfoForm] = Form.useForm();
   const { visible, userInfo, setVisible } = props;
   useEffect(() => {
@@ -32,22 +51,31 @@ const UserInfoModel = (props: IProps) => {
     });
   }, [props.visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleOk = () => {
-    setVisible(false);
+  // 提交并校验
+  const handleOk = async () => {
+    try {
+      if (!imageUrl) return message.error('请选择图片！');
+      setConfirmLoading(true);
+      const values = await userInfoForm.validateFields();
+      const requestData: IUserInfo = { ...values, imageUrl };
+      console.log('Success:', requestData);
+      setTimeout(() => {
+        setVisible(false);
+        setConfirmLoading(false);
+      }, 2000);
+    } catch (errorInfo) {
+      setConfirmLoading(false);
+      console.log('Failed:', errorInfo);
+    }
   };
 
+  // 关闭 Modal
   const handleCancel = () => {
     setVisible(false);
   };
 
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
-
+  // 图片上传之前的回调，这里采用 antd 的校验方式
   const beforeUpload = (file: RcFile) => {
-    console.log('object', file);
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
       message.error('You can only upload JPG/PNG file!');
@@ -67,17 +95,25 @@ const UserInfoModel = (props: IProps) => {
   );
 
   const onChange = (info: UploadChangeParam) => {
-    console.log('onChange', info);
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
     }
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl) => {
-        setImageUrl(imageUrl);
+      // 现在在接口响应数据返回图片链接 if
+      const res = info.file.response;
+      if (res.code === '20000') {
+        setImageUrl(res.data.imgUrl);
         setLoading(false);
-      });
+      } else {
+        message.error(res.message);
+      }
+      // 这里是 antd Upload 提供的方法，将本地图片转换为 Base64 显示在前端 else
+      // Get this url from response in real world.
+      // getBase64(info.file.originFileObj, (imageUrl) =>
+      //   setImageUrl(res.data.imgUrl);
+      //   setLoading(false);
+      // );
     }
   };
   return (
@@ -85,25 +121,23 @@ const UserInfoModel = (props: IProps) => {
       title="我的资料"
       forceRender
       visible={visible}
+      confirmLoading={confirmLoading}
       onOk={handleOk}
       onCancel={handleCancel}
     >
       <Form {...layout} form={userInfoForm} initialValues={{ remember: true }}>
         <Item
-          label="头像"
-          name="avatar"
+          label="avatar"
           valuePropName="fileList"
-          rules={[{ required: true, message: 'Please input your avatar!' }]}
+          getValueFromEvent={normFile}
         >
           <Upload
-            name="avatar"
-            maxCount={1}
             listType="picture-card"
+            className="avatar-uploader"
             showUploadList={false}
-            action="/api/upload"
+            action="/upload"
             beforeUpload={beforeUpload}
             onChange={onChange}
-            fileList={[]}
           >
             {imageUrl ? (
               <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
@@ -119,12 +153,8 @@ const UserInfoModel = (props: IProps) => {
         >
           <Input />
         </Item>
-        <Item
-          label="uid"
-          name="uid"
-          rules={[{ required: true, message: 'Please input your uid!' }]}
-        >
-          <Input />
+        <Item label="uid" name="uid">
+          <Input disabled />
         </Item>
         <Item
           label="昵称"
@@ -138,7 +168,13 @@ const UserInfoModel = (props: IProps) => {
           name="gender"
           rules={[{ required: true, message: 'Please input your gender!' }]}
         >
-          <Input />
+          <Select>
+            {GENDER_LIST.map(({ value, label }: { [p: string]: string }) => (
+              <Option key={value} value={value}>
+                {label}
+              </Option>
+            ))}
+          </Select>
         </Item>
         <Item
           label="职位"
@@ -154,7 +190,7 @@ const UserInfoModel = (props: IProps) => {
             { required: true, message: 'Please input your introduction!' }
           ]}
         >
-          <Input />
+          <Input.TextArea autoSize={autoSize} />
         </Item>
       </Form>
     </Modal>

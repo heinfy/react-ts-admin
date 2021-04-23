@@ -70,7 +70,7 @@ const MyCenter = (props: IProps) => {
       <Dropdown placement="bottomCenter" arrow overlay={menu}>
         <div>
           <span>
-            你好 {userInfo && userInfo.nickname}&nbsp;&nbsp;&nbsp;&nbsp;
+            你好，{userInfo && userInfo.nickname}&nbsp;&nbsp;&nbsp;&nbsp;
           </span>
           <Avatar
             size={40}

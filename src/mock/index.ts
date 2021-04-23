@@ -14,7 +14,7 @@ function XHR2ExpressReqWrap(respond) {
       const { body, type, url } = options;
       result = respond({
         method: type,
-        body: JSON.parse(body),
+        body: body,
         query: param2Obj(url)
       });
     } else {
