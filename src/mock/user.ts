@@ -47,9 +47,8 @@ const user = [
     url: '/api/user/login',
     type: 'post',
     response: (config) => {
-      const { username } = config.body;
+      const { username } = JSON.parse(config.body);
       const token = tokens[username];
-
       // mock error
       if (!token) {
         return responseData('60001', '帐号或密码错误');
@@ -81,7 +80,7 @@ const user = [
     url: '/api/user/logout',
     type: 'post',
     response: (_) => {
-      console.log('logout uid：', _.body.uid);
+      console.log('logout uid：', JSON.parse(_.body).uid);
       return responseData('20000', 'success');
     }
   }
