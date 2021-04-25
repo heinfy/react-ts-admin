@@ -58,6 +58,7 @@ const Nav = (props: IProps) => {
 
   return (
     <Sider
+      className="sider-list"
       style={{
         overflow: 'auto',
         height: '100vh',
