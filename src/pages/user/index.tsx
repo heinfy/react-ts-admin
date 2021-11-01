@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Tag, Space, message } from 'antd';
+import { Table, message } from 'antd';
 
 import { getTableList } from '../../api';
 

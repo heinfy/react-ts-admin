@@ -1,70 +1,54 @@
-import React, { useEffect } from 'react';
-import { RouteComponentProps } from 'react-router';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { JSEncrypt } from 'jsencrypt';
 
-import { Form, Input, Button, Checkbox, message, notification } from 'antd';
-import { FormProps } from 'antd/lib/form';
-import { UserOutlined, LockOutlined, SmileOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Checkbox, message } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import { IStore } from '../../redux/interface';
 import { setToken } from '../../redux/actions';
 
 import logo from '../../assets/logo.svg';
-import { login } from '../../api';
+import { login, getPublicKey } from '../../api';
+
+import { LoginProps, ILogin } from './type';
 import './index.scss';
 
 const { Item } = Form;
-interface ILogin {
-  username: string;
-  password: string;
-  remember: boolean;
-}
-
-type LoginProps = {
-  token: string;
-  setToken: (string) => void;
-} & RouteComponentProps &
-  FormProps;
 
 const Login = (props: LoginProps) => {
   const history = useHistory();
   const { token, setToken } = props;
-
+  const [pubKey, setPulKey] = useState<string>('');
   useEffect(() => {
     if (token) history.push('/');
-    openNotification();
+    getKey();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onFinish = async (values: ILogin) => {
-    const result = await login(values);
-    console.log('Received values of login: ', result);
-    if (result.code === '20000') {
-      setToken(result.data.token);
-      history.push('/');
+  const getKey = async () => {
+    const res = await getPublicKey();
+    if (res.code === 1) {
+      setPulKey(res.result);
     } else {
-      message.error(result.message);
+      message.error(res.message);
     }
   };
-  const openNotification = () => {
-    const args = {
-      message: 'Welcome To My Nest',
-      description: (
-        <span>
-          This is a react-admin system. If you want to get more, place visite my{' '}
-          <a
-            rel="noreferrer"
-            target="_blank"
-            href="https://github.com/houfeii/react-ts-admin"
-          >
-            github.
-          </a>
-        </span>
-      ),
-      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-      duration: 60
-    };
-    notification.open(args);
+  const encrypt = (data) => {
+    const encryptor = new JSEncrypt();
+    encryptor.setPublicKey(pubKey);
+    return encryptor.encrypt(data);
+  };
+  const onFinish = async (values: ILogin) => {
+    const password = encrypt(values.password);
+    const res = await login({ ...values, password });
+    if (res.code === 1) {
+      console.log('object', res);
+      setToken(res.token);
+      // history.push('/');
+    } else {
+      message.error(res.message);
+    }
   };
 
   return (
@@ -80,12 +64,12 @@ const Login = (props: LoginProps) => {
           <h5>React Admin 后台系统</h5>
         </div>
         <Item
-          name="username"
+          name="email"
           rules={[{ required: true, message: 'Please input your Username~' }]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="用户名为admin或guest"
+            placeholder="请输入登录邮箱"
           />
         </Item>
         <Item
@@ -95,7 +79,7 @@ const Login = (props: LoginProps) => {
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
-            placeholder="密码随便填！"
+            placeholder="请输入密码"
           />
         </Item>
         <Item>

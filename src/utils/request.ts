@@ -47,26 +47,20 @@ service.interceptors.response.use(
   (response) => {
     const res = response.data;
 
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== '20000') {
+    if (response.status !== 200) {
+      Modal.warning({
+        title: '注意',
+        content: '您登陆以过期，请重新登录',
+        okText: 'OK',
+        onOk() {
+          console.log('to re-login');
+        }
+      });
+      return;
+    }
+    // if the custom code is not 1, it is judged as an error.
+    if (res.code !== 1) {
       message.error(res.message || 'Error');
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (
-        res.code === '50008' ||
-        res.code === '50012' ||
-        res.code === '50014'
-      ) {
-        // to re-login
-        Modal.warning({
-          title: '注意',
-          content: '您登陆以过期，请重新登录',
-          okText: 'OK',
-          onOk() {
-            console.log('to re-login');
-          }
-        });
-      }
       return Promise.reject(res.message || 'Error');
     } else {
       return res;

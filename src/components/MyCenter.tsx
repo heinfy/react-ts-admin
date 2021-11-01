@@ -12,11 +12,9 @@ import { setToken } from '../redux/actions';
 import { removeCookies, clearStorage } from '../utils/auth';
 import errorImage from '../assets/images/error-image.png';
 
-type TToken = string | null;
-
 type IProps = {
   userInfo: IUserInfo;
-  setToken: (token: TToken) => void;
+  setToken: (token: string) => void;
 };
 
 const { Item } = Menu;
@@ -36,7 +34,7 @@ const MyCenter = (props: IProps) => {
           uid: userInfo && userInfo.uid
         });
         if (result.code === '20000') {
-          setToken(null);
+          setToken('');
           removeCookies(TOKEN);
           clearStorage();
           history.push('/login');

@@ -2,9 +2,15 @@ import request from '../utils/request';
 
 export const login = (data) =>
   request({
-    url: '/user/login',
+    url: '/login',
     method: 'post',
     data
+  });
+
+export const getPublicKey = () =>
+  request({
+    url: '/getPublicKey',
+    method: 'get'
   });
 
 export const getInfo = (token) =>
