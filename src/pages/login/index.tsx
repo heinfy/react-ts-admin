@@ -6,12 +6,10 @@ import { useHistory } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, message, notification } from 'antd';
 import { FormProps } from 'antd/lib/form';
 import { UserOutlined, LockOutlined, SmileOutlined } from '@ant-design/icons';
-import Particles from 'react-particles-js';
 
 import { IStore } from '../../redux/interface';
 import { setToken } from '../../redux/actions';
 
-import particlesConfig from '../../json/particlesConfig.json';
 import logo from '../../assets/logo.svg';
 import { login } from '../../api';
 import './index.scss';
@@ -69,11 +67,8 @@ const Login = (props: LoginProps) => {
     notification.open(args);
   };
 
-  // eslint-disable-next-line
-  const config: any = particlesConfig;
   return (
     <div className="login">
-      <Particles className="particles" params={config} />
       <Form
         name="normal_login"
         className="login-form"
