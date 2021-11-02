@@ -7,6 +7,7 @@ import Bar from '../charts/bar';
 import Line from '../charts/line';
 import Pie from '../charts/pie';
 import Store from '../store';
+import Log from '../log';
 
 export const rRoutes = {
   '/app/dashboard': Home,
@@ -19,5 +20,5 @@ export const rRoutes = {
   '/app/charts/line': Line,
   '/app/charts/pie': Pie,
   '/app/store': Store,
-  '/app/log': Pie
+  '/app/log': Log
 };

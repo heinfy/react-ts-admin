@@ -10,13 +10,13 @@ import {
 } from './action-types';
 import { setCookies, getCookies } from '../utils/auth';
 
-function token(state = null, action) {
+function token(state = '', action) {
   switch (action.type) {
     case TOKEN:
       setCookies(action.type, action.token);
       return action.token;
     default:
-      return state || getCookies(TOKEN) || null;
+      return state || getCookies(TOKEN);
   }
 }
 

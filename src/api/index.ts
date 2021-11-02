@@ -1,4 +1,4 @@
-import { login, getPublicKey, getUserInfo, logout } from './user';
-import { getTableList } from './table';
+import { login, getPublicKey, getUserInfo, updateUserInfo } from './user';
+import { getLogs } from './log';
 
-export { login, getPublicKey, getUserInfo, logout, getTableList };
+export { login, getPublicKey, getUserInfo, updateUserInfo, getLogs };

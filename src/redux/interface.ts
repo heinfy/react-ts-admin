@@ -7,12 +7,19 @@ export interface IStore {
 }
 
 export interface IUserInfo {
-  uid: string;
+  info: IInfo;
   role: string;
   introduction: string;
   avatar: string;
   roleName: string;
   nickname: string;
+}
+
+export interface IInfo {
+  userid: string;
+  username: string;
+  email: string;
+  avatar?: string;
 }
 
 export interface IAuths {

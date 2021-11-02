@@ -20,16 +20,9 @@ export const getUserInfo = (token) =>
     params: { token }
   });
 
-export const logout = (data) =>
+export const updateUserInfo = (data) =>
   request({
-    url: '/user/logout',
-    method: 'post',
-    data
-  });
-
-export const upload = (data) =>
-  request({
-    url: '/logout',
-    method: 'post',
+    url: '/user',
+    method: 'put',
     data
   });

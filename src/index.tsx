@@ -4,13 +4,17 @@ import { Provider } from 'react-redux';
 import App from './App';
 import store from './redux/store';
 import reportWebVitals from './test/reportWebVitals';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/lib/locale/zh_CN';
 
 import './index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ConfigProvider locale={zhCN}>
+        <App />
+      </ConfigProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

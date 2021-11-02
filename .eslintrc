@@ -8,6 +8,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "@typescript-eslint/no-explicit-any": ["off"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "arrow-parens": 0, // 箭头函数用小括号括起来
     "quotes": [1, "single"],
