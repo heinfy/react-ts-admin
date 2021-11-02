@@ -16,13 +16,13 @@ export interface IUserInfo {
 }
 
 export interface IAuths {
-  title: string;
-  key: string;
+  routeName: string;
+  routeid: string;
   icon: string;
-  isPublic?: boolean;
-  isMenu: 0 | 1;
-  id: number;
-  pid: number;
+  authid: string;
+  route: string;
+  pid: string;
+  routeSort: number;
 }
 
 export interface IRoutes extends IAuths {

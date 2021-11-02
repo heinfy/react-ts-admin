@@ -13,9 +13,11 @@ export const rRoutes = {
   '/app/category': Category,
   '/app/product': Product,
   '/app/user': User,
+  '/app/auth': User,
   '/app/role': Role,
   '/app/charts/bar': Bar,
   '/app/charts/line': Line,
   '/app/charts/pie': Pie,
-  '/app/store': Store
+  '/app/store': Store,
+  '/app/log': Pie
 };

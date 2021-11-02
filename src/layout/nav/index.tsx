@@ -27,23 +27,27 @@ const Nav = (props: IProps) => {
     return menuList.reduce((pre, item) => {
       if (!item.children) {
         pre.push(
-          <Menu.Item key={item.key} icon={getIcon(item.icon)}>
-            <Link to={item.key}>
-              <span>{item.title}</span>
+          <Menu.Item key={item.route} icon={getIcon(item.icon)}>
+            <Link to={item.route}>
+              <span>{item.routeName}</span>
             </Link>
           </Menu.Item>
         );
       } else {
         // 查找一个与当前请求路径匹配的子Item
         const cItem = item.children.find((cItem) => {
-          return path.indexOf(cItem.key) === 0;
+          return path.indexOf(cItem.route) === 0;
         });
         // 如果存在, 说明当前item的子列表需要打开
         if (cItem && openKey.length === 0) {
-          setOpenKey([item.key]);
+          setOpenKey([item.route]);
         }
         pre.push(
-          <SubMenu key={item.key} icon={getIcon(item.icon)} title={item.title}>
+          <SubMenu
+            key={item.route}
+            icon={getIcon(item.icon)}
+            title={item.routeName}
+          >
             {getMenuNodes(item.children)}
           </SubMenu>
         );

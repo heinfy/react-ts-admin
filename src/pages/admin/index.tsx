@@ -39,9 +39,9 @@ const Admin = (props: Props) => {
       />
       {renderRoutes.map((route) => (
         <Route
-          key={route.key}
-          path={route.key}
-          component={rRoutes[route.key]}
+          key={route.authid}
+          path={route.route}
+          component={rRoutes[route.route]}
         />
       ))}
       <Route path="*" component={NotFound} />

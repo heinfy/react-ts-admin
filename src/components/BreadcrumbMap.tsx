@@ -11,8 +11,8 @@ type IProps = {
 } & RouteComponentProps;
 
 interface IBreadcrumb {
-  title: string;
-  key: string;
+  routeName: string;
+  route: string;
 }
 
 const BreadcrumbMap = (props: IProps) => {
@@ -33,19 +33,19 @@ const BreadcrumbMap = (props: IProps) => {
         </Link>
       </Breadcrumb.Item>
       {temp.map((item, idx) => {
-        if (item.key === '/app/dashboard') return null;
+        if (item.route === '/app/dashboard') return null;
         if (temp.length - 1 === idx) {
           return (
-            <Breadcrumb.Item key={item.key}>
-              <Link to={item.key}>
-                <span>{item.title}</span>
+            <Breadcrumb.Item key={item.route}>
+              <Link to={item.route}>
+                <span>{item.routeName}</span>
               </Link>
             </Breadcrumb.Item>
           );
         } else {
           return (
-            <Breadcrumb.Item key={item.key}>
-              <span>{item.title}</span>
+            <Breadcrumb.Item key={item.route}>
+              <span>{item.routeName}</span>
             </Breadcrumb.Item>
           );
         }

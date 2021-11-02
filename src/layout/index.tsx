@@ -7,7 +7,7 @@ import { Layout, LayoutProps, message, Spin } from 'antd';
 import { IStore, IUserInfo } from '../redux/interface';
 import { setUserInfo, setAuths, setRoutes } from '../redux/actions';
 import { formateDataTree } from '../utils/utils';
-import { getInfo } from '../api';
+import { getUserInfo } from '../api';
 
 import Nav from './nav';
 import Header from './header';
@@ -33,24 +33,23 @@ const Layouts = (props: Props) => {
   useEffect(() => {
     if (token) {
       if (!userInfo) {
-        getUserInfo();
+        getInfo();
       }
     } else {
       history.push('/login');
     }
   }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getUserInfo = async () => {
+  const getInfo = async () => {
     setSpinning(true);
-    const result = await getInfo(token);
-    console.log('getUserInfo：', result);
-    if (result.code === '20000') {
-      const { userInfo, auths } = result.data;
-      setUserInfo(userInfo);
+    const res = await getUserInfo(token);
+    if (res.code === 1) {
+      const { auths, routes } = res.result;
+      setUserInfo(res.result);
       setAuths(auths);
-      setRoutes(formateDataTree(auths));
+      setRoutes(formateDataTree(routes));
     } else {
-      message.error(result.message);
+      message.error(res.message);
     }
     setSpinning(false);
   };

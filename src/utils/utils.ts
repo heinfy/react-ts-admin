@@ -13,13 +13,11 @@ import { IAuths, IRoutes } from '../redux/interface';
 export const formateDataTree: (data: IAuths[]) => IRoutes[] = (
   data: IAuths[]
 ) => {
-  const _data = JSON.parse(JSON.stringify(data)).filter(
-    (item: IAuths) => item.isMenu === 1
-  );
+  const _data = JSON.parse(JSON.stringify(data));
   return _data.filter((p) => {
-    const _arr = _data.filter((c) => c.pid === p.id);
+    const _arr = _data.filter((c) => c.pid === p.authid);
     _arr.length && (p.children = _arr);
-    return p.pid === 0;
+    return p.pid === '1';
   });
 };
 
@@ -34,8 +32,8 @@ export const getParentForTree = (treeData, $selectKey) => {
     const layer = 0;
     const posIndx = [];
     const item = treeData[i];
-    if (item.key === $selectKey) {
-      return [{ key: item.key, title: item.title }];
+    if (item.route === $selectKey) {
+      return [{ route: item.route, routeName: item.routeName }];
     } else {
       const res = scanTree(item, $selectKey, layer, posIndx);
       if (res) return res;
@@ -46,31 +44,30 @@ export const getParentForTree = (treeData, $selectKey) => {
 /**
  * 扫描树下面的孩子对象
  * @param {object} $item - 要递归遍历的对象
- * @param {string} $key - 要匹配的元素
+ * @param {string} $route - 要匹配的元素
  * @param {number} $layer - 遍历到哪一级孩子对象
  * @param {array} $posIndx - 用来存储匹配到的元素的所有父级
  * @returns {array} - 匹配到的元素的所有父级
  */
-const scanTree = ($item, $key, $layer, $posIndx) => {
-  // console.log('layer', $item, $key, $layer, $posIndx);
+const scanTree = ($item, $route, $layer, $posIndx) => {
   if (!$item.children) {
     $layer -= 1;
     return false;
   }
-  $posIndx[$layer] = { key: $item.key, title: $item.title };
+  $posIndx[$layer] = { route: $item.route, routeName: $item.routeName };
   for (let i = 0; i < $item.children.length; i++) {
     const item = $item.children[i];
-    if (item.key === $key) {
+    if (item.route === $route) {
       // console.log('找到节点,节点位置是：', i);
-      $posIndx.push({ key: item.key, title: item.title });
+      $posIndx.push({ route: item.route, routeName: item.routeName });
       return $posIndx;
     } else {
       // console.log('深入到子节点');
       const layer = $layer + 1;
-      const node = scanTree(item, $key, layer, $posIndx);
+      const node = scanTree(item, $route, layer, $posIndx);
       if (!node && $posIndx.length > 0) {
         $posIndx.length -= 1;
-        $posIndx[$layer] = { key: $item.key, title: $item.title };
+        $posIndx[$layer] = { route: $item.route, routeName: $item.routeName };
       }
       if (node) return node;
     }

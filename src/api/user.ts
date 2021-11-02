@@ -13,9 +13,9 @@ export const getPublicKey = () =>
     method: 'get'
   });
 
-export const getInfo = (token) =>
+export const getUserInfo = (token) =>
   request({
-    url: '/user/info',
+    url: '/user',
     method: 'get',
     params: { token }
   });

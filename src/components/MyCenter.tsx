@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Avatar, Dropdown, Menu, message, Modal } from 'antd';
+import { Avatar, Dropdown, Menu, Modal } from 'antd';
 import { IStore, IUserInfo } from '../redux/interface';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import UserInfoModel from './UserInfoModel';
-import { logout } from '../api';
-import { TOKEN } from '../redux/action-types';
 import { setToken } from '../redux/actions';
-import { removeCookies, clearStorage } from '../utils/auth';
+import { clearStorage } from '../utils/auth';
 import errorImage from '../assets/images/error-image.png';
 
 type IProps = {
@@ -28,19 +26,11 @@ const MyCenter = (props: IProps) => {
   const removeUser = () => {
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
-      content: 'Do you want to log out?',
-      async onOk() {
-        const result = await logout({
-          uid: userInfo && userInfo.uid
-        });
-        if (result.code === '20000') {
-          setToken('');
-          removeCookies(TOKEN);
-          clearStorage();
-          history.push('/login');
-        } else {
-          message.error(result.message);
-        }
+      content: '确定要登出?',
+      onOk() {
+        setToken('');
+        clearStorage();
+        history.push('/login');
       }
     });
   };

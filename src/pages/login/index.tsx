@@ -43,9 +43,8 @@ const Login = (props: LoginProps) => {
     const password = encrypt(values.password);
     const res = await login({ ...values, password });
     if (res.code === 1) {
-      console.log('object', res);
-      setToken(res.token);
-      // history.push('/');
+      setToken(res.result.token);
+      history.push('/');
     } else {
       message.error(res.message);
     }
