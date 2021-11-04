@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Badge, Row, Col } from 'antd';
+import { Layout, Badge, Row, Col } from 'antd';
 import BreadcrumbMap from '../../components/BreadcrumbMap';
 import screenfull from 'screenfull';
 import {
@@ -12,7 +12,6 @@ import {
 import MyCenter from '../../components/MyCenter';
 import './index.scss';
 
-const { SubMenu } = Menu;
 interface IProps {
   collapsed: boolean;
   toggle: () => void;
@@ -71,9 +70,9 @@ class Header extends React.Component<IProps, IState> {
         <Row>
           <Col flex="none" onClick={this.handleScreenfull}>
             {isFullscreen ? (
-              <FullscreenExitOutlined style={style} />
+              <FullscreenExitOutlined title="取消全屏" style={style} />
             ) : (
-              <FullscreenOutlined style={style} />
+              <FullscreenOutlined title="全屏" style={style} />
             )}
           </Col>
           <Col flex="none">

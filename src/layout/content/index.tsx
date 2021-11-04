@@ -7,7 +7,7 @@ const Content = () => {
     <Layout.Content style={{ margin: '16px' }}>
       <div
         className="site-layout-background"
-        style={{ padding: 24, minHeight: 'calc(100vh - 190px)' }}
+        style={{ padding: 24, minHeight: 'calc(100vh - 168px)' }}
       >
         <Admin />
       </div>
