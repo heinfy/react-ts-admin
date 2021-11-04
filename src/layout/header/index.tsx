@@ -1,13 +1,13 @@
 import React from 'react';
-import { Layout, Menu, Badge } from 'antd';
+import { Layout, Menu, Badge, Row, Col } from 'antd';
+import BreadcrumbMap from '../../components/BreadcrumbMap';
 import screenfull from 'screenfull';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  NotificationOutlined,
+  MessageOutlined,
   FullscreenOutlined,
-  FullscreenExitOutlined,
-  SettingOutlined
+  FullscreenExitOutlined
 } from '@ant-design/icons';
 import MyCenter from '../../components/MyCenter';
 import './index.scss';
@@ -24,7 +24,11 @@ interface IState {
 
 class Header extends React.Component<IProps, IState> {
   state = {
-    isFullscreen: false
+    isFullscreen: false,
+    style: {
+      fontSize: 20,
+      marginRight: '20px'
+    }
   };
   handleScreenfull = () => {
     if (screenfull.isEnabled) {
@@ -37,7 +41,7 @@ class Header extends React.Component<IProps, IState> {
   };
   render() {
     const { collapsed, toggle } = this.props;
-    const { isFullscreen } = this.state;
+    const { isFullscreen, style } = this.state;
     return (
       <Layout.Header
         style={{
@@ -50,54 +54,37 @@ class Header extends React.Component<IProps, IState> {
         }}
         className="site-layout-header"
       >
-        {React.createElement(
-          collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-          {
-            className: 'trigger',
-            onClick: toggle
-          }
-        )}
-        <div className="header-userinfo">
-          <Menu mode="horizontal">
-            <Menu.Item
-              onClick={this.handleScreenfull}
-              key="screenfull"
-              icon={
-                isFullscreen ? (
-                  <FullscreenExitOutlined />
-                ) : (
-                  <FullscreenOutlined />
-                )
+        <Row justify="space-around" align="middle">
+          <Col flex="none">
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: 'trigger',
+                onClick: toggle
               }
-            >
-              全屏
-            </Menu.Item>
-            <Menu.Item key="messgae" icon={<NotificationOutlined />}>
-              <Badge dot>
-                <span
-                  style={{
-                    marginRight: '6px'
-                  }}
-                >
-                  消息
-                </span>
-              </Badge>
-            </Menu.Item>
-            <SubMenu key="SubMenu" icon={<SettingOutlined />} title="系统">
-              <Menu.ItemGroup title="Item 1">
-                <Menu.Item key="setting:1">Option 1</Menu.Item>
-                <Menu.Item key="setting:2">Option 2</Menu.Item>
-              </Menu.ItemGroup>
-              <Menu.ItemGroup title="Item 2">
-                <Menu.Item key="setting:3">Option 3</Menu.Item>
-                <Menu.Item key="setting:4">Option 4</Menu.Item>
-              </Menu.ItemGroup>
-            </SubMenu>
-            <Menu.Item key="my-center">
-              <MyCenter></MyCenter>
-            </Menu.Item>
-          </Menu>
-        </div>
+            )}
+          </Col>
+          <Col flex="none">
+            <BreadcrumbMap></BreadcrumbMap>
+          </Col>
+        </Row>
+        <Row>
+          <Col flex="none" onClick={this.handleScreenfull}>
+            {isFullscreen ? (
+              <FullscreenExitOutlined style={style} />
+            ) : (
+              <FullscreenOutlined style={style} />
+            )}
+          </Col>
+          <Col flex="none">
+            <Badge style={style} dot>
+              <MessageOutlined style={style} />
+            </Badge>
+          </Col>
+          <Col flex="none">
+            <MyCenter></MyCenter>
+          </Col>
+        </Row>
       </Layout.Header>
     );
   }

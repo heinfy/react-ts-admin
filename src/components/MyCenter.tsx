@@ -47,21 +47,20 @@ const MyCenter = (props: IProps) => {
   const { userInfo, setUserInfo, setToken } = props;
   return (
     <>
-      {userInfo && (
-        <UserInfoModel
-          visible={isModalVisible}
-          setVisible={setIsModalVisible}
-          setUserInfo={setUserInfo}
-          userInfo={userInfo}
-        />
-      )}
+      <UserInfoModel
+        visible={isModalVisible}
+        setVisible={setIsModalVisible}
+        setUserInfo={setUserInfo}
+        userInfo={userInfo}
+      />
       <Dropdown placement="bottomCenter" arrow overlay={menu}>
         <div>
-          <span>你好，{userInfo && userInfo.info.username}&nbsp;&nbsp;</span>
+          <span>你好，{userInfo && userInfo.info.username}</span>
           <Avatar
             size={40}
             style={{
-              borderRadius: '50%'
+              borderRadius: '50%',
+              margin: '0 20px'
             }}
             src={errorImage}
           />
