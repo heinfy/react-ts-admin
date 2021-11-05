@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Table, Button, message } from 'antd';
 import JsonView from '../../components/JsonView';
+import SearchForm from '../../components/SearchForm';
 
 import { getLogs } from '../../api';
 
 import { INITPAGEQUERY } from '../../utils/constant';
 
 const Log = () => {
+  const searchRef: any = useRef();
   const [params, setParams] = useState<any>(INITPAGEQUERY);
   const [visibleJsonView, setVisibleJsonView] = useState<boolean>(false);
   const [jsonTitle, setJsonTitle] = useState<string>('');
@@ -14,6 +16,14 @@ const Log = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [logList, setLogList] = useState([]);
   const [total, setToal] = useState<number>(0);
+  const search = () => {
+    const fields = searchRef.current.getFieldsValue(true);
+    const searchParams = { ...params, ...fields };
+    getLogList(searchParams);
+  };
+  const clear = () => {
+    getLogList(INITPAGEQUERY);
+  };
   const columns = [
     {
       title: 'userid',
@@ -23,10 +33,14 @@ const Log = () => {
       width: 120
     },
     {
-      title: 'url',
+      title: '请求方法',
+      dataIndex: 'method',
+      key: 'method'
+    },
+    {
+      title: '请求地址',
       dataIndex: 'url',
-      key: 'url',
-      render: (r: any, t: any) => `${t.method} ${r}`
+      key: 'url'
     },
     {
       title: '请求体',
@@ -67,14 +81,14 @@ const Log = () => {
       )
     },
     {
-      title: '返回值',
+      title: '状态码',
+      dataIndex: 'code',
+      key: 'code'
+    },
+    {
+      title: '返回消息',
       dataIndex: 'content',
-      key: 'content',
-      render: (r: any, t: any) => (
-        <Button size="small" onClick={() => viewJson(r, t.userid)}>
-          返回值
-        </Button>
-      )
+      key: 'content'
     },
     {
       title: 'createdAt',
@@ -82,11 +96,40 @@ const Log = () => {
       key: 'createdAt'
     }
   ];
+  const searchList = [
+    {
+      type: 'input',
+      name: '用户id',
+      label: 'userid',
+      attr: { placeholder: '请输入 userid' }
+    },
+    {
+      type: 'select',
+      name: 'method',
+      label: '请求方式',
+      option: [
+        { value: 'GET', key: 'GET' },
+        { value: 'POST', key: 'POST' },
+        { value: 'DELETE', key: 'DELETE' },
+        { value: 'PUT', key: 'PUT' }
+      ],
+      attr: { placeholder: '请选择请求方式' }
+    },
+    {
+      type: 'input',
+      name: 'url',
+      label: '请求地址',
+      attr: { placeholder: '请输入 url' }
+    },
+    {
+      type: 'rangePicker',
+      name: 'timeRange',
+      label: '创建时间'
+    }
+  ];
   useEffect(() => {
-    logList.length !== 0 && setLogList([]);
-    !total && setToal(0);
-    getLogList();
-  }, [params.page, params.size, params.userid, params.url, params.method]); // eslint-disable-line react-hooks/exhaustive-deps
+    getLogList(params);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!visibleJsonView) {
       setSrc({});
@@ -98,7 +141,8 @@ const Log = () => {
     setSrc(src || {});
     setJsonTitle(title);
   };
-  const getLogList = async () => {
+  const getLogList = async (params) => {
+    setParams(params);
     setLoading(true);
     const res = await getLogs(params);
     setLoading(false);
@@ -109,8 +153,15 @@ const Log = () => {
       message.error(res.message);
     }
   };
+
   return (
     <div>
+      <SearchForm
+        searchList={searchList}
+        searchFn={search}
+        clearFn={clear}
+        ref={searchRef}
+      />
       <JsonView
         visible={visibleJsonView}
         setVisible={setVisibleJsonView}
@@ -130,7 +181,7 @@ const Log = () => {
           pageSizeOptions: ['10', '20', '50', '100', '200'],
           showQuickJumper: true,
           showTotal: (total) => `共 ${total} 条数据`,
-          onChange: (page, size) => setParams({ ...params, page, size }),
+          onChange: (page, size) => getLogList({ ...params, page, size }),
           total: total
         }}
       />

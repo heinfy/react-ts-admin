@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import SearchForm from '../../components/SearchForm/index';
+import React, { useRef, useEffect } from 'react';
+import SearchForm from '../../components/SearchForm';
 import './index.scss';
 
 const options = [
@@ -80,13 +80,22 @@ const list = [
   }
 ];
 
-export default class Home extends Component {
-  render() {
-    return (
-      <div className="home">
-        <SearchForm searchList={list} />
-        <h1>这是首页</h1>
-      </div>
-    );
-  }
-}
+const Home = () => {
+  const searchRef: any = useRef();
+  useEffect(() => {
+    // 在副作用中可以获取ref绑定子组件的元素
+    console.log('searchRef', searchRef);
+  }, []);
+  const search = () => {
+    const fields = searchRef.current.getFieldsValue(true);
+    console.log(fields);
+  };
+  return (
+    <div className="home">
+      <SearchForm searchList={list} searchFn={search} ref={searchRef} />
+      <button onClick={search}>查询</button>
+    </div>
+  );
+};
+
+export default Home;
