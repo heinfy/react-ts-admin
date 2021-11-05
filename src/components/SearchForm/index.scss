@@ -1,4 +1,13 @@
-.search-form .search-item {
-  display: block;
-  width: 100%;
+.search-form {
+  margin-bottom: 20px;
+  .search-item {
+    display: block;
+    width: 100%;
+  }
+  .col-right {
+    text-align: right;
+  }
+  .btn-margin {
+    margin: 0 8px;
+  }
 }

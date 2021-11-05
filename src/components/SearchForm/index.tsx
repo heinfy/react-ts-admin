@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import React, { useState, useEffect, forwardRef } from 'react';
+import {
+  DownOutlined,
+  ClearOutlined,
+  SearchOutlined,
+  UpOutlined
+} from '@ant-design/icons';
 import {
   Form,
   Row,
@@ -11,13 +16,12 @@ import {
   Cascader,
   Button
 } from 'antd';
-
 import './index.scss';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const searchItem = (srh) => {
+const generateSearchItem = (srh) => {
   const { type, name, label, option = null, attr = {} } = srh;
   switch (type) {
     case 'input':
@@ -68,44 +72,69 @@ const searchItem = (srh) => {
   }
 };
 
-const SearchForm = ({ searchList }) => {
-  const params = {};
-  searchList.forEach((i) => {
-    params[i.name] = null;
-  });
-  searchList.map((i) => ({ [i.name]: null }));
-  const [searchInfo, setSearchInfo] = useState<unknown>(params);
-  const [expand, setExpand] = useState<boolean>(false);
-  console.log('SearchForm', searchList);
+const SearchForm = forwardRef((props: any, ref: any) => {
+  const searchList = JSON.parse(JSON.stringify(props.searchList)) || [];
+  const canExpand = searchList.length > 4;
+  const searchFirRow = searchList.slice(0, 4);
+  const [form] = Form.useForm();
+  const [searchItems, setSearchItems] = useState<any[]>([]);
+  const [expand, setExpand] = useState<boolean>(!canExpand);
+  useEffect(() => {
+    setSearchItems(expand ? searchList.slice(4) : []);
+  }, [expand]); // eslint-disable-line react-hooks/exhaustive-deps
+  const search = () => {
+    form.getFieldsValue(true);
+    props.searchFn();
+  };
+  const clear = () => {
+    form.resetFields();
+    props.clearFn();
+  };
   return (
     <Form
+      ref={ref}
+      form={form}
       size="small"
       className="search-form"
+      style={{ marginBottom: 20 }}
       labelCol={{ span: 6 }}
       wrapperCol={{ span: 16, offset: 1 }}
     >
       <Row>
-        {searchList.map((i, idx) => (
+        {/* 默认展开第一行 */}
+        {searchFirRow.map((i, idx) => (
           <Col span={6} key={idx}>
-            {searchItem(i)}
+            {generateSearchItem(i)}
+          </Col>
+        ))}
+        {searchItems.map((i, idx) => (
+          <Col span={6} key={idx}>
+            {generateSearchItem(i)}
           </Col>
         ))}
       </Row>
       <Row>
-        <Col span={24} style={{ textAlign: 'right' }}>
-          <Button type="primary">Search</Button>
-          <Button style={{ margin: '0 8px' }}>Clear</Button>
-          <Button
-            style={{ margin: '0 8px' }}
-            type="text"
-            onClick={() => setExpand(!expand)}
-          >
-            {expand ? <UpOutlined /> : <DownOutlined />} Collapse
+        <Col span={24} className="col-right">
+          <Button type="primary" icon={<SearchOutlined />} onClick={search}>
+            Search
           </Button>
+          <Button
+            className="btn-margin"
+            icon={<ClearOutlined />}
+            danger
+            onClick={clear}
+          >
+            Clear
+          </Button>
+          {canExpand && (
+            <Button className="btn-margin" onClick={() => setExpand(!expand)}>
+              {expand ? <UpOutlined /> : <DownOutlined />} Collapse
+            </Button>
+          )}
         </Col>
       </Row>
     </Form>
   );
-};
+});
 
 export default SearchForm;
