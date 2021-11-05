@@ -1,8 +1,8 @@
 import request from '../utils/request';
 
-export const getLogs = (params) =>
+export const getLogs = (data) =>
   request({
     url: '/getLogList',
-    method: 'get',
-    params
+    method: 'post',
+    data
   });
