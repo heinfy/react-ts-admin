@@ -13,11 +13,10 @@ export const getPublicKey = () =>
     method: 'get'
   });
 
-export const getUserInfo = (token) =>
+export const getUserInfo = () =>
   request({
     url: '/user',
-    method: 'get',
-    params: { token }
+    method: 'get'
   });
 
 export const updateUserInfo = (data) =>

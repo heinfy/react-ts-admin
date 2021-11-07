@@ -3,6 +3,7 @@ import { message, Modal } from 'antd';
 
 import store from '../redux/store';
 import { TOKEN } from '../redux/action-types';
+import { setToken } from '../redux/actions';
 import { getCookies } from './auth';
 
 // create an axios instance
@@ -46,17 +47,17 @@ service.interceptors.response.use(
    */
   (response) => {
     const res = response.data;
-
-    if (response.status !== 200) {
+    if (response.status === 214) {
+      store.dispatch(setToken(''));
       Modal.warning({
         title: '注意',
         content: '您登陆以过期，请重新登录',
         okText: 'OK',
         onOk() {
-          console.log('to re-login');
+          window.location.href = '/login';
         }
       });
-      return;
+      return res;
     }
     // if the custom code is not 1, it is judged as an error.
     if (res.code !== 1) {

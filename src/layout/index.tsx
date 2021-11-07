@@ -42,7 +42,8 @@ const Layouts = (props: Props) => {
 
   const getInfo = async () => {
     setSpinning(true);
-    const res = await getUserInfo(token);
+    const res = await getUserInfo();
+    setSpinning(false);
     if (res.code === 1) {
       const { auths, routes } = res.result;
       setUserInfo(res.result);
@@ -51,7 +52,6 @@ const Layouts = (props: Props) => {
     } else {
       message.error(res.message);
     }
-    setSpinning(false);
   };
 
   const toggle = () => setCllapsed(!collapsed);
