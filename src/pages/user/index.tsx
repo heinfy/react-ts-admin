@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, message } from 'antd';
+import React, { useRef, useState, useEffect } from 'react';
+import { Table, Tag, message } from 'antd';
+
+import SearchForm from '../../components/SearchForm';
 
 import { getList } from '../../api/user';
 
@@ -14,9 +16,21 @@ const columns = [
     width: 120
   },
   {
+    title: 'username',
+    dataIndex: 'username',
+    key: 'username'
+  },
+  {
     title: 'email',
     dataIndex: 'email',
     key: 'email'
+  },
+  {
+    title: '角色',
+    dataIndex: 'roles',
+    key: 'roles',
+    width: 240,
+    render: (r) => r.map((role) => <Tag>{role.roleName}</Tag>)
   },
   {
     title: 'createdAt',
@@ -30,7 +44,34 @@ const columns = [
   }
 ];
 
+const searchList = [
+  {
+    type: 'input',
+    name: '用户id',
+    label: 'userid',
+    attr: { placeholder: '请输入 userid' }
+  },
+  {
+    type: 'input',
+    name: 'username',
+    label: '用户名',
+    attr: { placeholder: '请输入用户名' }
+  },
+  {
+    type: 'input',
+    name: 'email',
+    label: '邮箱',
+    attr: { placeholder: '请输入邮箱' }
+  },
+  {
+    type: 'rangePicker',
+    name: 'timeRange',
+    label: '创建时间'
+  }
+];
+
 const User = () => {
+  const searchRef: any = useRef();
   const [params, setParams] = useState<any>(INITPAGEQUERY);
   const [loading, setLoading] = useState<boolean>(false);
   const [userList, setUserList] = useState([]);
@@ -50,8 +91,22 @@ const User = () => {
       message.error(res.message);
     }
   };
+  const search = () => {
+    const fields = searchRef.current.getFieldsValue(true);
+    const searchParams = { ...params, ...fields };
+    getUserList(searchParams);
+  };
+  const clear = () => {
+    getUserList(INITPAGEQUERY);
+  };
   return (
     <div>
+      <SearchForm
+        searchList={searchList}
+        searchFn={search}
+        clearFn={clear}
+        ref={searchRef}
+      />
       <Table
         bordered
         loading={loading}
