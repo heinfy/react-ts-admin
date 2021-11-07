@@ -2,7 +2,7 @@ import request from '../utils/request';
 
 /* Postman 02.用户管理 */
 // 获取用户列表
-export const getUserList = (params) =>
+export const getList = (params) =>
   request({
     url: '/users',
     method: 'get',
