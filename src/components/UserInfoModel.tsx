@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Modal, message } from 'antd';
 
-import { updateUserInfo } from '../api';
+import { updateUserInfo } from '../api/user';
 
 import { IUserInfo } from '../redux/interface';
 

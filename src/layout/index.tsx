@@ -7,7 +7,7 @@ import { Layout, LayoutProps, message, Spin } from 'antd';
 import { IStore, IUserInfo } from '../redux/interface';
 import { setUserInfo, setAuths, setRoutes } from '../redux/actions';
 import { formateDataTree } from '../utils/utils';
-import { getUserInfo } from '../api';
+import { getUserInfo } from '../api/user';
 
 import Nav from './nav';
 import Header from './header';

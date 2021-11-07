@@ -10,7 +10,7 @@ import { IStore } from '../../redux/interface';
 import { setToken } from '../../redux/actions';
 
 import logo from '../../assets/logo.svg';
-import { login, getPublicKey } from '../../api';
+import { login, getPublicKey } from '../../api/user';
 
 import { LoginProps, ILogin } from './type';
 import './index.scss';

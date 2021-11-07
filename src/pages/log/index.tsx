@@ -3,7 +3,7 @@ import { Table, Button, message } from 'antd';
 import JsonView from '../../components/JsonView';
 import SearchForm from '../../components/SearchForm';
 
-import { getLogs } from '../../api';
+import { getLogs } from '../../api/log';
 
 import { INITPAGEQUERY } from '../../utils/constant';
 
