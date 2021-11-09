@@ -2,11 +2,11 @@ import request from '../utils/request';
 
 /* Postman 04.角色管理 */
 // 获取角色列表
-export const getRoleList = (params) =>
+export const getList = (data) =>
   request({
     url: '/roles',
-    method: 'get',
-    params
+    method: 'post',
+    data
   });
 
 // 新建角色
