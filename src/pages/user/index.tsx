@@ -30,7 +30,7 @@ const columns = [
     dataIndex: 'roles',
     key: 'roles',
     width: 240,
-    render: (r) => r.map((role) => <Tag>{role.roleName}</Tag>)
+    render: (r) => r.map((role) => <Tag key={role.roleid}>{role.roleName}</Tag>)
   },
   {
     title: 'createdAt',
@@ -110,7 +110,7 @@ const User = () => {
       <Table
         bordered
         loading={loading}
-        rowKey={(row: any) => row._id}
+        rowKey={(row: any) => row.userid}
         columns={columns}
         dataSource={userList}
         scroll={{ x: true }}

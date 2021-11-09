@@ -2,6 +2,8 @@ import Home from '../home';
 import Category from '../products/category';
 import Product from '../products/product';
 import User from '../user';
+import Auth from '../auth';
+import Route from '../route';
 import Role from '../role';
 import Bar from '../charts/bar';
 import Line from '../charts/line';
@@ -14,7 +16,8 @@ export const rRoutes = {
   '/app/category': Category,
   '/app/product': Product,
   '/app/user': User,
-  '/app/auth': User,
+  '/app/auth': Auth,
+  '/app/route': Route,
   '/app/role': Role,
   '/app/charts/bar': Bar,
   '/app/charts/line': Line,

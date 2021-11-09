@@ -2,11 +2,11 @@ import request from '../utils/request';
 
 /* Postman 06.路由接口 */
 // 获取路由列表
-export const getRouteList = (params) =>
+export const getList = (data) =>
   request({
     url: '/routes',
-    method: 'get',
-    params
+    method: 'post',
+    data
   });
 
 // 新建路由

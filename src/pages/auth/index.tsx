@@ -3,40 +3,55 @@ import { Table, message } from 'antd';
 
 import SearchForm from '../../components/SearchForm';
 
-import { getList } from '../../api/role';
+import { getList } from '../../api/auth';
 
 import { INITPAGEQUERY } from '../../utils/constant';
 
 const columns = [
   {
-    title: '角色ID',
-    dataIndex: 'roleid',
-    key: 'roleid',
+    title: '权限ID',
+    dataIndex: 'authid',
+    key: 'authid',
     fixed: true,
     width: 120
   },
   {
-    title: '角色名称',
-    dataIndex: 'roleName',
-    key: 'roleName'
+    title: '权限名',
+    dataIndex: 'authName',
+    key: 'authName'
   },
   {
-    title: '角色描述',
-    dataIndex: 'roleDesc',
-    key: 'roleDesc'
+    title: '路由名称',
+    dataIndex: 'routeName',
+    key: 'routeName'
+  },
+  {
+    title: '类型',
+    dataIndex: 'type',
+    key: 'type'
+  },
+  {
+    title: '父ID',
+    dataIndex: 'pid',
+    key: 'pid'
   },
   {
     title: '排序',
-    dataIndex: 'roleSort',
-    key: 'roleSort'
+    dataIndex: 'authSort',
+    key: 'authSort'
   },
   {
-    title: 'createdAt',
+    title: '描述',
+    dataIndex: 'authDesc',
+    key: 'authDesc'
+  },
+  {
+    title: '创建时间',
     dataIndex: 'createdAt',
     key: 'createdAt'
   },
   {
-    title: 'updatedAt',
+    title: '更新时间',
     dataIndex: 'updatedAt',
     key: 'updatedAt'
   }
@@ -45,21 +60,37 @@ const columns = [
 const searchList = [
   {
     type: 'input',
-    name: 'roleid',
-    label: '角色ID',
-    attr: { placeholder: '请输入 roleid' }
+    name: 'authid',
+    label: '权限ID',
+    attr: { placeholder: '请输入 authid' }
   },
   {
     type: 'input',
-    name: '角色名称',
-    label: 'roleName',
-    attr: { placeholder: '请输入角色名称' }
+    name: 'authName',
+    label: '权限名称',
+    attr: { placeholder: '请输入用户名' }
   },
   {
     type: 'input',
-    name: 'roleSort',
-    label: '排序',
-    attr: { placeholder: '请输入排序' }
+    name: 'pid',
+    label: '父ID',
+    attr: { placeholder: '请输入父ID' }
+  },
+  {
+    type: 'select',
+    name: 'type',
+    label: '权限类型',
+    option: [
+      { value: '菜单', key: 'menu' },
+      { value: '按钮', key: 'button' }
+    ],
+    attr: { placeholder: '请选择权限类型' }
+  },
+  {
+    type: 'inputNumber',
+    name: 'authSort',
+    label: '权限排序',
+    attr: { placeholder: '请输入权限排序' }
   },
   {
     type: 'rangePicker',
@@ -75,9 +106,9 @@ const User = () => {
   const [userList, setUserList] = useState([]);
   const [total, setToal] = useState<number>(0);
   useEffect(() => {
-    getRoleList(params);
+    getAuthList(params);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  const getRoleList = async (params) => {
+  const getAuthList = async (params) => {
     setParams(params);
     setLoading(true);
     const res = await getList(params);
@@ -92,10 +123,10 @@ const User = () => {
   const search = () => {
     const fields = searchRef.current.getFieldsValue(true);
     const searchParams = { ...params, ...fields };
-    getRoleList(searchParams);
+    getAuthList(searchParams);
   };
   const clear = () => {
-    getRoleList(INITPAGEQUERY);
+    getAuthList(INITPAGEQUERY);
   };
   return (
     <div>
@@ -108,7 +139,7 @@ const User = () => {
       <Table
         bordered
         loading={loading}
-        rowKey={(row: any) => row.roleid}
+        rowKey={(row: any) => row.authid}
         columns={columns}
         dataSource={userList}
         scroll={{ x: true }}

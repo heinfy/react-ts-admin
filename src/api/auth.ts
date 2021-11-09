@@ -2,11 +2,11 @@ import request from '../utils/request';
 
 /* Postman 05.权限管理 */
 // 获取权限列表
-export const getAuthList = (params) =>
+export const getList = (data) =>
   request({
     url: '/auths',
-    method: 'get',
-    params
+    method: 'post',
+    data
   });
 
 // 新建权限
