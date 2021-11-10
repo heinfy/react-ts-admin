@@ -1,4 +1,6 @@
 import React, { useRef, useEffect } from 'react';
+import { Row, Col, Button } from 'antd';
+
 import SearchForm from '../../components/SearchForm';
 import './index.scss';
 
@@ -92,8 +94,18 @@ const Home = () => {
   };
   return (
     <div className="home">
-      <SearchForm searchList={list} searchFn={search} ref={searchRef} />
       <button onClick={search}>查询</button>
+      <SearchForm searchList={list} searchFn={search} ref={searchRef} />
+      <Row gutter={[16, 16]} justify="start" align="top">
+        <Col span={2}>
+          <Button type="primary" size="small">
+            创建
+          </Button>
+          <Button type="primary" size="small">
+            显示项
+          </Button>
+        </Col>
+      </Row>
     </div>
   );
 };
