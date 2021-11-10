@@ -1,3 +1,6 @@
+import React from 'react';
+import * as Icon from '@ant-design/icons';
+
 import { IAuths, IRoutes } from '../redux/interface';
 
 /**
@@ -73,3 +76,10 @@ const scanTree = ($item, $route, $layer, $posIndx) => {
     }
   }
 };
+/**
+ * 根据 Icon名称 获取 Icon 标签
+ * @param {string} iconname - Icon名称
+ * @returns {Element}} - Icon 标签
+ */
+export const getIcon = (iconname: string) =>
+  React.createElement(Icon[iconname]);

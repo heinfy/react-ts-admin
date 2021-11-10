@@ -1,48 +1,29 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Table, message } from 'antd';
-import * as Icon from '@ant-design/icons';
+import { Table, message, Button } from 'antd';
 
+// 组件
 import SearchForm from '../../components/SearchForm';
+import ControlRow from '../../components/ControlRow';
+import ModalCom from '../../components/ModalCom';
 
-import { getList } from '../../api/route';
+// 接口
+import {
+  getList
+  // createRoute,
+  // updateRoute,
+  // deleteRoute,
+  // getRouteByRouteid
+} from '../../api/route';
 
+// 常量
+import { columns, searchList } from './route.config';
 import { INITPAGEQUERY } from '../../utils/constant';
 
-const searchList = [
-  {
-    type: 'input',
-    name: 'routeid',
-    label: '路由ID',
-    attr: { placeholder: '请输入 routeid' }
-  },
-  {
-    type: 'input',
-    name: 'route',
-    label: '路由',
-    attr: { placeholder: '请输入 route' }
-  },
-  {
-    type: 'input',
-    name: '路由名称',
-    label: 'routeName',
-    attr: { placeholder: '请输入路由名称' }
-  },
-  {
-    type: 'input',
-    name: 'routeSort',
-    label: '排序',
-    attr: { placeholder: '请输入排序' }
-  },
-  {
-    type: 'rangePicker',
-    name: 'timeRange',
-    label: '创建时间'
-  }
-];
-
-const User = () => {
+const Route = () => {
   const searchRef: any = useRef();
+  const controlRef: any = useRef();
   const [params, setParams] = useState<any>(INITPAGEQUERY);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [userList, setUserList] = useState([]);
   const [total, setToal] = useState<number>(0);
@@ -69,49 +50,18 @@ const User = () => {
   const clear = () => {
     getRoleList(INITPAGEQUERY);
   };
-  const getIcon = (iconname: string) => React.createElement(Icon[iconname]);
+  const showCreateModal = () => {
+    console.log('新建路由');
+    setIsModalVisible(true);
+  };
 
-  const columns = [
-    {
-      title: '路由ID',
-      dataIndex: 'routeid',
-      key: 'routeid',
-      fixed: true,
-      width: 120
-    },
-    {
-      title: '路由名称',
-      dataIndex: 'routeName',
-      key: 'routeName'
-    },
-    {
-      title: '路由',
-      dataIndex: 'route',
-      key: 'route'
-    },
-    {
-      title: '路由Icon',
-      dataIndex: 'icon',
-      key: 'icon',
-      render: (r: string) => getIcon(r)
-    },
-    {
-      title: '排序',
-      dataIndex: 'routeSort',
-      key: 'routeSort'
-    },
-    {
-      title: 'createdAt',
-      dataIndex: 'createdAt',
-      key: 'createdAt'
-    },
-    {
-      title: 'updatedAt',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt'
-    }
-  ];
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
     <div>
       <SearchForm
@@ -120,6 +70,21 @@ const User = () => {
         clearFn={clear}
         ref={searchRef}
       />
+      <ModalCom
+        modalConf={{
+          title: '新建',
+          visible: isModalVisible,
+          onOk: handleOk,
+          onCancel: handleCancel
+        }}
+      >
+        <p>Some contents...</p>
+      </ModalCom>
+      <ControlRow ref={controlRef}>
+        <Button type="primary" onClick={showCreateModal} size="small">
+          创建
+        </Button>
+      </ControlRow>
       <Table
         bordered
         loading={loading}
@@ -141,4 +106,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Route;
