@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import * as Icon from '@ant-design/icons';
 
 import { IAuths, IRoutes } from '../redux/interface';
@@ -76,6 +77,7 @@ const scanTree = ($item, $route, $layer, $posIndx) => {
     }
   }
 };
+
 /**
  * 根据 Icon名称 获取 Icon 标签
  * @param {string} iconname - Icon名称
@@ -83,3 +85,14 @@ const scanTree = ($item, $route, $layer, $posIndx) => {
  */
 export const getIcon = (iconname: string) =>
   React.createElement(Icon[iconname]);
+
+/**
+ * 根据 Icon名称 获取 Icon 标签
+ * @param {Date| string} time - 标准时间
+ * @param {string} formatType - 时间格式
+ * @returns {string}} - 时间
+ */
+export const formatTime = (time: Date | string, formatType?: string) => {
+  formatType = formatType || 'YYYY-MM-DD HH:mm:ss';
+  return moment(time).format(formatType);
+};

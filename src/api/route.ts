@@ -9,19 +9,11 @@ export const getList = (data) =>
     data
   });
 
-// 新建路由
-export const createRoute = (data) =>
+// 新建路由 / 更新路由
+export const createRoute = (data, method) =>
   request({
     url: '/route',
-    method: 'post',
-    data
-  });
-
-// 更新路由
-export const updateRoute = (data) =>
-  request({
-    url: '/route',
-    method: 'put',
+    method,
     data
   });
 

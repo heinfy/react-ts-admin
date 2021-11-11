@@ -1,5 +1,5 @@
 // 通用方法
-import { getIcon } from '../../utils/utils';
+import { getIcon, formatTime } from '../../utils/utils';
 
 export const columns = [
   {
@@ -33,12 +33,14 @@ export const columns = [
   {
     title: 'createdAt',
     dataIndex: 'createdAt',
-    key: 'createdAt'
+    key: 'createdAt',
+    render: (r: string) => formatTime(r)
   },
   {
     title: 'updatedAt',
     dataIndex: 'updatedAt',
-    key: 'updatedAt'
+    key: 'updatedAt',
+    render: (r: string) => formatTime(r)
   }
 ];
 

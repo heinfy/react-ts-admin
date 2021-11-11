@@ -1,20 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
-import {
-  Table,
-  Space,
-  Tooltip,
-  message,
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Typography
-} from 'antd';
+import { Table, message, Button, Form } from 'antd';
 
 // 组件
 import SearchForm from '../../components/SearchForm';
 import ControlRow from '../../components/ControlRow';
 import ModalCom from '../../components/ModalCom';
+import { EditBtn, ViewBtn, DelBtn } from '../../components/Buttons';
+import RouteForm from './RouteForm';
 
 // 接口
 import {
@@ -24,9 +16,6 @@ import {
   // deleteRoute,
   // getRouteByRouteid
 } from '../../api/route';
-
-// 方法
-import { getIcon } from '../../utils/utils';
 
 // 常量
 import { columns, searchList } from './route.config';
@@ -65,32 +54,44 @@ const Route = () => {
     getRoleList(INITPAGEQUERY);
   };
   const showCreateModal = () => {
-    console.log('新建路由');
     setIsModalVisible(true);
   };
-
+  const showEditModal = (t) => {
+    form.setFieldsValue(t);
+    setIsModalVisible(true);
+  };
   const handleOk = async () => {
     form.validateFields().then(async (value) => {
-      try {
-        getIcon(value.icon);
-        console.log('value', value);
-        const res = await createRoute(value);
-        if (res.code === 1) {
-          form.resetFields();
-          setIsModalVisible(false);
-          getRoleList(INITPAGEQUERY);
-        } else {
-          message.error(res.message);
-        }
-      } catch (err) {
-        console.log(err);
-        message.error('找不到该Icon，请重试');
+      const method = value.routeid ? 'put' : 'post';
+      const reachParams = value.routeid ? params : INITPAGEQUERY;
+      const res = await createRoute(value, method);
+      if (res.code === 1) {
+        form.resetFields();
+        setIsModalVisible(false);
+        getRoleList(reachParams);
+      } else {
+        message.error(res.message);
       }
     });
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setIsModalVisible(false);
+  };
+  const operation = {
+    title: '操作',
+    dataIndex: 'routeid',
+    key: 'routeid',
+    render: (r: string, t: any) => {
+      return (
+        <>
+          <ViewBtn />
+          <EditBtn onClick={() => showEditModal(t)} />
+          <DelBtn />
+        </>
+      );
+    }
   };
   return (
     <div>
@@ -102,68 +103,13 @@ const Route = () => {
       />
       <ModalCom
         modalConf={{
-          title: '新建',
+          title: '路由',
           visible: isModalVisible,
           onOk: handleOk,
           onCancel: handleCancel
         }}
       >
-        <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-          <Form.Item
-            label="路由名称"
-            name="routeName"
-            rules={[
-              { pattern: /^[^\s]*$/, message: '禁止输入空格' },
-              { required: true, message: '最多输入6个字符', max: 6 }
-            ]}
-          >
-            <Input placeholder="请输入路由名称" />
-          </Form.Item>
-          <Form.Item
-            label="路由路径"
-            name="route"
-            rules={[
-              {
-                required: true,
-                pattern: new RegExp(/^\/.{1,}/),
-                message: '请输入正确的路由路径'
-              }
-            ]}
-          >
-            <Input placeholder="请输入路由路径" />
-          </Form.Item>
-          <Form.Item label="Icon">
-            <Space>
-              <Form.Item
-                noStyle
-                name="icon"
-                rules={[
-                  {
-                    pattern: new RegExp(/^[A-Z][A-z]{5,50}$/),
-                    message: 'Icon为首字母大写的字符串'
-                  }
-                ]}
-              >
-                <Input placeholder="请输入Icon" />
-              </Form.Item>
-              <Tooltip title="Icon图标">
-                <Typography.Link
-                  href="https://ant-design.gitee.io/components/icon-cn/"
-                  target="_blank"
-                >
-                  AntDesign Icon
-                </Typography.Link>
-              </Tooltip>
-            </Space>
-          </Form.Item>
-          <Form.Item label="排序" name="routeSort" rules={[{ required: true }]}>
-            <InputNumber
-              style={{ width: '100%' }}
-              min={1}
-              placeholder="请输入排序"
-            />
-          </Form.Item>
-        </Form>
+        <RouteForm form={form} />
       </ModalCom>
       <ControlRow ref={controlRef}>
         <Button type="primary" onClick={showCreateModal} size="small">
@@ -174,7 +120,7 @@ const Route = () => {
         bordered
         loading={loading}
         rowKey={(row: any) => row.routeid}
-        columns={columns}
+        columns={[...columns, operation]}
         dataSource={userList}
         scroll={{ x: true }}
         pagination={{
