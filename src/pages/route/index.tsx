@@ -1,5 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Table, message, Button } from 'antd';
+import {
+  Table,
+  Space,
+  Tooltip,
+  message,
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  Typography
+} from 'antd';
 
 // 组件
 import SearchForm from '../../components/SearchForm';
@@ -8,12 +18,15 @@ import ModalCom from '../../components/ModalCom';
 
 // 接口
 import {
-  getList
-  // createRoute,
+  getList,
+  createRoute
   // updateRoute,
   // deleteRoute,
   // getRouteByRouteid
 } from '../../api/route';
+
+// 方法
+import { getIcon } from '../../utils/utils';
 
 // 常量
 import { columns, searchList } from './route.config';
@@ -22,6 +35,7 @@ import { INITPAGEQUERY } from '../../utils/constant';
 const Route = () => {
   const searchRef: any = useRef();
   const controlRef: any = useRef();
+  const [form] = Form.useForm();
   const [params, setParams] = useState<any>(INITPAGEQUERY);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -55,8 +69,24 @@ const Route = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const handleOk = async () => {
+    form.validateFields().then(async (value) => {
+      try {
+        getIcon(value.icon);
+        console.log('value', value);
+        const res = await createRoute(value);
+        if (res.code === 1) {
+          form.resetFields();
+          setIsModalVisible(false);
+          getRoleList(INITPAGEQUERY);
+        } else {
+          message.error(res.message);
+        }
+      } catch (err) {
+        console.log(err);
+        message.error('找不到该Icon，请重试');
+      }
+    });
   };
 
   const handleCancel = () => {
@@ -78,7 +108,62 @@ const Route = () => {
           onCancel: handleCancel
         }}
       >
-        <p>Some contents...</p>
+        <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+          <Form.Item
+            label="路由名称"
+            name="routeName"
+            rules={[
+              { pattern: /^[^\s]*$/, message: '禁止输入空格' },
+              { required: true, message: '最多输入6个字符', max: 6 }
+            ]}
+          >
+            <Input placeholder="请输入路由名称" />
+          </Form.Item>
+          <Form.Item
+            label="路由路径"
+            name="route"
+            rules={[
+              {
+                required: true,
+                pattern: new RegExp(/^\/.{1,}/),
+                message: '请输入正确的路由路径'
+              }
+            ]}
+          >
+            <Input placeholder="请输入路由路径" />
+          </Form.Item>
+          <Form.Item label="Icon">
+            <Space>
+              <Form.Item
+                noStyle
+                name="icon"
+                rules={[
+                  {
+                    pattern: new RegExp(/^[A-Z][A-z]{5,50}$/),
+                    message: 'Icon为首字母大写的字符串'
+                  }
+                ]}
+              >
+                <Input placeholder="请输入Icon" />
+              </Form.Item>
+              <Tooltip title="Icon图标">
+                <Typography.Link
+                  href="https://ant-design.gitee.io/components/icon-cn/"
+                  target="_blank"
+                >
+                  AntDesign Icon
+                </Typography.Link>
+              </Tooltip>
+            </Space>
+          </Form.Item>
+          <Form.Item label="排序" name="routeSort" rules={[{ required: true }]}>
+            <InputNumber
+              style={{ width: '100%' }}
+              min={1}
+              placeholder="请输入排序"
+            />
+          </Form.Item>
+        </Form>
       </ModalCom>
       <ControlRow ref={controlRef}>
         <Button type="primary" onClick={showCreateModal} size="small">
