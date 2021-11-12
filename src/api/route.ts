@@ -9,19 +9,11 @@ export const getList = (data) =>
     data
   });
 
-// 新建路由 / 更新路由
-export const createRoute = (data, method) =>
+// 新建路由 post / 更新路由 put / 删除路由 delete
+export const operatRoute = (data, method) =>
   request({
     url: '/route',
     method,
-    data
-  });
-
-// 删除路由
-export const deleteRoute = (data) =>
-  request({
-    url: '/route',
-    method: 'delete',
     data
   });
 

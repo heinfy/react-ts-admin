@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Table, message, Button, Form } from 'antd';
+import { Table, message, Button, Modal, Form } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 // 组件
 import SearchForm from '../../components/SearchForm';
@@ -11,15 +12,15 @@ import RouteForm from './RouteForm';
 // 接口
 import {
   getList,
-  createRoute
-  // updateRoute,
-  // deleteRoute,
+  operatRoute
   // getRouteByRouteid
 } from '../../api/route';
 
 // 常量
 import { columns, searchList } from './route.config';
 import { INITPAGEQUERY } from '../../utils/constant';
+
+const { confirm } = Modal;
 
 const Route = () => {
   const searchRef: any = useRef();
@@ -64,8 +65,9 @@ const Route = () => {
     form.validateFields().then(async (value) => {
       const method = value.routeid ? 'put' : 'post';
       const reachParams = value.routeid ? params : INITPAGEQUERY;
-      const res = await createRoute(value, method);
+      const res = await operatRoute(value, method);
       if (res.code === 1) {
+        message.success(res.message);
         form.resetFields();
         setIsModalVisible(false);
         getRoleList(reachParams);
@@ -74,10 +76,33 @@ const Route = () => {
       }
     });
   };
-
   const handleCancel = () => {
     form.resetFields();
     setIsModalVisible(false);
+  };
+  // 删除某项
+  const showDelModal = (routeid, routeName) => {
+    confirm({
+      title: '删除路由',
+      icon: <ExclamationCircleOutlined />,
+      content: `确定删除${routeName}路由吗？`,
+      onOk() {
+        return new Promise(async (resolve, reject) => {
+          const res = await operatRoute({ routeid }, 'delete');
+          if (res.code === 1) {
+            message.success(res.message);
+            resolve(res);
+            getRoleList(INITPAGEQUERY);
+          } else {
+            reject();
+            message.error(res.message);
+          }
+        }).catch(() => message.error('Oops errors!'));
+      },
+      onCancel() {
+        message.info('Cancel');
+      }
+    });
   };
   const operation = {
     title: '操作',
@@ -88,7 +113,7 @@ const Route = () => {
         <>
           <ViewBtn />
           <EditBtn onClick={() => showEditModal(t)} />
-          <DelBtn />
+          <DelBtn onClick={() => showDelModal(r, t.routeName)} />
         </>
       );
     }
