@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Table, message, Button, Modal, Form } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
@@ -23,6 +24,7 @@ import { INITPAGEQUERY } from '../../utils/constant';
 const { confirm } = Modal;
 
 const Route = () => {
+  const history = useHistory();
   const searchRef: any = useRef();
   const controlRef: any = useRef();
   const [form] = Form.useForm();
@@ -85,18 +87,17 @@ const Route = () => {
     confirm({
       title: '删除路由',
       icon: <ExclamationCircleOutlined />,
-      content: `确定删除${routeName}路由吗？`,
-      onOk() {
-        return new Promise(async (resolve, reject) => {
-          const res = await operatRoute({ routeid }, 'delete');
-          if (res.code === 1) {
-            message.success(res.message);
-            resolve(res);
-            getRoleList(INITPAGEQUERY);
-          } else {
-            reject();
-            message.error(res.message);
-          }
+      content: `确定删除『${routeName}』路由吗？`,
+      onOk: async () => {
+        const res = await operatRoute({ routeid }, 'delete');
+        if (res.code === 1) {
+          message.success(res.message);
+          getRoleList(INITPAGEQUERY);
+        } else {
+          message.error(res.message);
+        }
+        return new Promise((resolve) => {
+          resolve(res);
         }).catch(() => message.error('Oops errors!'));
       },
       onCancel() {
@@ -111,7 +112,7 @@ const Route = () => {
     render: (r: string, t: any) => {
       return (
         <>
-          <ViewBtn />
+          <ViewBtn onClick={() => history.push(`/app/route/${r}`)} />
           <EditBtn onClick={() => showEditModal(t)} />
           <DelBtn onClick={() => showDelModal(r, t.routeName)} />
         </>

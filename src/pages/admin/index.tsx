@@ -39,6 +39,7 @@ const Admin = (props: Props) => {
       />
       {renderRoutes.map((route) => (
         <Route
+          exact
           key={route.authid}
           path={route.route}
           component={rRoutes[route.route]}

@@ -4,6 +4,7 @@ import Product from '../products/product';
 import User from '../user';
 import Auth from '../auth';
 import Route from '../route';
+import RouteDetail from '../route/detail';
 import Role from '../role';
 import Bar from '../charts/bar';
 import Line from '../charts/line';
@@ -18,6 +19,7 @@ export const rRoutes = {
   '/app/user': User,
   '/app/auth': Auth,
   '/app/route': Route,
+  '/app/route/:routeid': RouteDetail,
   '/app/role': Role,
   '/app/charts/bar': Bar,
   '/app/charts/line': Line,
