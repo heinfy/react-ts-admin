@@ -10,13 +10,11 @@ import zhCN from 'antd/lib/locale/zh_CN';
 import './index.scss';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ConfigProvider locale={zhCN}>
-        <App />
-      </ConfigProvider>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <ConfigProvider locale={zhCN}>
+      <App />
+    </ConfigProvider>
+  </Provider>,
   document.getElementById('root')
 );
 

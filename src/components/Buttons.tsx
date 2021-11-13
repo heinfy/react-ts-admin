@@ -2,7 +2,8 @@ import { Button } from 'antd';
 import {
   EditOutlined,
   DeleteOutlined,
-  FileSearchOutlined
+  FileSearchOutlined,
+  HighlightOutlined
 } from '@ant-design/icons';
 
 const style = { marginRight: 10 };
@@ -37,6 +38,17 @@ export const DelBtn = (props) => (
     size="small"
     shape="circle"
     icon={<DeleteOutlined />}
+    {...props}
+  />
+);
+
+export const AddBtn = (props) => (
+  <Button
+    title="添加"
+    style={style}
+    size="small"
+    shape="circle"
+    icon={<HighlightOutlined />}
     {...props}
   />
 );

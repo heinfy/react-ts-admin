@@ -9,27 +9,11 @@ export const getList = (data) =>
     data
   });
 
-// 新建权限
-export const createAuth = (data) =>
+// 新建权限 post / 更新权限 put / 删除权限 delete
+export const operateAuth = (data, method) =>
   request({
     url: '/auth',
-    method: 'post',
-    data
-  });
-
-// 更新权限
-export const updateAuth = (data) =>
-  request({
-    url: '/auth',
-    method: 'put',
-    data
-  });
-
-// 删除权限
-export const deleteAuth = (data) =>
-  request({
-    url: '/auth',
-    method: 'delete',
+    method,
     data
   });
 

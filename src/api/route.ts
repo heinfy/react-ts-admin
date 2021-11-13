@@ -2,7 +2,7 @@ import request from '../utils/request';
 
 /* Postman 06.路由接口 */
 // 获取路由列表
-export const getList = (data) =>
+export const getRList = (data) =>
   request({
     url: '/routes',
     method: 'post',

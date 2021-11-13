@@ -26,6 +26,24 @@ export const formateDataTree: (data: IAuths[]) => IRoutes[] = (
 };
 
 /**
+ * 路由权限列表转换为树形结构
+ * @param {Object[]} auths - 权限项
+ * @param {string} auths[].authName - 权限名称
+ * @param {number} auths[].authid - 权限id
+ * @param {number} auths[].pid - 权限父id
+ * @param {number} auths[].type - 权限类型
+ * @returns {Array} 树形结构
+ */
+export const formateData2Tree = (data) => {
+  const _data = JSON.parse(JSON.stringify(data));
+  return _data.filter((p) => {
+    const _arr = _data.filter((c) => c.pid === p.key);
+    _arr.length && (p.children = _arr);
+    return p.pid === 'null';
+  });
+};
+
+/**
  * 获取指定元素的所有父级对象的索引
  * @param {array} treeData - 要匹配的树
  * @param {string} $selectKey - 要匹配的元素

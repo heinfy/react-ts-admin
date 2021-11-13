@@ -6,16 +6,11 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 // 组件
 import SearchForm from '../../components/SearchForm';
 import ControlRow from '../../components/ControlRow';
-import ModalCom from '../../components/ModalCom';
 import { EditBtn, ViewBtn, DelBtn } from '../../components/Buttons';
 import RouteForm from './RouteForm';
 
 // 接口
-import {
-  getList,
-  operatRoute
-  // getRouteByRouteid
-} from '../../api/route';
+import { getRList, operatRoute } from '../../api/route';
 
 // 常量
 import { columns, searchList } from './route.config';
@@ -31,19 +26,19 @@ const Route = () => {
   const [params, setParams] = useState<any>(INITPAGEQUERY);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [userList, setUserList] = useState([]);
+  const [routeList, setRouteList] = useState([]);
   const [total, setToal] = useState<number>(0);
   useEffect(() => {
-    getRoleList(params);
+    getRouteList(params);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  const getRoleList = async (params) => {
+  const getRouteList = async (params) => {
     setParams(params);
     setLoading(true);
-    const res = await getList(params);
+    const res = await getRList(params);
     setLoading(false);
     if (res.code === 1) {
       setToal(res.result.total);
-      setUserList(res.result.data);
+      setRouteList(res.result.data);
     } else {
       message.error(res.message);
     }
@@ -51,10 +46,10 @@ const Route = () => {
   const search = () => {
     const fields = searchRef.current.getFieldsValue(true);
     const searchParams = { ...params, ...fields };
-    getRoleList(searchParams);
+    getRouteList(searchParams);
   };
   const clear = () => {
-    getRoleList(INITPAGEQUERY);
+    getRouteList(INITPAGEQUERY);
   };
   const showCreateModal = () => {
     setIsModalVisible(true);
@@ -72,7 +67,7 @@ const Route = () => {
         message.success(res.message);
         form.resetFields();
         setIsModalVisible(false);
-        getRoleList(reachParams);
+        getRouteList(reachParams);
       } else {
         message.error(res.message);
       }
@@ -92,7 +87,7 @@ const Route = () => {
         const res = await operatRoute({ routeid }, 'delete');
         if (res.code === 1) {
           message.success(res.message);
-          getRoleList(INITPAGEQUERY);
+          getRouteList(INITPAGEQUERY);
         } else {
           message.error(res.message);
         }
@@ -119,6 +114,12 @@ const Route = () => {
       );
     }
   };
+  const modalConf = {
+    title: '路由',
+    visible: isModalVisible,
+    onOk: handleOk,
+    onCancel: handleCancel
+  };
   return (
     <div>
       <SearchForm
@@ -127,16 +128,9 @@ const Route = () => {
         clearFn={clear}
         ref={searchRef}
       />
-      <ModalCom
-        modalConf={{
-          title: '路由',
-          visible: isModalVisible,
-          onOk: handleOk,
-          onCancel: handleCancel
-        }}
-      >
+      <Modal {...modalConf}>
         <RouteForm form={form} />
-      </ModalCom>
+      </Modal>
       <ControlRow ref={controlRef}>
         <Button type="primary" onClick={showCreateModal} size="small">
           创建
@@ -147,7 +141,7 @@ const Route = () => {
         loading={loading}
         rowKey={(row: any) => row.routeid}
         columns={[...columns, operation]}
-        dataSource={userList}
+        dataSource={routeList}
         scroll={{ x: true }}
         pagination={{
           current: params.page,
@@ -155,7 +149,7 @@ const Route = () => {
           pageSizeOptions: ['10', '20', '50', '100', '200'],
           showQuickJumper: true,
           showTotal: (total) => `共 ${total} 条数据`,
-          onChange: (page, size) => setUserList({ ...params, page, size }),
+          onChange: (page, size) => setRouteList({ ...params, page, size }),
           total: total
         }}
       />
