@@ -57,6 +57,7 @@ const Auth = () => {
       let list = res.result.data;
       list = list.map((i) => ({
         key: i.authid,
+        value: i.authid,
         pid: i.pid,
         type: i.type,
         title: i.authName,
@@ -99,10 +100,10 @@ const Auth = () => {
   };
   // 编辑权限
   const showEditModal = (t) => {
-    setIsC$EModalVisible(true);
-    form.setFieldsValue(t);
     getAuthTree();
     getRouteList();
+    setIsC$EModalVisible(true);
+    form.setFieldsValue(t);
   };
   // 确定
   const handleOk = async () => {

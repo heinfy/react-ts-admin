@@ -10,7 +10,9 @@ import {
 } from 'antd';
 
 const AuthForm = ({ form, authTree, routeList }) => {
-  const [isMenu, setIsMenu] = useState<boolean>(false);
+  const [isMenu, setIsMenu] = useState<boolean>(
+    !!form.getFieldValue('routeid')
+  );
   const authid = !!form.getFieldValue('authid');
   const typeChange = (value) => {
     setIsMenu(value === 'menu');
@@ -42,7 +44,13 @@ const AuthForm = ({ form, authTree, routeList }) => {
           }
         ]}
       >
-        <Select placeholder="请选择权限类型" allowClear onChange={typeChange}>
+        {/* 更新权限时，按钮 路由不能切换 */}
+        <Select
+          disabled={!!authid}
+          placeholder="请选择权限类型"
+          allowClear
+          onChange={typeChange}
+        >
           <Select.Option value="button">按钮权限</Select.Option>
           <Select.Option value="menu">路由权限</Select.Option>
         </Select>
@@ -92,7 +100,7 @@ const AuthForm = ({ form, authTree, routeList }) => {
             }
           ]}
         >
-          <Select placeholder="请选择路由" allowClear>
+          <Select disabled={!!authid} placeholder="请选择路由" allowClear>
             {routeList.map((i: any) => (
               <Select.Option value={i.value} key={i.value}>
                 {i.label}
