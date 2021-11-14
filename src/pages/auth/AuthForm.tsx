@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Select,
   Space,
@@ -9,8 +9,12 @@ import {
   Button
 } from 'antd';
 
-const AuthForm = ({ form, authTree }) => {
+const AuthForm = ({ form, authTree, routeList }) => {
+  const [isMenu, setIsMenu] = useState<boolean>(false);
   const authid = !!form.getFieldValue('authid');
+  const typeChange = (value) => {
+    setIsMenu(value === 'menu');
+  };
   return (
     <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
       {authid && (
@@ -38,7 +42,7 @@ const AuthForm = ({ form, authTree }) => {
           }
         ]}
       >
-        <Select placeholder="请选择权限类型" allowClear>
+        <Select placeholder="请选择权限类型" allowClear onChange={typeChange}>
           <Select.Option value="button">按钮权限</Select.Option>
           <Select.Option value="menu">路由权限</Select.Option>
         </Select>
@@ -77,6 +81,26 @@ const AuthForm = ({ form, authTree }) => {
       >
         <Input placeholder="请输入权限描述" />
       </Form.Item>
+      {isMenu && (
+        <Form.Item
+          label="指向路由"
+          name="routeid"
+          rules={[
+            {
+              required: true,
+              message: '请选择路由'
+            }
+          ]}
+        >
+          <Select placeholder="请选择路由" allowClear>
+            {routeList.map((i: any) => (
+              <Select.Option value={i.value} key={i.value}>
+                {i.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+      )}
       <Form.Item label="排序" name="authSort" rules={[{ required: true }]}>
         <InputNumber
           style={{ width: '100%' }}

@@ -24,14 +24,6 @@ export const getUserByUserid = (authid) =>
     method: 'get'
   });
 
-// menu 权限添加路由
-export const giveAuthRoute = (data) =>
-  request({
-    url: '/giveAuthRoute',
-    method: 'post',
-    data
-  });
-
 // menu 权限更新路由
 export const updateAuthRoute = (data) =>
   request({

@@ -9,12 +9,7 @@ import { EditBtn, DelBtn, AddBtn } from '../../components/Buttons';
 import AuthForm from './AuthForm';
 
 // 接口
-import {
-  getList,
-  operateAuth,
-  giveAuthRoute,
-  updateAuthRoute
-} from '../../api/auth';
+import { getList, operateAuth, updateAuthRoute } from '../../api/auth';
 import { getRList } from '../../api/route';
 
 import { formateData2Tree } from '../../utils/utils';
@@ -73,6 +68,19 @@ const Auth = () => {
       message.error(res.message);
     }
   };
+  // 获取路由
+  const getRouteList = async () => {
+    const res = await getRList({ page: 1, size: 1000 });
+    if (res.code === 1) {
+      const list = res.result.data.map((i) => ({
+        value: i.routeid,
+        label: i.routeName
+      }));
+      setRouteList(list);
+    } else {
+      message.error(res.message);
+    }
+  };
   // 查询列表
   const search = () => {
     const fields = searchRef.current.getFieldsValue(true);
@@ -86,6 +94,7 @@ const Auth = () => {
   // 创建新权限
   const showCreateModal = () => {
     getAuthTree();
+    getRouteList();
     setIsC$EModalVisible(true);
   };
   // 编辑权限
@@ -93,6 +102,7 @@ const Auth = () => {
     setIsC$EModalVisible(true);
     form.setFieldsValue(t);
     getAuthTree();
+    getRouteList();
   };
   // 确定
   const handleOk = async () => {
@@ -146,34 +156,17 @@ const Auth = () => {
   };
   // 给 menu 类型的权限添加/更新路由
   const showAddModal = async (authid, routeid) => {
-    const res = await getRList(params);
-    if (res.code === 1) {
-      const list = res.result.data.map((i) => ({
-        value: i.routeid,
-        label: i.routeName
-      }));
-      setRouteList(list);
-    } else {
-      message.error(res.message);
-    }
     routeForm.setFieldsValue({
-      addRouteFlag: !routeid,
       authid,
       routeid
     });
     setRouteModalVisible(true);
   };
-  // 确定更新、添加路由
+  // 确定更新路由
   const handleRouteOk = () => {
     routeForm.validateFields().then(async (value) => {
       console.log('value', value);
-      const { authid, routeid } = value;
-      let res: any = null;
-      if (value.addRouteFlag) {
-        res = await giveAuthRoute({ authid, routeid });
-      } else {
-        res = await updateAuthRoute({ authid, routeid });
-      }
+      const res = await updateAuthRoute(value);
       if (res.code === 1) {
         message.success(res.message);
         form.resetFields();
@@ -224,7 +217,7 @@ const Auth = () => {
     footer: null
   };
   const routeModalConf = {
-    title: '添加/更新路由',
+    title: '更新路由',
     visible: routeModalVisible,
     onOk: handleRouteOk,
     onCancel: handleRouteCancel
@@ -238,7 +231,7 @@ const Auth = () => {
         ref={searchRef}
       />
       <Modal {...c$eModalConf}>
-        <AuthForm form={form} authTree={authTree} />
+        <AuthForm form={form} authTree={authTree} routeList={routeList} />
       </Modal>
       <Modal {...treeModalConf}>
         {/* // TODO 不会默认展开 */}
@@ -255,9 +248,6 @@ const Auth = () => {
       </Modal>
       <Modal getContainer={false} {...routeModalConf}>
         <Form form={routeForm} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-          <Form.Item style={{ display: 'none' }} name="addRouteFlag">
-            <Input disabled />
-          </Form.Item>
           <Form.Item label="权限ID" name="authid">
             <Input disabled />
           </Form.Item>
