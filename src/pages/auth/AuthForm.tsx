@@ -10,7 +10,6 @@ import {
 } from 'antd';
 
 const AuthForm = ({ form, authTree, routeList }) => {
-  console.log('!!form.getFieldVa', !!form.getFieldValue('routeid'));
   const [isMenu, setIsMenu] = useState<boolean>(
     !!form.getFieldValue('routeid')
   );

@@ -11,7 +11,7 @@ import AddAuthForm from './AddAuthForm';
 
 // 接口
 import {
-  getList,
+  getRoles,
   operateRole,
   giveRoleAuths,
   getAuthsByRoleid
@@ -34,7 +34,7 @@ const Role = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [authModalVisible, setAuthModalVisible] = useState<boolean>(false);
-  const [RoleList, setRoleList] = useState([]);
+  const [roleList, setRoleList] = useState([]);
   const [roleid, setRoleid] = useState<string>('');
   const [authTree, setAuthTree] = useState([]);
   const [selectedKeys, setSelectedKeys] = useState([]);
@@ -45,7 +45,7 @@ const Role = () => {
   const getRoleList = async (params) => {
     setParams(params);
     setLoading(true);
-    const res = await getList(params);
+    const res = await getRoles(params);
     setLoading(false);
     if (res.code === 1) {
       setToal(res.result.total);
@@ -229,7 +229,7 @@ const Role = () => {
         loading={loading}
         rowKey={(row: any) => row.roleid}
         columns={[...columns, operation]}
-        dataSource={RoleList}
+        dataSource={roleList}
         scroll={{ x: true }}
         pagination={{
           current: params.page,

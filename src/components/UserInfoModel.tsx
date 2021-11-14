@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Modal, message } from 'antd';
 
-import { updateUserInfo } from '../api/user';
+import { operateUser } from '../api/user';
 
 import { IUserInfo } from '../redux/interface';
 
@@ -30,7 +30,7 @@ const UserInfoModel = (props: IProps) => {
   // 提交并校验
   const handleOk = async () => {
     const values = await userInfoForm.validateFields();
-    const res = await updateUserInfo(values);
+    const res = await operateUser(values, 'put');
     setConfirmLoading(false);
     if (res.code === 1) {
       setVisible(false);

@@ -2,34 +2,18 @@ import request from '../utils/request';
 
 /* Postman 02.用户管理 */
 // 获取用户列表
-export const getList = (data) =>
+export const getUsers = (data) =>
   request({
     url: '/users',
     method: 'post',
     data
   });
 
-// 新建用户
-export const createUser = (data) =>
+// 新建用户 post / 更新用户 put / 删除用户 delete
+export const operateUser = (data, method) =>
   request({
     url: '/user',
-    method: 'post',
-    data
-  });
-
-// 更新用户
-export const updateUserInfo = (data) =>
-  request({
-    url: '/user',
-    method: 'put',
-    data
-  });
-
-// 删除用户
-export const deleteUser = (data) =>
-  request({
-    url: '/user',
-    method: 'delete',
+    method,
     data
   });
 
