@@ -9,8 +9,8 @@ import { EditBtn, DelBtn, AddBtn } from '../../components/Buttons';
 import AuthForm from './AuthForm';
 
 // 接口
-import { getList, operateAuth, updateAuthRoute } from '../../api/auth';
-import { getRList } from '../../api/route';
+import { getAuths, operateAuth, updateAuthRoute } from '../../api/auth';
+import { getRoutes } from '../../api/route';
 
 import { formateData2Tree } from '../../utils/utils';
 
@@ -41,7 +41,7 @@ const Auth = () => {
   const getAuthList = async (params) => {
     setParams(params);
     setLoading(true);
-    const res = await getList(params);
+    const res = await getAuths(params);
     setLoading(false);
     if (res.code === 1) {
       setToal(res.result.total);
@@ -52,7 +52,7 @@ const Auth = () => {
   };
   // 获取树结构
   const getAuthTree = async () => {
-    const res = await getList({ page: 1, size: 1000 });
+    const res = await getAuths({ page: 1, size: 1000 });
     if (res.code === 1) {
       let list = res.result.data;
       list = list.map((i) => ({
@@ -71,7 +71,7 @@ const Auth = () => {
   };
   // 获取路由
   const getRouteList = async () => {
-    const res = await getRList({ page: 1, size: 1000 });
+    const res = await getRoutes({ page: 1, size: 1000 });
     if (res.code === 1) {
       const list = res.result.data.map((i) => ({
         value: i.routeid,

@@ -9,28 +9,11 @@ export const getList = (data) =>
     data
   });
 
-// 新建角色
-export const createRole = (data) =>
+// 新建角色 post / 更新角色 put / 删除角色 delete
+export const operateRole = (data, method) =>
   request({
     url: '/role',
-    method: 'post',
-    data
-  });
-
-// 更新角色
-export const updateRole = (data) =>
-  request({
-    url: '/role',
-    method: 'put',
-    data
-  });
-
-// TODO ？
-// 删除角色
-export const deleteRole = (data) =>
-  request({
-    url: '/role',
-    method: 'delete',
+    method,
     data
   });
 
@@ -41,19 +24,11 @@ export const getUserByUserid = (roleid) =>
     method: 'get'
   });
 
-// 角色设置权限
+// 角色设置权限/更新权限
 export const giveRoleAuths = (data) =>
   request({
     url: '/giveRoleAuths',
     method: 'post',
-    data
-  });
-
-// 角色更新权限
-export const updateRoleAuths = (data) =>
-  request({
-    url: '/updateRoleAuths',
-    method: 'put',
     data
   });
 

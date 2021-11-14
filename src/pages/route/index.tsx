@@ -10,7 +10,7 @@ import { EditBtn, ViewBtn, DelBtn } from '../../components/Buttons';
 import RouteForm from './RouteForm';
 
 // 接口
-import { getRList, operatRoute } from '../../api/route';
+import { getRoutes, operateRoute } from '../../api/route';
 
 // 常量
 import { columns, searchList } from './route.config';
@@ -34,7 +34,7 @@ const Route = () => {
   const getRouteList = async (params) => {
     setParams(params);
     setLoading(true);
-    const res = await getRList(params);
+    const res = await getRoutes(params);
     setLoading(false);
     if (res.code === 1) {
       setToal(res.result.total);
@@ -51,18 +51,21 @@ const Route = () => {
   const clear = () => {
     getRouteList(INITPAGEQUERY);
   };
+  // 展示创建
   const showCreateModal = () => {
     setIsModalVisible(true);
   };
+  // 展示编辑
   const showEditModal = (t) => {
     form.setFieldsValue(t);
     setIsModalVisible(true);
   };
+  // 保存
   const handleOk = async () => {
     form.validateFields().then(async (value) => {
       const method = value.routeid ? 'put' : 'post';
       const reachParams = value.routeid ? params : INITPAGEQUERY;
-      const res = await operatRoute(value, method);
+      const res = await operateRoute(value, method);
       if (res.code === 1) {
         message.success(res.message);
         form.resetFields();
@@ -73,6 +76,7 @@ const Route = () => {
       }
     });
   };
+  // 取消
   const handleCancel = () => {
     form.resetFields();
     setIsModalVisible(false);
@@ -84,7 +88,7 @@ const Route = () => {
       icon: <ExclamationCircleOutlined />,
       content: `确定删除『${routeName}』路由吗？`,
       onOk: async () => {
-        const res = await operatRoute({ routeid }, 'delete');
+        const res = await operateRoute({ routeid }, 'delete');
         if (res.code === 1) {
           message.success(res.message);
           getRouteList(INITPAGEQUERY);
@@ -114,6 +118,7 @@ const Route = () => {
       );
     }
   };
+  // 弹窗
   const modalConf = {
     title: '路由',
     visible: isModalVisible,
