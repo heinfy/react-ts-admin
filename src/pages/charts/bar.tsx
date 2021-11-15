@@ -1,5 +1,6 @@
 import React from 'react';
-import { Chart, Interval } from 'bizcharts';
+import { Chart, Axis, Geom, Interaction, Interval, Tooltip } from 'bizcharts';
+import { Card } from 'antd';
 
 const data = [
   { year: 1949, population: 1275 },
@@ -97,27 +98,49 @@ const data = [
 ];
 
 const Bar = () => {
+  const label = {
+    formatter(text, item, index) {
+      return text + '年';
+    }
+  };
+
   return (
-    <div style={{}}>
-      <Chart height={400} autoFit data={data} appendPadding={[20, 0]}>
-        <Interval
-          position="year*population"
-          size={20}
-          label={[
-            'population',
-            (val) => {
-              return {
-                content: val,
-                style: {
-                  fill: 'red',
-                  fontSize: 12,
-                  fontWeight: 'bold'
-                }
-              };
-            }
-          ]}
-        />
-      </Chart>
+    <div>
+      <Card title="中国历年出生人数">
+        <h5>数据统计来源为互联网（万人）</h5>
+        <Chart
+          height={400}
+          autoFit
+          data={data}
+          interactions={['active-region']}
+          appendPadding={[20, 0, 0, 0]}
+          padding={[20, 30, 50, 40]}
+        >
+          <Geom type="line" color="pink" position="year*population" />
+          <Axis name="year" title label={label} />
+          <Interval position="year*population" color="year" />
+          <Tooltip>
+            {(title, items: any) => {
+              console.log(title, items);
+              return (
+                <div
+                  style={{
+                    padding: '20px 0 10px'
+                  }}
+                >
+                  <h4 style={{ color: items[0].color || 'red' }}>
+                    年份：{title} 年
+                  </h4>
+                  <h5 style={{ color: items[0].color || 'red' }}>
+                    出生人口数量：{items[0].data.population || 0} 万人
+                  </h5>
+                </div>
+              );
+            }}
+          </Tooltip>
+          <Interaction type="active-region" />
+        </Chart>
+      </Card>
     </div>
   );
 };
