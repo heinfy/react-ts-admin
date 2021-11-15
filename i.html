@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var s = [
+      { year: 1949, sales: 38 }
+      ]
+      for(let i = 0; i < 71; i++) {
+        s.push({
+          year: s[s.length - 1].year + 1,
+          sales: s[s.length - 1].sales + 1
+        })
+      }
+      console.log(JSON.stringify(s));
+    </script>
+  </body>
+</html>
