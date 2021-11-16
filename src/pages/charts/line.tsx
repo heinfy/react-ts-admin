@@ -158,8 +158,18 @@ const LineChart = () => {
     <div>
       <Row gutter={16}>
         <Col span={12}>
-          <Card title="2020年，北京、上海、广州月平均温度">
-            {/* 内置预设的折线图形LineAdvance https://www.bizcharts.net/product/BizCharts4/demo/305 */}
+          <Card
+            title="2020年，北京、上海、广州月平均温度"
+            extra={
+              <a
+                href="https://www.bizcharts.net/product/BizCharts4/demo/305"
+                target="_blank"
+                rel="noreferrer"
+              >
+                内置预设的折线图形LineAdvance
+              </a>
+            }
+          >
             <Chart
               padding={[10, 20, 70, 40]}
               autoFit
@@ -177,8 +187,18 @@ const LineChart = () => {
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="余额宝利率">
-            {/* https://www.bizcharts.net/product/BizCharts4/demo/480 */}
+          <Card
+            title="余额宝利率"
+            extra={
+              <a
+                href="https://www.bizcharts.net/product/BizCharts4/demo/480"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Annotation.DataMarker Annotation.DataRegion
+              </a>
+            }
+          >
             <Chart height={400} data={income} autoFit scale={scale}>
               <Line position="time*rate" />
               <Point
@@ -204,8 +224,18 @@ const LineChart = () => {
       </Divider>
       <Row gutter={16}>
         <Col span={24}>
-          {/* 坐标轴显示首尾刻度点 https://www.bizcharts.net/product/BizCharts4/demo/556 */}
-          <Card title="客服咨询量/外部舆情量">
+          <Card
+            title="客服咨询量/外部舆情量"
+            extra={
+              <a
+                href="https://www.bizcharts.net/product/BizCharts4/demo/556"
+                target="_blank"
+                rel="noreferrer"
+              >
+                坐标轴显示首尾刻度点
+              </a>
+            }
+          >
             <div>
               <div className="chart-legend">
                 <ul>

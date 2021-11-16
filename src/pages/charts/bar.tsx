@@ -65,7 +65,18 @@ const Bar = () => {
 
   return (
     <div>
-      <Card title="中国历年出生人数">
+      <Card
+        title="中国历年出生人数"
+        extra={
+          <a
+            href="https://www.bizcharts.net/product/BizCharts4/demo/301"
+            target="_blank"
+            rel="noreferrer"
+          >
+            基础柱状图
+          </a>
+        }
+      >
         <h5>数据统计来源为互联网（万人）</h5>
         <Chart
           height={400}
@@ -110,7 +121,18 @@ const Bar = () => {
       </Divider>
       <Row gutter={16}>
         <Col span={12}>
-          <Card title="2021年工资">
+          <Card
+            title="2021年工资"
+            extra={
+              <a
+                href="https://www.bizcharts.net/product/BizCharts4/demo/312"
+                target="_blank"
+                rel="noreferrer"
+              >
+                堆叠柱状图
+              </a>
+            }
+          >
             <Chart height={400} padding="auto" data={pro} autoFit>
               <Interval
                 adjust={[
@@ -126,7 +148,18 @@ const Bar = () => {
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="每月消费">
+          <Card
+            title="每月消费"
+            extra={
+              <a
+                href="https://www.bizcharts.net/product/BizCharts4/demo/311"
+                target="_blank"
+                rel="noreferrer"
+              >
+                极坐标分组柱状图
+              </a>
+            }
+          >
             <Chart height={400} padding="auto" data={cons} autoFit>
               <Interval
                 adjust={[
@@ -147,7 +180,18 @@ const Bar = () => {
       <Divider dashed plain>
         分割线
       </Divider>
-      <Card title="天猫京东历年双十一销售额（亿元）">
+      <Card
+        title="天猫京东历年双十一销售额（亿元）"
+        extra={
+          <a
+            href="https://www.bizcharts.net/product/BizCharts4/demo/368"
+            target="_blank"
+            rel="noreferrer"
+          >
+            分组柱状图
+          </a>
+        }
+      >
         <Chart
           height={400}
           padding="auto"
