@@ -1,8 +1,16 @@
 import React from 'react';
-import { Chart, Axis, Geom, Interaction, Interval, Tooltip } from 'bizcharts';
-import { Card } from 'antd';
+import { Card, Col, Row, Divider } from 'antd';
+import {
+  Chart,
+  Axis,
+  Geom,
+  Legend,
+  Interaction,
+  Interval,
+  Tooltip
+} from 'bizcharts';
 
-const data = [
+const population = [
   { year: 1949, population: 1275 },
   { year: 1950, population: 1419 },
   { year: 1951, population: 1349 },
@@ -97,6 +105,36 @@ const data = [
   { year: 2020, population: 1003.5 }
 ];
 
+const data = [
+  { name: '天猫', 年份: '2009', 成交额: 0.5 },
+  { name: '天猫', 年份: '2010', 成交额: 9.36 },
+  { name: '天猫', 年份: '2011', 成交额: 33.6 },
+  { name: '天猫', 年份: '2012', 成交额: 191 },
+  { name: '天猫', 年份: '2013', 成交额: 352 },
+  { name: '天猫', 年份: '2014', 成交额: 571 },
+  { name: '天猫', 年份: '2015', 成交额: 912 },
+  { name: '天猫', 年份: '2016', 成交额: 1207 },
+  { name: '天猫', 年份: '2017', 成交额: 1682 },
+  { name: '天猫', 年份: '2018', 成交额: 2135 },
+  { name: '天猫', 年份: '2019', 成交额: 2684 },
+  { name: '天猫', 年份: '2020', 成交额: 4982 },
+  { name: '天猫', 年份: '2021', 成交额: 5403 },
+
+  { name: '京东', 年份: '2009', 成交额: 0 },
+  { name: '京东', 年份: '2010', 成交额: 0 },
+  { name: '京东', 年份: '2011', 成交额: 0 },
+  { name: '京东', 年份: '2012', 成交额: 0 },
+  { name: '京东', 年份: '2013', 成交额: 0 },
+  { name: '京东', 年份: '2014', 成交额: 0 },
+  { name: '京东', 年份: '2015', 成交额: 93 },
+  { name: '京东', 年份: '2016', 成交额: 1770 },
+  { name: '京东', 年份: '2017', 成交额: 1271 },
+  { name: '京东', 年份: '2018', 成交额: 1598 },
+  { name: '京东', 年份: '2019', 成交额: 2044 },
+  { name: '京东', 年份: '2020', 成交额: 2715 },
+  { name: '京东', 年份: '2021', 成交额: 3491 }
+];
+
 const Bar = () => {
   const label = {
     formatter(text, item, index) {
@@ -111,7 +149,7 @@ const Bar = () => {
         <Chart
           height={400}
           autoFit
-          data={data}
+          data={population}
           interactions={['active-region']}
           appendPadding={[20, 0, 0, 0]}
           padding={[20, 30, 50, 40]}
@@ -134,6 +172,11 @@ const Bar = () => {
                   <h5 style={{ color: items[0].color || 'red' }}>
                     出生人口数量：{items[0].data.population || 0} 万人
                   </h5>
+                  {items[0].data.other && (
+                    <strong style={{ paddingTop: 20 }}>
+                      {title} 年，{items[0].data.other}
+                    </strong>
+                  )}
                 </div>
               );
             }}
@@ -141,6 +184,51 @@ const Bar = () => {
           <Interaction type="active-region" />
         </Chart>
       </Card>
+      <Divider dashed plain></Divider>
+      <Card title="天猫京东历年双十一销售额（亿元）">
+        <Chart
+          height={400}
+          padding="auto"
+          data={data}
+          autoFit
+          containerStyle={{
+            padding: '20px'
+          }}
+        >
+          <Interval
+            adjust={[
+              {
+                type: 'dodge',
+                marginRatio: 0
+              }
+            ]}
+            color="name"
+            position="年份*成交额"
+          />
+          <Tooltip shared />
+          <Legend
+            layout="vertical"
+            position="top-left"
+            itemName={{
+              spacing: 10, // 文本同滑轨的距离
+              style: {
+                // stroke: 'blue',
+                // fill: 'red'
+              },
+              formatter: (text, item, index) => {
+                return text;
+              }
+            }}
+          />
+        </Chart>
+      </Card>
+      <Divider dashed plain></Divider>
+      <Row gutter={16}>
+        <Col span={12}></Col>
+        <Col span={12}>
+          <Card title="Card title">Card content</Card>
+        </Col>
+      </Row>
     </div>
   );
 };
