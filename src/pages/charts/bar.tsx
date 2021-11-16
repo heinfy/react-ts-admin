@@ -24,7 +24,7 @@ const Bar = () => {
     getSal();
     getProfit();
     getConsumption();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const getPop = async () => {
     const res = await population();
     if (res.code === 1) {

@@ -86,7 +86,7 @@ const Home = () => {
   useEffect(() => {
     // 在副作用中可以获取ref绑定子组件的元素
     console.log('searchRef', searchRef);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const search = () => {
     const fields = searchRef.current.getFieldsValue(true);
     console.log(fields);

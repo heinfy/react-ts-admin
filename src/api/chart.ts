@@ -27,3 +27,10 @@ export const consumption = () =>
     url: '/chart/bar/consumption',
     method: 'get'
   });
+
+// 获取工资
+export const getJson = () =>
+  request({
+    url: '/chart/line/getJson',
+    method: 'get'
+  });

@@ -53,7 +53,7 @@ const Nav = (props: IProps) => {
         );
       }
       return pre;
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
   };
 
   const { collapsed, routes } = props,
