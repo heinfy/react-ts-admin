@@ -1,101 +1,85 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+  List,
+  Typography,
+  Card,
+  message,
+  Avatar,
+  Skeleton,
+  Divider
+} from 'antd';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-import SearchForm from '../../components/SearchForm';
 import './index.scss';
 
-const options = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men'
-          }
-        ]
-      }
-    ]
-  }
-];
-
-const list = [
-  {
-    type: 'input',
-    name: 'name',
-    label: '姓名',
-    attr: { placeholder: '请输入' }
-  },
-  {
-    type: 'inputNumber',
-    name: 'age',
-    label: '年纪',
-    attr: { placeholder: '请输入' }
-  },
-  {
-    type: 'select',
-    name: 'hobbies',
-    label: '爱好',
-    option: [
-      { value: '苹果', key: 'apple' },
-      { value: '香蕉', key: 'banana' }
-    ],
-    attr: { placeholder: '请输入' }
-  },
-  {
-    type: 'rangePicker',
-    name: 'timeRange',
-    label: '时间段'
-  },
-  {
-    type: 'datePicker',
-    name: 'date',
-    label: '周',
-    attr: { picker: 'week' }
-  },
-  {
-    type: 'cascader',
-    name: 'location',
-    label: '省市区',
-    option: options,
-    attr: { placeholder: '请输入' }
-  }
-];
-
 const Home = () => {
-  const searchRef: any = useRef();
-  useEffect(() => {
-    // 在副作用中可以获取ref绑定子组件的元素
-    console.log('searchRef', searchRef);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  const search = () => {
-    const fields = searchRef.current.getFieldsValue(true);
-    console.log(fields);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any>([]);
+  const loadMoreData = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    fetch(
+      'https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo'
+    )
+      .then((res) => res.json())
+      .then((body) => {
+        setData([...data, ...body.results]);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
+
+  useEffect(() => {
+    loadMoreData();
+  }, []);
   return (
-    <div className="home">
-      <button onClick={search}>查询</button>
-      <SearchForm searchList={list} searchFn={search} ref={searchRef} />
-    </div>
+    <Card title="每日推荐">
+      <div
+        id="scrollableDiv"
+        style={{
+          height: 400,
+          overflow: 'auto',
+          padding: '0 20px'
+        }}
+      >
+        <InfiniteScroll
+          dataLength={data.length}
+          next={loadMoreData}
+          hasMore={data.length < 50}
+          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          scrollableTarget="scrollableDiv"
+        >
+          <List
+            dataSource={data}
+            renderItem={(item: any) => (
+              <List.Item
+                key={item.id}
+                actions={[<a href="#1">edit</a>, <a href="#2">more</a>]}
+              >
+                <Skeleton avatar title={false} loading={item.loading} active>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.picture.large} />}
+                    title={<a href="https://ant.design">{item.name.last}</a>}
+                    description={
+                      <>
+                        <Typography.Text mark>[ITEM]</Typography.Text>{' '}
+                        {item.email}
+                      </>
+                    }
+                  />
+                  <div>Content</div>
+                </Skeleton>
+              </List.Item>
+            )}
+          />
+        </InfiniteScroll>
+      </div>
+    </Card>
   );
 };
 
