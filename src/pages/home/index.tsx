@@ -1,85 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import {
-  List,
-  Typography,
-  Card,
-  message,
-  Avatar,
-  Skeleton,
-  Divider
-} from 'antd';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import React from 'react';
+import { Divider, Col, Row } from 'antd';
+
+// 组件
+import RepoLanguages from '../../components/RepoLanguages';
+import StatisticDemo from '../../components/StatisticDemo';
+import DailyRecommendation from '../../components/DailyRecommendation';
+import WordCloud from '../../components/WordCloud';
 
 import './index.scss';
 
 const Home = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<any>([]);
-  const loadMoreData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    fetch(
-      'https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo'
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setData([...data, ...body.results]);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    loadMoreData();
-  }, []);
   return (
-    <Card title="每日推荐">
-      <div
-        id="scrollableDiv"
-        style={{
-          height: 400,
-          overflow: 'auto',
-          padding: '0 20px'
-        }}
-      >
-        <InfiniteScroll
-          dataLength={data.length}
-          next={loadMoreData}
-          hasMore={data.length < 50}
-          loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-          scrollableTarget="scrollableDiv"
-        >
-          <List
-            dataSource={data}
-            renderItem={(item: any) => (
-              <List.Item
-                key={item.id}
-                actions={[<a href="#1">edit</a>, <a href="#2">more</a>]}
-              >
-                <Skeleton avatar title={false} loading={item.loading} active>
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.picture.large} />}
-                    title={<a href="https://ant.design">{item.name.last}</a>}
-                    description={
-                      <>
-                        <Typography.Text mark>[ITEM]</Typography.Text>{' '}
-                        {item.email}
-                      </>
-                    }
-                  />
-                  <div>Content</div>
-                </Skeleton>
-              </List.Item>
-            )}
-          />
-        </InfiniteScroll>
-      </div>
-    </Card>
+    <div>
+      <Row gutter={[16, 24]}>
+        <Col span={6}>
+          <RepoLanguages />
+        </Col>
+        <Col span={18}>
+          <StatisticDemo />
+        </Col>
+      </Row>
+      <Divider />
+      <Row gutter={16}>
+        <Col span={12}>
+          <DailyRecommendation />
+        </Col>
+        <Col span={12}>
+          <WordCloud />
+        </Col>
+      </Row>
+    </div>
   );
 };
 

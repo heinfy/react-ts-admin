@@ -17,3 +17,8 @@ export const GENDER_LIST = [
  * 性别列表
  */
 export const INITPAGEQUERY = { page: 1, size: 20 };
+
+/**
+ * GITHUB 地址
+ */
+export const GITHUB_API = 'https://api.github.com';

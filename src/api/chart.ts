@@ -34,3 +34,10 @@ export const getJson = () =>
     url: '/chart/line/getJson',
     method: 'get'
   });
+
+// 获取词云图
+export const wordCloud = () =>
+  request({
+    url: '/chart/wordCloud',
+    method: 'get'
+  });
