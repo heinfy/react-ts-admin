@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  List,
-  Typography,
-  Card,
-  Col,
-  Row,
-  Avatar,
-  Skeleton,
-  Divider
-} from 'antd';
+import { List, Typography, Card, Avatar, Skeleton, Divider } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const DailyRecommendation = () => {

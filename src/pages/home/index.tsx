@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div>
       <Row gutter={[16, 24]}>
-        <Col span={6}>
+        <Col style={{ border: '1px solid #86ccfe' }} span={6}>
           <RepoLanguages />
         </Col>
         <Col span={18}>

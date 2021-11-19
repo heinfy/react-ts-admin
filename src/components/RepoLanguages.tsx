@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Chart,
   Interval,
@@ -9,32 +9,34 @@ import {
   Coordinate
 } from 'bizcharts';
 import DataSet from '@antv/data-set';
+import { message } from 'antd';
+
+// 接口
+import { languages } from '../api/github.api';
 
 const { DataView } = DataSet;
 
 const RepoLanguages = () => {
-  const data = [
-    { value: 4787, type: 'SCSS' },
-    { value: 119674, type: 'TypeScript' },
-    { value: 2272, type: 'HTML' },
-    { value: 308, type: 'JavaScript' }
-  ];
-  // 通过 DataSet 计算百分比
-  const dv = new DataView();
-  dv.source(data).transform({
-    type: 'percent',
-    field: 'value',
-    dimension: 'type',
-    as: 'percent'
-  });
+  let data: any = {};
+  const dv: any = new DataView();
 
-  const dv1 = new DataView();
-  dv1.source(data).transform({
-    type: 'percent',
-    field: 'value',
-    dimension: 'name',
-    as: 'percent'
-  });
+  useEffect(() => {
+    getLanguages();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const getLanguages = async () => {
+    const res = await languages();
+    if (typeof res === 'object') {
+      data = res;
+      dv.source(res).transform({
+        type: 'percent',
+        field: 'value',
+        dimension: 'type',
+        as: 'percent'
+      });
+    } else {
+      message.error('gethub api 异常');
+    }
+  };
 
   const colors = data.reduce((pre, cur: any, idx) => {
     pre[cur.item] = getTheme().colors10[idx];
@@ -43,7 +45,7 @@ const RepoLanguages = () => {
 
   return (
     <Chart
-      // height={400}
+      height={220}
       data={dv.rows}
       autoFit
       scale={{
@@ -55,13 +57,13 @@ const RepoLanguages = () => {
         }
       }}
     >
-      <Coordinate type="theta" radius={0.5} innerRadius={0.8} />
+      <Coordinate type="theta" radius={0.6} innerRadius={0.8} />
       <Axis visible={false} />
       <Legend visible={false} />
       <Tooltip showTitle={false} />
       <Interval
         adjust="stack"
-        position="value"
+        position="percent"
         shape="sliceShape"
         color="type"
         element-highlight
@@ -73,7 +75,7 @@ const RepoLanguages = () => {
           'type',
           (item) => {
             return {
-              offset: 30,
+              offset: 20,
               content: (data) => {
                 return data.type;
               },
