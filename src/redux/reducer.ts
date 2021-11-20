@@ -8,11 +8,16 @@ import {
   INCREMENT,
   DECREMENT
 } from './action-types';
-import { setCookies, getCookies } from '../utils/auth';
+import { setCookies, getCookies, removeCookies } from '../utils/auth';
 
 function token(state = '', action) {
   switch (action.type) {
     case TOKEN:
+      console.log('action', action);
+      if (action.token === '') {
+        removeCookies(action.type);
+        return null;
+      }
       setCookies(action.type, action.token);
       return action.token;
     default:

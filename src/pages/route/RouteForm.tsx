@@ -15,7 +15,7 @@ const RouteForm = ({ form }) => {
         name="routeName"
         rules={[
           { pattern: /^[^\s]*$/, message: '禁止输入空格' },
-          { required: true, message: '最多输入6个字符', max: 6 }
+          { required: true, message: '最多输入10个字符', max: 10 }
         ]}
       >
         <Input placeholder="请输入路由名称" />

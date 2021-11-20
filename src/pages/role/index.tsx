@@ -173,7 +173,7 @@ const Role = () => {
     key: 'roleid',
     render: (r: string, t: any) => {
       // 基础角色 和 管理员角色不允许操作
-      return r === 'g_TpK5' || r === 'B0Gs1N' ? null : (
+      return (
         <>
           <EditBtn onClick={() => showEditModal(t)} />
           <DelBtn onClick={() => showDelModal(r, t.roleName)} />
@@ -237,7 +237,7 @@ const Role = () => {
           pageSizeOptions: ['10', '20', '50', '100', '200'],
           showQuickJumper: true,
           showTotal: (total) => `共 ${total} 条数据`,
-          onChange: (page, size) => setRoleList({ ...params, page, size }),
+          onChange: (page, size) => getRoleList({ ...params, page, size }),
           total: total
         }}
       />

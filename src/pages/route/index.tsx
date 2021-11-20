@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Table, message, Button, Modal, Form } from 'antd';
+import { Table, message, Button, Modal, Form, Alert } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 // 组件
@@ -127,6 +127,11 @@ const Route = () => {
   };
   return (
     <div>
+      <Alert
+        message="提示：每个相关路由排序数量接近，比如：rbac 在 200 - 300 之间"
+        type="info"
+        style={{ marginBottom: 20 }}
+      />
       <SearchForm
         searchList={searchList}
         searchFn={search}
@@ -154,7 +159,7 @@ const Route = () => {
           pageSizeOptions: ['10', '20', '50', '100', '200'],
           showQuickJumper: true,
           showTotal: (total) => `共 ${total} 条数据`,
-          onChange: (page, size) => setRouteList({ ...params, page, size }),
+          onChange: (page, size) => getRouteList({ ...params, page, size }),
           total: total
         }}
       />

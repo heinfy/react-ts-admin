@@ -29,7 +29,7 @@ const AuthForm = ({ form, authTree, routeList }) => {
         name="authName"
         rules={[
           { pattern: /^[^\s]*$/, message: '禁止输入空格' },
-          { required: true, message: '最多输入6个字符', max: 6 }
+          { required: true, message: '最多输入10个字符', max: 10 }
         ]}
       >
         <Input placeholder="请输入权限名称" />
@@ -100,7 +100,15 @@ const AuthForm = ({ form, authTree, routeList }) => {
             }
           ]}
         >
-          <Select disabled={!!authid} placeholder="请选择路由" allowClear>
+          <Select
+            disabled={!!authid}
+            placeholder="请选择路由"
+            allowClear
+            showSearch
+            filterOption={(input: string, option: any) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
             {routeList.map((i: any) => (
               <Select.Option value={i.value} key={i.value}>
                 {i.label}
