@@ -3,7 +3,7 @@ import { message, Modal } from 'antd';
 
 import store from '../redux/store';
 import { TOKEN } from '../redux/action-types';
-import { setToken } from '../redux/actions';
+import { setToken, setUserInfo } from '../redux/actions';
 import { getCookies } from './auth';
 
 // create an axios instance
@@ -49,6 +49,7 @@ service.interceptors.response.use(
     const res = response.data;
     if (response.status === 214) {
       store.dispatch(setToken(''));
+      store.dispatch(setUserInfo(null));
       Modal.warning({
         title: '注意',
         content: '您登陆以过期，请重新登录',

@@ -11,7 +11,7 @@ import errorImage from '../assets/images/error-image.png';
 
 type IProps = {
   userInfo: IUserInfo;
-  setUserInfo: (IUserInfo) => void;
+  setUserInfo: (info: IUserInfo | null) => void;
   setToken: (token: string) => void;
 };
 
@@ -29,6 +29,7 @@ const MyCenter = (props: IProps) => {
       content: '确定要登出?',
       onOk() {
         setToken('');
+        setUserInfo(null);
         history.push('/login');
       }
     });
