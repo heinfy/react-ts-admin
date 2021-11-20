@@ -17,24 +17,28 @@ import { languages } from '../api/github.api';
 const { DataView } = DataSet;
 
 const RepoLanguages = () => {
-  let data: any = {};
-  const dv: any = new DataView();
-
+  const [data, setDate] = useState([]);
+  const [dv, setDv] = useState(new DataView());
   useEffect(() => {
     getLanguages();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const getLanguages = async () => {
-    const res = await languages();
-    if (typeof res === 'object') {
-      data = res;
-      dv.source(res).transform({
+    const res: any = await languages();
+    if (!res.message) {
+      const list: any = Object.entries(res).map((i) => {
+        return { value: i[0], type: i[1] };
+      });
+      setDate(list);
+      const dv_ = dv.source(list).transform({
         type: 'percent',
         field: 'value',
         dimension: 'type',
         as: 'percent'
       });
+      setDv(dv_);
     } else {
-      message.error('gethub api 异常');
+      console.error(res.message);
+      message.error('GITHUB API 403 ERROR');
     }
   };
 
@@ -43,7 +47,7 @@ const RepoLanguages = () => {
     return pre;
   }, {});
 
-  return (
+  return data.length > 0 ? (
     <Chart
       height={220}
       data={dv.rows}
@@ -87,7 +91,7 @@ const RepoLanguages = () => {
         ]}
       />
     </Chart>
-  );
+  ) : null;
 };
 
 export default RepoLanguages;
