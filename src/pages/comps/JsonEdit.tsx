@@ -16,7 +16,7 @@ const JsonEdit = () => {
   return (
     <>
       <Alert
-        message="注意：JsonEdit 的 onChange 事件180ms的延迟"
+        message="注意：JsonEdit 的 onChange 事件会有 180ms 的延迟"
         type="warning"
         style={{ marginBottom: 20 }}
       />

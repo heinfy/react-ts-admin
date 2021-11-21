@@ -17,6 +17,7 @@ import RouteDetail from '../route/detail';
 
 import Markdown from '../comps/markdown';
 import Richtext from '../comps/richtext';
+import Mixin from '../comps/mixin';
 import JsonEdit from '../comps/JsonEdit';
 
 import Log from '../log';
@@ -41,6 +42,7 @@ export const rRoutes = {
 
   '/app/markdown': Markdown,
   '/app/richText': Richtext,
+  '/app/mixin': Mixin,
   '/app/jsonEdit': JsonEdit,
 
   '/app/log': Log
