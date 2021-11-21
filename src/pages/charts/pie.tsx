@@ -242,9 +242,9 @@ const Pie = () => {
               data={data_2}
               scale={cols}
               autoFit
-              onIntervalClick={(e) => {
-                const states = e.target.cfg.element.getStates(); // 如果是选中，值为['selected'];取消选中，值为[]
-              }}
+              // onIntervalClick={(e) => {
+              // const states = e.target.cfg.element.getStates(); // 如果是选中，值为['selected'];取消选中，值为[]
+              // }}
             >
               <Coordinate type="theta" radius={0.75} />
               <Tooltip showTitle={false} />

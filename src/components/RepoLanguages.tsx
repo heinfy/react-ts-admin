@@ -23,23 +23,30 @@ const RepoLanguages = () => {
     getLanguages();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const getLanguages = async () => {
-    const res: any = await languages();
-    if (!res.message) {
-      const list: any = Object.entries(res).map((i) => {
-        return { value: i[0], type: i[1] };
-      });
-      setDate(list);
-      const dv_ = dv.source(list).transform({
-        type: 'percent',
-        field: 'value',
-        dimension: 'type',
-        as: 'percent'
-      });
-      setDv(dv_);
-    } else {
+    let res: any = await languages();
+    if (res.message) {
+      res = {
+        TypeScript: 119674,
+        SCSS: 4787,
+        HTML: 2272,
+        JavaScript: 308
+      };
       console.error(res.message);
-      message.error('GITHUB API 403 ERROR');
+      message.error('GITHUB open API 禁止访问');
     }
+    const list: any = Object.entries(res).map((i) => {
+      return { value: i[1], type: i[0] };
+    });
+    const dv_ = dv.source(list).transform({
+      type: 'percent',
+      field: 'value',
+      dimension: 'type',
+      as: 'percent'
+    });
+    setTimeout(() => {
+      setDv(dv_);
+      setDate(list);
+    }, 1000);
   };
 
   const colors = data.reduce((pre, cur: any, idx) => {

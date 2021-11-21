@@ -1,5 +1,5 @@
 import React from 'react';
-import { Statistic, Divider, Card, Col, Row } from 'antd';
+import { Statistic, Card, Col, Row } from 'antd';
 import {
   ArrowUpOutlined,
   ArrowDownOutlined,

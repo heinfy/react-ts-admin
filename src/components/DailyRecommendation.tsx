@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { List, Typography, Card, Avatar, Skeleton, Divider } from 'antd';
+import {
+  List,
+  Typography,
+  Card,
+  Avatar,
+  Skeleton,
+  Divider,
+  message,
+  Popover,
+  Button
+} from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
+
+//接口
+import { daily } from '../api/home';
 
 const DailyRecommendation = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -8,22 +21,18 @@ const DailyRecommendation = () => {
   useEffect(() => {
     loadMoreData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  const loadMoreData = () => {
+  const loadMoreData = async () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    fetch(
-      'https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo'
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setData([...data, ...body.results]);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
+    const res = await daily({ page: 1, size: 5 });
+    setLoading(false);
+    if (res) {
+      setData([...data, ...res.result]);
+    } else {
+      message.error(res.message);
+    }
   };
   return (
     <Card title="每日推荐">
@@ -40,28 +49,40 @@ const DailyRecommendation = () => {
           next={loadMoreData}
           hasMore={data.length < 50}
           loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          endMessage={<Divider plain>没有更多了！🤐</Divider>}
           scrollableTarget="scrollableDiv"
         >
           <List
             dataSource={data}
             renderItem={(item: any) => (
-              <List.Item
-                key={item.id}
-                actions={[<a href="#1">edit</a>, <a href="#2">more</a>]}
-              >
+              <List.Item key={item.id} actions={[<a href="#2">更多...</a>]}>
                 <Skeleton avatar title={false} loading={item.loading} active>
                   <List.Item.Meta
                     avatar={<Avatar src={item.picture.large} />}
-                    title={<a href="https://ant.design">{item.name.last}</a>}
+                    title={
+                      <Popover
+                        content={
+                          <>
+                            <div>
+                              {item.name.title}.{item.name.first}{' '}
+                              {item.name.last}
+                            </div>
+                            <div>{item.nat}</div>
+                          </>
+                        }
+                        title={item.email}
+                      >
+                        <Button type="link">{item.name.last}</Button>
+                      </Popover>
+                    }
                     description={
                       <>
-                        <Typography.Text mark>[ITEM]</Typography.Text>{' '}
+                        <Typography.Text mark>[{item.nat}]</Typography.Text>{' '}
                         {item.email}
                       </>
                     }
                   />
-                  <div>Content</div>
+                  <div>君不见黄河之水天上来，奔流到海不复回...</div>
                 </Skeleton>
               </List.Item>
             )}

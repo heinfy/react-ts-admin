@@ -63,7 +63,10 @@ const MyCenter = (props: IProps) => {
               borderRadius: '50%',
               margin: '0 20px'
             }}
-            src={errorImage}
+            src={
+              '//game.gtimg.cn/images/lol/act/img/champion/Jayce.png' ||
+              errorImage
+            }
           />
         </div>
       </Dropdown>
