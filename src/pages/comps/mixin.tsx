@@ -7,6 +7,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import JSZip from 'jszip';
 import saveAs from 'file-saver';
 
+import ReactFileReader from 'react-file-reader';
+
 const Mixin = () => {
   // 1.  剪切板
   const [state, setState] = useState(
@@ -30,7 +32,10 @@ const Mixin = () => {
       saveAs(content, 'example.zip');
     });
   };
-
+  // 获取上传的图片的base64地址
+  const handleFiles = (files) => {
+    console.log(files);
+  };
   return (
     <Row gutter={16}>
       <Col span={8}>
@@ -49,6 +54,14 @@ const Mixin = () => {
             <Button type="primary" onClick={downloadZip}>
               字符串zip
             </Button>
+            <ReactFileReader
+              fileTypes={['.png', '.jpg', '.gif', 'jpeg']}
+              base64
+              multipleFiles={!1}
+              handleFiles={handleFiles}
+            >
+              <Button>上传图片</Button>
+            </ReactFileReader>
             <Button type="primary" onClick={downloadZip}>
               图片文件zip
             </Button>
