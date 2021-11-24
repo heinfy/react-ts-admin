@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { message, Modal } from 'antd';
+import NProgress from 'nprogress';
+
+import 'nprogress/nprogress.css';
 
 import store from '../redux/store';
 import { TOKEN } from '../redux/action-types';
@@ -16,6 +19,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   (config) => {
+    NProgress.start();
     const token = store.getState()[TOKEN] || getCookies(TOKEN);
     // 判断 token 是否存在
     if (token) {
@@ -46,6 +50,7 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   (response) => {
+    NProgress.done();
     const res = response.data;
     if (response.status === 214) {
       store.dispatch(setToken(''));
@@ -69,6 +74,7 @@ service.interceptors.response.use(
     }
   },
   (error) => {
+    NProgress.done();
     console.log('err' + error); // for debug
     message.error(error.message || 'Error');
     return Promise.reject(error.message || 'Error');
