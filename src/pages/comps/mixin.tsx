@@ -3,6 +3,7 @@ import { Button, Card, Row, Col } from 'antd';
 
 import Clipboard from '../../components/Clipboard';
 import JsZip from '../../components/JsZip';
+import UploadTest from '../../components/UploadTest';
 
 const Mixin = () => {
   return (
@@ -14,13 +15,11 @@ const Mixin = () => {
         <JsZip />
       </Col>
       <Col span={8}>
-        <Card title="download html in pdf">
-          <Button>下载页面</Button>
-        </Card>
+        <UploadTest />
       </Col>
       <Col span={8}>
-        <Card title="window print">
-          <Button>window print</Button>
+        <Card title="download html in pdf">
+          <Button>下载页面</Button>
         </Card>
       </Col>
     </Row>
