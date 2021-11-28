@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, Card, Row, Col } from 'antd';
+import { Row, Col } from 'antd';
 
 import Clipboard from '../../components/Clipboard';
 import JsZip from '../../components/JsZip';
 import UploadTest from '../../components/UploadTest';
+import PdfDownload from '../../components/PdfDownload';
 
 const Mixin = () => {
   return (
@@ -18,9 +19,7 @@ const Mixin = () => {
         <UploadTest />
       </Col>
       <Col span={8}>
-        <Card title="download html in pdf">
-          <Button>下载页面</Button>
-        </Card>
+        <PdfDownload />
       </Col>
     </Row>
   );
