@@ -114,3 +114,14 @@ export const formatTime = (time: Date | string, formatType?: string) => {
   formatType = formatType || 'YYYY-MM-DD HH:mm:ss';
   return moment(time).format(formatType);
 };
+
+export const urlToObj = (str: string) => {
+  const obj = {};
+  const arr1 = str.split('?');
+  const arr2 = arr1[1].split('&');
+  for (let i = 0; i < arr2.length; i++) {
+    const res = arr2[i].split('=');
+    obj[res[0]] = res[1];
+  }
+  return obj;
+};

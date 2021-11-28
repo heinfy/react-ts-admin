@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { JSEncrypt } from 'jsencrypt';
 
 import { Form, Input, Button, Checkbox, message } from 'antd';
@@ -12,6 +12,8 @@ import { setToken } from '../../redux/actions';
 import logo from '../../assets/logo.svg';
 import { login, getPublicKey } from '../../api/user';
 
+import { urlToObj } from '../../utils/utils';
+
 import { LoginProps, ILogin } from './type';
 import './index.scss';
 
@@ -19,6 +21,7 @@ const { Item } = Form;
 
 const Login = (props: LoginProps) => {
   const history = useHistory();
+  const location = useLocation();
   const { token, setToken } = props;
   const [pubKey, setPulKey] = useState<string>('');
   useEffect(() => {
@@ -44,7 +47,10 @@ const Login = (props: LoginProps) => {
     const res = await login({ ...values, password });
     if (res.code === 1) {
       setToken(res.result.token);
-      history.push('/');
+      const queryObject = location.search && urlToObj(location.search);
+      history.push({
+        pathname: queryObject.redirect || '/app/dashboard'
+      });
     } else {
       message.error(res.message);
     }

@@ -60,7 +60,8 @@ service.interceptors.response.use(
         content: '您登陆以过期，请重新登录',
         okText: 'OK',
         onOk() {
-          window.location.href = '/login';
+          const pathname = window.location.pathname;
+          window.location.href = `/login?redirect=${pathname}`;
         }
       });
       return res;

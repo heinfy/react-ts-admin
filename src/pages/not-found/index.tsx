@@ -9,7 +9,7 @@ export default class NotFound extends Component<RouteComponentProps> {
       <section className="not-found">
         <div className="number">404</div>
         <div className="text">
-          <Button onClick={() => this.props.history.replace('/app')}>
+          <Button onClick={() => this.props.history.replace('/app/dashboard')}>
             回到首页
           </Button>
         </div>

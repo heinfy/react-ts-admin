@@ -36,7 +36,10 @@ const Layouts = (props: Props) => {
         getInfo();
       }
     } else {
-      history.push('/login');
+      history.push({
+        pathname: '/login',
+        search: `redirect=${window.location.pathname}`
+      });
     }
   }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
