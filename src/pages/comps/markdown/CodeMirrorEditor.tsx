@@ -1,44 +1,9 @@
-import React, { useRef, createRef, useState, useEffect } from 'react';
+import React from 'react';
 import CodeMirror from 'codemirror';
-import PropTypes from 'prop-types';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/nord.css';
-
-// const CodeMirrorEditor = (props: any) => {
-//   const editorRef: any = createRef();
-//   let editor: any = useRef();
-//   useEffect(() => {
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//     editor = CodeMirror.fromTextArea(editorRef.current, props);
-//     editor.on('change', handleChange);
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, []);
-//   useEffect(() => {
-//     if (!editor) return;
-//     if (props.value && editor.getValue() !== props.value) {
-//       editor.setValue(props.value);
-//     }
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [props.value]);
-//   const handleChange = () => {
-//     if (!editor) return;
-//     const value = editor.getValue();
-//     if (value === props.value) return;
-//     if (props.onChange) {
-//       props.onChange({ target: { value } });
-//     }
-//     if (editor.getValue() !== props.value) {
-//       editor.setValue(props.value);
-//     }
-//   };
-
-//   return (
-//     <textarea ref={editorRef} value={props.value} onChange={props.onChange} />
-//   );
-// };
-
-// export default CodeMirrorEditor;
+import 'highlight.js/scss/github.scss';
 
 class CodeMirrorEditor extends React.Component<any, any> {
   editorRef: React.RefObject<unknown>;
