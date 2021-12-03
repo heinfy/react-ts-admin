@@ -47,6 +47,7 @@ class Header extends React.Component<IProps, IState> {
           backgroundColor: 'white',
           height: '66px',
           padding: '0',
+          paddingRight: 150,
           overflow: 'auto',
           width: '100%',
           boxSizing: 'border-box'
