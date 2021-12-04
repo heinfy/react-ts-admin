@@ -15,7 +15,6 @@ import { Alert } from 'antd';
 import './index.scss';
 
 import { initialValue } from './mdText';
-import { spawn } from 'child_process';
 
 const Markdown = () => {
   const [value, setValue] = useState<any>(initialValue);
