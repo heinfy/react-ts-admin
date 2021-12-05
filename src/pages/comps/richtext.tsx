@@ -1,12 +1,15 @@
 // https://www.cnblogs.com/uimeigui/p/13716917.html
 // https://www.cnblogs.com/katydids/p/12676111.html
-import React, { useState, useRef } from 'react';
-import { message } from 'antd';
+// http://t.zoukankan.com/katydids-p-12676111.html
+import React, { useState, createRef } from 'react';
+import { message, Alert, Button, Space, Modal, Image, Divider } from 'antd';
 import { Editor } from '@tinymce/tinymce-react';
 
 import { upload } from '../../api/upload';
 const Richtext = () => {
-  let editorRef: any = useRef(null);
+  let editorRef: any = createRef();
+  const [imgSrc, setImgSrc] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [defaultContent, setDefaultContent] = useState<string>('默认');
   const onInit = (content, editor) => {
     console.log('content', content);
@@ -20,7 +23,8 @@ const Richtext = () => {
   };
   // 获取编辑器中的值
   const getEditorContent = () => {
-    console.log(editorRef.getContent());
+    console.log(editorRef);
+    console.log(defaultContent);
   };
   // 使用 setContent 为编辑器赋值
   // const setEditorContent = () => {
@@ -30,6 +34,7 @@ const Richtext = () => {
   // const insertContent = (content) => {
   //   editorRef.insertContent(content);
   // };
+  // 上传图片
   const uploadImgHandler = async (
     biobInfo: any,
     success: any,
@@ -67,16 +72,55 @@ const Richtext = () => {
         } else {
           message.error(res.message);
         }
-        console.log(111, res);
       };
       //触发点击
       input.click();
     }
   };
+  const showModal = () => {
+    setIsModalVisible(true);
+    setImgSrc('');
+  };
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  const handleImg = (e) => {
+    if (e.target.tagName === 'IMG') {
+      setImgSrc(e.target.src);
+    }
+  };
   return (
-    <div>
-      <button onClick={getEditorContent}>测试</button>
+    <>
+      <Alert
+        message={
+          <span>
+            更多请查看{' '}
+            <a
+              href="https://github.com/tinymce/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              tinymce
+            </a>{' '}
+          </span>
+        }
+        type="warning"
+        style={{ marginBottom: 20 }}
+      />
+      <Space style={{ marginBottom: 20 }}>
+        <Button type="default" onClick={getEditorContent}>
+          在 console 预览打印 HTML 内容
+        </Button>
+        <Button type="primary" onClick={showModal}>
+          在 Model 预览编辑器内容
+        </Button>
+      </Space>
       <Editor
+        // 可以将 tinymce 放在 public 优化加载
+        // tinymceScriptSrc={'/tinymce/js/tinymce/tinymce.min.js'}
         id="tinymceEditor"
         apiKey="1mzihhkagqi7hfyer8oa2bvah07z4bvju36keh7e9cvxr79r"
         initialValue={defaultContent}
@@ -122,7 +166,23 @@ const Richtext = () => {
         onChange={handleEditorChange}
         onBlur={handleEditorBlur}
       />
-    </div>
+      <Modal
+        title="预览编辑器内容"
+        width={600}
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        {!!imgSrc && <Image width={200} src={imgSrc} />}
+        <Divider>点击 html 图片，将会在上面生成图片，点击图片放大</Divider>
+        <div
+          style={{ width: '100%' }}
+          onClick={handleImg}
+          dangerouslySetInnerHTML={{ __html: defaultContent }}
+        />
+      </Modal>
+    </>
   );
 };
 
