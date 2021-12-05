@@ -7,6 +7,10 @@
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
+  "globals": {
+    "jsBridgeClient": false,
+    "tinymce": false
+  },
   "rules": {
     "@typescript-eslint/no-explicit-any": ["off"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
