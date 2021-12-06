@@ -26,9 +26,63 @@ const Login = (props: LoginProps) => {
   const [pubKey, setPulKey] = useState<string>('');
   useEffect(() => {
     if (token) history.push('/');
+    colourRibbon();
     getKey();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // canvas 背景
+  const colourRibbon = () => {
+    const c: any = document.getElementsByTagName('canvas')[0];
+    const x: any = c.getContext('2d'),
+      pr: number = window.devicePixelRatio || 1,
+      w = window.innerWidth,
+      h = window.innerHeight,
+      f = 90,
+      z = Math.random,
+      u = Math.PI * 2,
+      v = Math.cos;
+    let r = 0,
+      q;
+    c.width = w * pr;
+    c.height = h * pr;
+    x.scale(pr, pr); // Synchronization with devicePixelRatio
+    x.globalAlpha = 0.6; // gloabalAlpha set or return the opacity-value of draw
 
+    function i() {
+      x.clearRect(0, 0, w, h); // clear all rect
+      q = [
+        { x: 0, y: h * 0.7 + f },
+        { x: 0, y: h * 0.7 - f }
+      ];
+      while (q[1].x < w + f) d(q[0], q[1]); // w + f
+    }
+
+    function d(i, j) {
+      x.beginPath();
+      x.moveTo(i.x, i.y);
+      x.lineTo(j.x, j.y);
+      const k = j.x + (z() * 2 - 0.25) * f,
+        n = y(j.y);
+      x.lineTo(k, n);
+      x.closePath();
+      r -= u / -50;
+      x.fillStyle =
+        '#' +
+        (
+          ((v(r) * 127 + 128) << 16) |
+          ((v(r + u / 3) * 127 + 128) << 8) |
+          (v(r + (u / 3) * 2) * 127 + 128)
+        ).toString(16);
+      x.fill();
+      q[0] = q[1]; // old point -> new q[0]
+      q[1] = { x: k, y: n }; // new point(k, n) -> new q[1]
+    }
+    function y(p) {
+      const t = p + (z() * 2 - 1.1) * f;
+      return t > h || t < 0 ? y(p) : t;
+    }
+    document.onclick = i;
+    i();
+  };
   const getKey = async () => {
     const res = await getPublicKey();
     if (res.code === 1) {
@@ -58,6 +112,7 @@ const Login = (props: LoginProps) => {
 
   return (
     <div className="login">
+      <canvas></canvas>
       <Form
         name="normal_login"
         className="login-form"
