@@ -14,6 +14,9 @@ import { getPublicKey } from '../../api/user';
 import { getUsers, operateUser } from '../../api/user';
 import { getRoles } from '../../api/role';
 
+// 方法
+import { exportExcel } from '../../utils/excel';
+
 // 常量
 import { columns, searchList } from './user.config';
 import { INITPAGEQUERY } from '../../utils/constant';
@@ -161,6 +164,16 @@ const User = () => {
     onOk: handleOk,
     onCancel: handleCancel
   };
+  // 导出文件
+  const exportTable = () => {
+    console.log('导出文件');
+    const headers = columns.map((i: any) => ({
+      title: i.title,
+      dataIndex: i.dataIndex,
+      key: i.key
+    }));
+    exportExcel(headers, userList, '用户列表.xlsx');
+  };
   return (
     <div>
       <SearchForm
@@ -175,6 +188,9 @@ const User = () => {
       <ControlRow ref={controlRef}>
         <Button type="primary" onClick={showCreateModal} size="small">
           创建
+        </Button>
+        <Button type="primary" onClick={exportTable} size="small">
+          导出 excel
         </Button>
       </ControlRow>
       <Table
