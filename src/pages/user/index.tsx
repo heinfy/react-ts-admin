@@ -166,30 +166,46 @@ const User = () => {
     onCancel: handleCancel
   };
   // 导出文件
-  const exportTableData = (params: any) => {
+  const exportTableData = async (params: any) => {
+    const allData: any = [];
+    const promises: any = [];
     const getAllData = async (initParams: any) => {
-      const allData: any = [];
-      const { page, size } = initParams;
-      console.log('导出文件');
-      if (page === 1) {
-        const res = await getUsers(initParams);
-        if (res.code === 1) {
-          const { total, data } = res.result;
-          // const { } = total;
-          allData.push(data);
-        } else {
-          message.error(res.message);
+      const { page } = initParams;
+      const { size } = initParams;
+      const res = await getUsers(initParams);
+      if (res.code === 1) {
+        const { total, data } = res.result;
+        allData.push(...data);
+        // 计算出总共多少页面
+        const allPage = Math.ceil(total / size);
+        // 第一次请求页面，就将之后所有的分页都放在队列里边
+        if (allPage > 1 && page === 1) {
+          for (let i = 2; i <= allPage; i++) {
+            promises.push(getAllData.bind(null, { ...initParams, page: i }));
+          }
         }
       } else {
+        message.error(`第 ${page} 发生错误： ${res.message}`);
+      }
+      // 将一个数组拆分为多个数组
+      if (promises.length > 0) {
+        const len = promises.length;
+        const newArr: any = [];
+        const part = Math.ceil(len / 2);
+        for (let i = 1; i <= part; i++) {
+          newArr.push(promises.splice(0, 2));
+        }
+        console.log(newArr);
       }
     };
-    getAllData(params);
+    await getAllData(params);
+    console.log(allData);
     const headers = columns.map((i: any) => ({
       title: i.title,
       dataIndex: i.dataIndex,
       key: i.key
     }));
-    const data = userList.map((i: any) => {
+    const data = allData.map((i: any) => {
       const { userid, username, email, createdAt, updatedAt, roles } = i;
       return {
         userid,
@@ -219,7 +235,7 @@ const User = () => {
         </Button>
         <Button
           type="primary"
-          onClick={() => exportTableData({ page: 1, size: 100 })}
+          onClick={() => exportTableData({ page: 1, size: 2 })}
           size="small"
         >
           导出 excel

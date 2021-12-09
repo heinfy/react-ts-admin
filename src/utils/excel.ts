@@ -93,14 +93,14 @@ const exportExcel = (headers, data, fileName = 'download.xlsx') => {
 
   // 构建 workbook 对象
   const wb = {
-    SheetNames: ['Sheet-1'],
+    SheetNames: ['mySheet'],
     Sheets: {
       mySheet: Object.assign({}, output, {
         '!ref': ref,
         '!cols': [
+          { wpx: 45 },
           { wpx: 100 },
-          { wpx: 100 },
-          { wpx: 200 },
+          { wpx: 80 },
           { wpx: 200 },
           { wpx: 150 },
           { wpx: 100 },
