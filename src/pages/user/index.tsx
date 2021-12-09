@@ -16,6 +16,7 @@ import { getRoles } from '../../api/role';
 
 // 方法
 import { exportExcel } from '../../utils/excel';
+import { formatTime } from '../../utils/utils';
 
 // 常量
 import { columns, searchList } from './user.config';
@@ -165,14 +166,41 @@ const User = () => {
     onCancel: handleCancel
   };
   // 导出文件
-  const exportTable = () => {
-    console.log('导出文件');
+  const exportTableData = (params: any) => {
+    const getAllData = async (initParams: any) => {
+      const allData: any = [];
+      const { page, size } = initParams;
+      console.log('导出文件');
+      if (page === 1) {
+        const res = await getUsers(initParams);
+        if (res.code === 1) {
+          const { total, data } = res.result;
+          // const { } = total;
+          allData.push(data);
+        } else {
+          message.error(res.message);
+        }
+      } else {
+      }
+    };
+    getAllData(params);
     const headers = columns.map((i: any) => ({
       title: i.title,
       dataIndex: i.dataIndex,
       key: i.key
     }));
-    exportExcel(headers, userList, '用户列表.xlsx');
+    const data = userList.map((i: any) => {
+      const { userid, username, email, createdAt, updatedAt, roles } = i;
+      return {
+        userid,
+        username,
+        email,
+        createdAt: formatTime(createdAt),
+        updatedAt: formatTime(updatedAt),
+        roles: roles.map((i: any) => i.roleName).join(',')
+      };
+    });
+    exportExcel(headers, data, '用户列表.xlsx');
   };
   return (
     <div>
@@ -189,7 +217,11 @@ const User = () => {
         <Button type="primary" onClick={showCreateModal} size="small">
           创建
         </Button>
-        <Button type="primary" onClick={exportTable} size="small">
+        <Button
+          type="primary"
+          onClick={() => exportTableData({ page: 1, size: 100 })}
+          size="small"
+        >
           导出 excel
         </Button>
       </ControlRow>

@@ -44,7 +44,7 @@ const importsExcel = (file) => {
  * @param {*} data
  * @param {*} fileName
  */
-const exportExcel = (headers, data, fileName = 'demo.xlsx') => {
+const exportExcel = (headers, data, fileName = 'download.xlsx') => {
   const _headers = headers
     .map((item, i) =>
       Object.assign(
@@ -93,15 +93,15 @@ const exportExcel = (headers, data, fileName = 'demo.xlsx') => {
 
   // 构建 workbook 对象
   const wb = {
-    SheetNames: ['mySheet'],
+    SheetNames: ['Sheet-1'],
     Sheets: {
       mySheet: Object.assign({}, output, {
         '!ref': ref,
         '!cols': [
-          { wpx: 45 },
+          { wpx: 100 },
           { wpx: 100 },
           { wpx: 200 },
-          { wpx: 80 },
+          { wpx: 200 },
           { wpx: 150 },
           { wpx: 100 },
           { wpx: 300 },
