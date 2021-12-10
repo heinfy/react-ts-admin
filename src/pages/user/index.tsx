@@ -170,8 +170,7 @@ const User = () => {
     const allData: any = [];
     const promises: any = [];
     const getAllData = async (initParams: any) => {
-      const { page } = initParams;
-      const { size } = initParams;
+      const { page, size } = initParams;
       const res = await getUsers(initParams);
       if (res.code === 1) {
         const { total, data } = res.result;
@@ -191,32 +190,48 @@ const User = () => {
       if (promises.length > 0) {
         const len = promises.length;
         const newArr: any = [];
+        // 按照2个拆分
         const part = Math.ceil(len / 2);
         for (let i = 1; i <= part; i++) {
           newArr.push(promises.splice(0, 2));
         }
-        console.log(newArr);
+        const fn = (idx) => {
+          if (idx <= part - 1) {
+            Promise.all(newArr[idx])
+              .then(function (posts) {
+                console.log(1, posts);
+                // fn(idx++);
+                // ...
+              })
+              .catch(function (reason) {
+                // ...
+                console.log(2, reason);
+              });
+          }
+        };
+        fn(0);
+        // console.log('newArr', newArr);
       }
     };
     await getAllData(params);
-    console.log(allData);
-    const headers = columns.map((i: any) => ({
-      title: i.title,
-      dataIndex: i.dataIndex,
-      key: i.key
-    }));
-    const data = allData.map((i: any) => {
-      const { userid, username, email, createdAt, updatedAt, roles } = i;
-      return {
-        userid,
-        username,
-        email,
-        createdAt: formatTime(createdAt),
-        updatedAt: formatTime(updatedAt),
-        roles: roles.map((i: any) => i.roleName).join(',')
-      };
-    });
-    exportExcel(headers, data, '用户列表.xlsx');
+    // console.log(allData);
+    // const headers = columns.map((i: any) => ({
+    //   title: i.title,
+    //   dataIndex: i.dataIndex,
+    //   key: i.key
+    // }));
+    // const data = allData.map((i: any) => {
+    //   const { userid, username, email, createdAt, updatedAt, roles } = i;
+    //   return {
+    //     userid,
+    //     username,
+    //     email,
+    //     createdAt: formatTime(createdAt),
+    //     updatedAt: formatTime(updatedAt),
+    //     roles: roles.map((i: any) => i.roleName).join(',')
+    //   };
+    // });
+    // exportExcel(headers, data, '用户列表.xlsx');
   };
   return (
     <div>
