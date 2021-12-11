@@ -7,6 +7,7 @@ import { JSEncrypt } from 'jsencrypt';
 import SearchForm from '../../components/SearchForm';
 import { EditBtn, DelBtn } from '../../components/Buttons';
 import ControlRow from '../../components/ControlRow';
+import PopoverColumn from '../../components/PopoverColumn';
 import UserForm from './UserForm';
 
 // 接口
@@ -220,6 +221,7 @@ const User = () => {
         >
           按查询条件导出 excel
         </Button>
+        <PopoverColumn columns={columns} configColumns={columns} />
       </ControlRow>
       <Table
         bordered
