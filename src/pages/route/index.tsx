@@ -14,7 +14,7 @@ import { getRoutes, operateRoute } from '../../api/route';
 
 // 方法
 import { exportExcel } from '../../utils/excel';
-import { formateData2Tree, formatTime, getExcelData } from '../../utils/utils';
+import { formatTime, getExcelData } from '../../utils/utils';
 
 // 常量
 import { columns, searchList } from './route.config';
