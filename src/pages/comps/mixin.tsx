@@ -5,6 +5,7 @@ import Clipboard from '../../components/Clipboard';
 import JsZip from '../../components/JsZip';
 import UploadTest from '../../components/UploadTest';
 import PdfDownload from '../../components/PdfDownload';
+import ExcelDemo from '../../components/ExcelDemo';
 
 const Mixin = () => {
   return (
@@ -20,6 +21,9 @@ const Mixin = () => {
       </Col>
       <Col span={8}>
         <PdfDownload />
+      </Col>
+      <Col span={8}>
+        <ExcelDemo />
       </Col>
     </Row>
   );
