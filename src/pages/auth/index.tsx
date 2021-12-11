@@ -12,7 +12,9 @@ import AuthForm from './AuthForm';
 import { getAuths, operateAuth, updateAuthRoute } from '../../api/auth';
 import { getRoutes } from '../../api/route';
 
-import { formateData2Tree } from '../../utils/utils';
+// 方法
+import { exportExcel } from '../../utils/excel';
+import { formateData2Tree, formatTime, getExcelData } from '../../utils/utils';
 
 // 常量
 import { columns, searchList } from './auth.config';
@@ -27,6 +29,7 @@ const Auth = () => {
   const [routeForm] = Form.useForm();
   const [params, setParams] = useState<any>(INITPAGEQUERY);
   const [loading, setLoading] = useState<boolean>(false);
+  const [exportLoading, setExportLoading] = useState<boolean>(false);
   const [isC$EModalVisible, setIsC$EModalVisible] = useState<boolean>(false);
   const [isTreeModalVisible, setIsTreeModalVisible] = useState<boolean>(false);
   const [routeModalVisible, setRouteModalVisible] = useState<boolean>(false);
@@ -223,6 +226,44 @@ const Auth = () => {
     onOk: handleRouteOk,
     onCancel: handleRouteCancel
   };
+  // 导出文件
+  const exportTableData = async (params: any) => {
+    setExportLoading(true);
+    const result = await getExcelData({ ...params, page: 1 }, getAuths, 1);
+    const headers = columns.map((i: any) => ({
+      title: i.title,
+      dataIndex: i.dataIndex,
+      key: i.key
+    }));
+    const data = result.map((i: any) => {
+      const {
+        authid,
+        authName,
+        type,
+        pid,
+        routeName,
+        routeid,
+        authSort,
+        authDesc,
+        createdAt,
+        updatedAt
+      } = i;
+      return {
+        authid,
+        authName,
+        type,
+        pid,
+        routeName,
+        routeid,
+        authSort,
+        authDesc,
+        createdAt: formatTime(createdAt),
+        updatedAt: formatTime(updatedAt)
+      };
+    });
+    exportExcel(headers, data, '权限列表.xlsx');
+    setExportLoading(false);
+  };
   return (
     <div>
       <SearchForm
@@ -283,6 +324,22 @@ const Auth = () => {
         </Button>
         <Button type="primary" onClick={showTreeModal} size="small">
           查看权限树
+        </Button>
+        <Button
+          loading={exportLoading}
+          type="primary"
+          onClick={() => exportTableData(INITPAGEQUERY)}
+          size="small"
+        >
+          导出所有 excel
+        </Button>
+        <Button
+          loading={exportLoading}
+          type="primary"
+          onClick={() => exportTableData(params)}
+          size="small"
+        >
+          按查询条件导出 excel
         </Button>
       </ControlRow>
       <Table

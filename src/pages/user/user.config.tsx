@@ -44,8 +44,8 @@ export const columns = [
 export const searchList = [
   {
     type: 'input',
-    name: '用户id',
-    label: 'userid',
+    name: 'userid',
+    label: '用户id',
     attr: { placeholder: '请输入 userid' }
   },
   {

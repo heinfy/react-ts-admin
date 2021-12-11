@@ -18,7 +18,9 @@ import {
 } from '../../api/role';
 import { getAuths } from '../../api/auth';
 
-import { formateData2Tree } from '../../utils/utils';
+// 方法
+import { exportExcel } from '../../utils/excel';
+import { formateData2Tree, formatTime, getExcelData } from '../../utils/utils';
 
 // 常量
 import { columns, searchList } from './role.config';
@@ -32,6 +34,7 @@ const Role = () => {
   const [form] = Form.useForm();
   const [params, setParams] = useState<any>(INITPAGEQUERY);
   const [loading, setLoading] = useState<boolean>(false);
+  const [exportLoading, setExportLoading] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [authModalVisible, setAuthModalVisible] = useState<boolean>(false);
   const [roleList, setRoleList] = useState([]);
@@ -201,6 +204,29 @@ const Role = () => {
       setAuthModalVisible(false);
     }
   };
+  // 导出文件
+  const exportTableData = async (params: any) => {
+    setExportLoading(true);
+    const result = await getExcelData({ ...params, page: 1 }, getRoles, 1);
+    const headers = columns.map((i: any) => ({
+      title: i.title,
+      dataIndex: i.dataIndex,
+      key: i.key
+    }));
+    const data = result.map((i: any) => {
+      const { roleid, roleName, roleDesc, roleSort, createdAt, updatedAt } = i;
+      return {
+        roleid,
+        roleName,
+        roleDesc,
+        roleSort,
+        createdAt: formatTime(createdAt),
+        updatedAt: formatTime(updatedAt)
+      };
+    });
+    exportExcel(headers, data, '角色列表.xlsx');
+    setExportLoading(false);
+  };
   return (
     <div>
       <SearchForm
@@ -222,6 +248,22 @@ const Role = () => {
       <ControlRow ref={controlRef}>
         <Button type="primary" onClick={showCreateModal} size="small">
           创建
+        </Button>
+        <Button
+          loading={exportLoading}
+          type="primary"
+          onClick={() => exportTableData(INITPAGEQUERY)}
+          size="small"
+        >
+          导出所有 excel
+        </Button>
+        <Button
+          loading={exportLoading}
+          type="primary"
+          onClick={() => exportTableData(params)}
+          size="small"
+        >
+          按查询条件导出 excel
         </Button>
       </ControlRow>
       <Table

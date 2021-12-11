@@ -1,4 +1,5 @@
 import React from 'react';
+import { message } from 'antd';
 import moment from 'moment';
 import * as Icon from '@ant-design/icons';
 
@@ -105,7 +106,7 @@ export const getIcon = (iconname: string) =>
   React.createElement(Icon[iconname]);
 
 /**
- * 根据 Icon名称 获取 Icon 标签
+ * 格式化时间
  * @param {Date| string} time - 标准时间
  * @param {string} formatType - 时间格式
  * @returns {string}} - 时间
@@ -115,6 +116,11 @@ export const formatTime = (time: Date | string, formatType?: string) => {
   return moment(time).format(formatType);
 };
 
+/**
+ * 将 url 的问好参数转换为对象
+ * @param {string} str - url
+ * @returns {object}} - 参数对象
+ */
 export const urlToObj = (str: string) => {
   const obj = {};
   const arr1 = str.split('?');
@@ -124,4 +130,71 @@ export const urlToObj = (str: string) => {
     obj[res[0]] = res[1];
   }
   return obj;
+};
+
+/**
+ * 获取导出数据
+ * @param {Object} initParams - 接口查询数据.
+ * @param {number} initParams.size - 每次请求多少条.
+ * @param {Function} $query - 请求方法
+ * @param {number} maxFit - 分片请求最大数量
+ * @returns {Array} 导出数据
+ */
+export const getExcelData = async (
+  initParams: any,
+  $query: (init: any) => any,
+  maxFit: number
+) => {
+  const allData: any = [];
+  const res = await $query(initParams);
+  if (res.code === 1) {
+    const querys: any = [];
+    const { total, data } = res.result;
+    allData.push(...data);
+    const allPage = Math.ceil(total / initParams.size);
+    if (allPage > 1) {
+      for (let i = 2; i <= allPage; i++) {
+        querys.push($query({ ...initParams, page: i }));
+      }
+      await getAllExcelData(allData, querys, maxFit);
+    }
+  } else {
+    message.error(res.message);
+  }
+  return allData;
+};
+
+/**
+ * 获取分页数据
+ * @param {Array} allData - 保存数据.
+ * @param {Array} promiseList - 接口查询数据.
+ * @param {max} maxFit - 分片请求最大数量
+ */
+const getAllExcelData = async (allData, promiseList, max) => {
+  if (promiseList.length > 0) {
+    const len = promiseList.length;
+    const newArr: any = [];
+    const part = Math.ceil(len / max);
+    for (let i = 1; i <= part; i++) {
+      newArr.push(promiseList.splice(0, max));
+    }
+    const next = async (idx) => {
+      if (idx <= part - 1) {
+        const result = await Promise.all(newArr[idx]);
+        const currentList = result
+          .map((item: any) => {
+            if (item.code === 1) {
+              return item.result.data;
+            } else {
+              message.error(item.message);
+              return [];
+            }
+          })
+          .flat();
+        allData.push(...currentList);
+        await next(++idx);
+      }
+    };
+    await next(0);
+  }
 };

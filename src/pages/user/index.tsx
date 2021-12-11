@@ -16,7 +16,7 @@ import { getRoles } from '../../api/role';
 
 // 方法
 import { exportExcel } from '../../utils/excel';
-import { formatTime } from '../../utils/utils';
+import { formatTime, getExcelData } from '../../utils/utils';
 
 // 常量
 import { columns, searchList } from './user.config';
@@ -30,6 +30,7 @@ const User = () => {
   const [form] = Form.useForm();
   const [params, setParams] = useState<any>(INITPAGEQUERY);
   const [loading, setLoading] = useState<boolean>(false);
+  const [exportLoading, setExportLoading] = useState<boolean>(false);
   const [isC$EModalVisible, setIsC$EModalVisible] = useState<boolean>(false);
   const [userList, setUserList] = useState([]);
   const [pubKey, setPulKey] = useState<string>('');
@@ -167,71 +168,26 @@ const User = () => {
   };
   // 导出文件
   const exportTableData = async (params: any) => {
-    const allData: any = [];
-    const promises: any = [];
-    const getAllData = async (initParams: any) => {
-      const { page, size } = initParams;
-      const res = await getUsers(initParams);
-      if (res.code === 1) {
-        const { total, data } = res.result;
-        allData.push(...data);
-        // 计算出总共多少页面
-        const allPage = Math.ceil(total / size);
-        // 第一次请求页面，就将之后所有的分页都放在队列里边
-        if (allPage > 1 && page === 1) {
-          for (let i = 2; i <= allPage; i++) {
-            promises.push(getAllData.bind(null, { ...initParams, page: i }));
-          }
-        }
-      } else {
-        message.error(`第 ${page} 发生错误： ${res.message}`);
-      }
-      // 将一个数组拆分为多个数组
-      if (promises.length > 0) {
-        const len = promises.length;
-        const newArr: any = [];
-        // 按照2个拆分
-        const part = Math.ceil(len / 2);
-        for (let i = 1; i <= part; i++) {
-          newArr.push(promises.splice(0, 2));
-        }
-        const fn = (idx) => {
-          if (idx <= part - 1) {
-            Promise.all(newArr[idx])
-              .then(function (posts) {
-                console.log(1, posts);
-                // fn(idx++);
-                // ...
-              })
-              .catch(function (reason) {
-                // ...
-                console.log(2, reason);
-              });
-          }
-        };
-        fn(0);
-        // console.log('newArr', newArr);
-      }
-    };
-    await getAllData(params);
-    // console.log(allData);
-    // const headers = columns.map((i: any) => ({
-    //   title: i.title,
-    //   dataIndex: i.dataIndex,
-    //   key: i.key
-    // }));
-    // const data = allData.map((i: any) => {
-    //   const { userid, username, email, createdAt, updatedAt, roles } = i;
-    //   return {
-    //     userid,
-    //     username,
-    //     email,
-    //     createdAt: formatTime(createdAt),
-    //     updatedAt: formatTime(updatedAt),
-    //     roles: roles.map((i: any) => i.roleName).join(',')
-    //   };
-    // });
-    // exportExcel(headers, data, '用户列表.xlsx');
+    setExportLoading(true);
+    const result = await getExcelData({ ...params, page: 1 }, getUsers, 1);
+    const headers = columns.map((i: any) => ({
+      title: i.title,
+      dataIndex: i.dataIndex,
+      key: i.key
+    }));
+    const data = result.map((i: any) => {
+      const { userid, username, email, createdAt, updatedAt, roles } = i;
+      return {
+        userid,
+        username,
+        email,
+        createdAt: formatTime(createdAt),
+        updatedAt: formatTime(updatedAt),
+        roles: roles.map((i: any) => i.roleName).join(',')
+      };
+    });
+    exportExcel(headers, data, '用户列表.xlsx');
+    setExportLoading(false);
   };
   return (
     <div>
@@ -249,11 +205,20 @@ const User = () => {
           创建
         </Button>
         <Button
+          loading={exportLoading}
           type="primary"
-          onClick={() => exportTableData({ page: 1, size: 2 })}
+          onClick={() => exportTableData(INITPAGEQUERY)}
           size="small"
         >
-          导出 excel
+          导出所有 excel
+        </Button>
+        <Button
+          loading={exportLoading}
+          type="primary"
+          onClick={() => exportTableData(params)}
+          size="small"
+        >
+          按查询条件导出 excel
         </Button>
       </ControlRow>
       <Table
