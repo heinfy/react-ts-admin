@@ -52,7 +52,7 @@ service.interceptors.response.use(
   (response) => {
     NProgress.done();
     const res = response.data;
-    if (response.status === 214) {
+    if (res.code === -1) {
       store.dispatch(setToken(''));
       store.dispatch(setUserInfo(null));
       Modal.warning({
@@ -75,6 +75,7 @@ service.interceptors.response.use(
     }
   },
   (error) => {
+    console.log('error', error);
     NProgress.done();
     console.log('err' + error); // for debug
     message.error(error.message || 'Error');
