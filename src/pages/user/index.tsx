@@ -173,7 +173,7 @@ const User = () => {
   const exportTableData = async (params: any) => {
     setExportLoading(true);
     const result = await getExcelData({ ...params, page: 1 }, getUsers, 1);
-    const headers = columns.map((i: any) => ({
+    const headers = currentColumns.map((i: any) => ({
       title: i.title,
       dataIndex: i.dataIndex,
       key: i.key
