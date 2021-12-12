@@ -6,6 +6,7 @@ import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import SearchForm from '../../components/SearchForm';
 import ControlRow from '../../components/ControlRow';
 import { EditBtn, DelBtn, AddBtn } from '../../components/Buttons';
+import PopoverColumn from '../../components/PopoverColumn';
 import AuthForm from './AuthForm';
 
 // 接口
@@ -28,6 +29,8 @@ const Auth = () => {
   const [form] = Form.useForm();
   const [routeForm] = Form.useForm();
   const [params, setParams] = useState<any>(INITPAGEQUERY);
+  const [selected, setSelected] = useState<any>([]);
+  const [currentColumns, setCurrentColumns] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [exportLoading, setExportLoading] = useState<boolean>(false);
   const [isC$EModalVisible, setIsC$EModalVisible] = useState<boolean>(false);
@@ -230,7 +233,7 @@ const Auth = () => {
   const exportTableData = async (params: any) => {
     setExportLoading(true);
     const result = await getExcelData({ ...params, page: 1 }, getAuths, 1);
-    const headers = columns.map((i: any) => ({
+    const headers = currentColumns.map((i: any) => ({
       title: i.title,
       dataIndex: i.dataIndex,
       key: i.key
@@ -341,12 +344,18 @@ const Auth = () => {
         >
           按查询条件导出 excel
         </Button>
+        <PopoverColumn
+          selected={selected}
+          setSelected={setSelected}
+          setCurrentColumns={setCurrentColumns}
+          columns={columns}
+        />
       </ControlRow>
       <Table
         bordered
         loading={loading}
         rowKey={(row: any) => row.authid}
-        columns={[...columns, operation]}
+        columns={[...currentColumns, operation]}
         dataSource={authList}
         scroll={{ x: true }}
         pagination={{

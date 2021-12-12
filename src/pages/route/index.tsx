@@ -7,6 +7,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import SearchForm from '../../components/SearchForm';
 import ControlRow from '../../components/ControlRow';
 import { EditBtn, ViewBtn, DelBtn } from '../../components/Buttons';
+import PopoverColumn from '../../components/PopoverColumn';
 import RouteForm from './RouteForm';
 
 // 接口
@@ -30,6 +31,8 @@ const Route = () => {
   const [params, setParams] = useState<any>(INITPAGEQUERY);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [exportLoading, setExportLoading] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>([]);
+  const [currentColumns, setCurrentColumns] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [routeList, setRouteList] = useState([]);
   const [total, setToal] = useState<number>(0);
@@ -134,7 +137,7 @@ const Route = () => {
   const exportTableData = async (params: any) => {
     setExportLoading(true);
     const result = await getExcelData({ ...params, page: 1 }, getRoutes, 1);
-    const headers = columns.map((i: any) => ({
+    const headers = currentColumns.map((i: any) => ({
       title: i.title,
       dataIndex: i.dataIndex,
       key: i.key
@@ -159,7 +162,7 @@ const Route = () => {
         updatedAt: formatTime(updatedAt)
       };
     });
-    exportExcel(headers, data, '角色列表.xlsx');
+    exportExcel(headers, data, '路由列表.xlsx');
     setExportLoading(false);
   };
   return (
@@ -198,12 +201,18 @@ const Route = () => {
         >
           按查询条件导出 excel
         </Button>
+        <PopoverColumn
+          selected={selected}
+          setSelected={setSelected}
+          setCurrentColumns={setCurrentColumns}
+          columns={columns}
+        />
       </ControlRow>
       <Table
         bordered
         loading={loading}
         rowKey={(row: any) => row.routeid}
-        columns={[...columns, operation]}
+        columns={[...currentColumns, operation]}
         dataSource={routeList}
         scroll={{ x: true }}
         pagination={{

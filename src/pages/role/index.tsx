@@ -6,6 +6,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import SearchForm from '../../components/SearchForm';
 import ControlRow from '../../components/ControlRow';
 import { EditBtn, DelBtn, AddBtn } from '../../components/Buttons';
+import PopoverColumn from '../../components/PopoverColumn';
 import RoleForm from './RoleForm';
 import AddAuthForm from './AddAuthForm';
 
@@ -37,6 +38,8 @@ const Role = () => {
   const [exportLoading, setExportLoading] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [authModalVisible, setAuthModalVisible] = useState<boolean>(false);
+  const [selected, setSelected] = useState<any>([]);
+  const [currentColumns, setCurrentColumns] = useState<any>([]);
   const [roleList, setRoleList] = useState([]);
   const [roleid, setRoleid] = useState<string>('');
   const [authTree, setAuthTree] = useState([]);
@@ -208,7 +211,7 @@ const Role = () => {
   const exportTableData = async (params: any) => {
     setExportLoading(true);
     const result = await getExcelData({ ...params, page: 1 }, getRoles, 1);
-    const headers = columns.map((i: any) => ({
+    const headers = currentColumns.map((i: any) => ({
       title: i.title,
       dataIndex: i.dataIndex,
       key: i.key
@@ -265,12 +268,18 @@ const Role = () => {
         >
           按查询条件导出 excel
         </Button>
+        <PopoverColumn
+          selected={selected}
+          setSelected={setSelected}
+          setCurrentColumns={setCurrentColumns}
+          columns={columns}
+        />
       </ControlRow>
       <Table
         bordered
         loading={loading}
         rowKey={(row: any) => row.roleid}
-        columns={[...columns, operation]}
+        columns={[...currentColumns, operation]}
         dataSource={roleList}
         scroll={{ x: true }}
         pagination={{
