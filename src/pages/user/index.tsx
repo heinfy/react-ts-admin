@@ -34,6 +34,8 @@ const User = () => {
   const [exportLoading, setExportLoading] = useState<boolean>(false);
   const [isC$EModalVisible, setIsC$EModalVisible] = useState<boolean>(false);
   const [userList, setUserList] = useState([]);
+  const [selected, setSelected] = useState<any>([]);
+  const [currentColumns, setCurrentColumns] = useState<any>([]);
   const [pubKey, setPulKey] = useState<string>('');
   const [roleList, setRoleList] = useState([]);
   const [total, setToal] = useState<number>(0);
@@ -190,6 +192,7 @@ const User = () => {
     exportExcel(headers, data, '用户列表.xlsx');
     setExportLoading(false);
   };
+
   return (
     <div>
       <SearchForm
@@ -221,13 +224,18 @@ const User = () => {
         >
           按查询条件导出 excel
         </Button>
-        <PopoverColumn columns={columns} configColumns={columns} />
+        <PopoverColumn
+          selected={selected}
+          setSelected={setSelected}
+          setCurrentColumns={setCurrentColumns}
+          columns={columns}
+        />
       </ControlRow>
       <Table
         bordered
         loading={loading}
         rowKey={(row: any) => row.userid}
-        columns={[...columns, operation]}
+        columns={[...currentColumns, operation]}
         dataSource={userList}
         scroll={{ x: true }}
         pagination={{

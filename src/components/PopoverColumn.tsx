@@ -1,28 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import { Table, Button, Popover, message } from 'antd';
 
-const PopoverColumn = ({ configColumns, columns, update }) => {
-  const [selected, setSelected] = useState<string[]>(
-    columns.map((col) => col.key)
-  );
-  const baseCol = configColumns.map((col) => ({
+import { getColumns, operateColumns } from '../api/common';
+
+const PopoverColumn = ({
+  columns,
+  selected,
+  setSelected,
+  setCurrentColumns
+}) => {
+  const location = useLocation();
+  useEffect(() => {
+    getCustomColumns();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const dataSource = columns.map((col) => ({
     key: col.key,
     title: col.title
   }));
-  const saveColumns = () => {
+  // 更新首选项
+  const saveColumns = async () => {
     if (selected.length === 0) {
       return message.error('至少展示一列');
     }
-    const result: any = [];
-    configColumns.forEach((row) => {
-      selected.forEach((select) => {
-        if (row.key === select) {
-          result.push(row);
-        }
-      });
+    const res = await operateColumns({
+      path: location.pathname,
+      columns: selected
     });
-    update(result);
+    if (res.code === 1) {
+      const result: any = [];
+      columns.forEach((row) => {
+        selected.forEach((select) => {
+          if (row.key === select) {
+            result.push(row);
+          }
+        });
+      });
+      setCurrentColumns(result);
+    } else {
+      message.error(res.message);
+    }
   };
+  // 获取该用户自定义的首选项展示
+  const getCustomColumns = async () => {
+    const res = await getColumns(location.pathname);
+    if (res.code === 1) {
+      const selected = res.result;
+      if (selected) {
+        setSelected(selected);
+        const current: any = [];
+        columns.forEach((row) => {
+          selected.forEach((select) => {
+            if (row.key === select) {
+              current.push(row);
+            }
+          });
+        });
+        setCurrentColumns(current);
+      } else {
+        setCurrentColumns(columns);
+      }
+    } else {
+      setCurrentColumns(columns);
+      message.error(res.message);
+    }
+  };
+
   const content = (
     <>
       <Table
@@ -44,7 +88,7 @@ const PopoverColumn = ({ configColumns, columns, update }) => {
           }
         }}
         pagination={false}
-        dataSource={baseCol}
+        dataSource={dataSource}
         scroll={{ x: 'max-content', y: 200 }}
       />
       <Button
