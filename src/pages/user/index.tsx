@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Table, message, Form, Modal, Button } from 'antd';
+import { Table, message, Form, Modal, Alert, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { JSEncrypt } from 'jsencrypt';
 
@@ -195,6 +195,11 @@ const User = () => {
 
   return (
     <div>
+      <Alert
+        message="提示：显示项会管理 Table 展示的列，并且指定导出的 Excel 文件的列属性"
+        type="info"
+        style={{ marginBottom: 20 }}
+      />
       <SearchForm
         searchList={searchList}
         searchFn={search}
