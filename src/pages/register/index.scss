@@ -1,0 +1,100 @@
+.register {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  .control {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 40px;
+    top: 40px;
+    z-index: 9;
+    img {
+      display: block;
+    }
+    .start {
+      animation: turn 3s linear infinite;
+    }
+    @keyframes turn{
+      0%{
+        -webkit-transform: rotate(0deg);
+      }
+      25%{
+        -webkit-transform: rotate(30deg);
+      }
+      50%{
+        -webkit-transform: rotate(0deg);
+      }
+      75%{
+        -webkit-transform: rotate(-30deg);
+      }
+      100%{
+        -webkit-transform: rotate(0deg);
+      }
+    }
+    .stop {
+      animation: size 4s linear infinite;
+    }
+    @keyframes size{
+      0%{
+        -webkit-transform: scale(1);
+      }
+      25%{
+        -webkit-transform: scale(1.4);
+      }
+      75%{
+        -webkit-transform: scale(1);
+      }
+      100%{
+        -webkit-transform: scale(1);
+      }
+    }
+  }
+  .audio_your_name {
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9;
+  }
+  .video_your_name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -10px;
+    bottom: 0;
+  }
+  .register-form {
+    height: 700px;
+    border-bottom-right-radius: 600px;
+    border-top-right-radius: 600px;
+    background-color: #f3f3f366;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding-left: 20px;
+    .ant-input-affix-wrapper {
+      background-color: #ffffff00 !important;
+    }
+    .ant-input {
+      background-color: #ffffff00 !important;
+    }
+    .title {
+      text-align: left;
+      margin-bottom: 20px;
+      color: #f3f3f3;
+      font-weight: 600;
+      font-size: 24px;
+    }
+  }
+}
+
