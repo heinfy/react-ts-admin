@@ -9,44 +9,45 @@
     position: absolute;
     left: 40px;
     top: 40px;
-    z-index: 9;
+    z-index: 11;
     img {
+      cursor: pointer;
       display: block;
     }
     .start {
       animation: turn 3s linear infinite;
     }
-    @keyframes turn{
-      0%{
+    @keyframes turn {
+      0% {
         -webkit-transform: rotate(0deg);
       }
-      25%{
+      25% {
         -webkit-transform: rotate(30deg);
       }
-      50%{
+      50% {
         -webkit-transform: rotate(0deg);
       }
-      75%{
+      75% {
         -webkit-transform: rotate(-30deg);
       }
-      100%{
+      100% {
         -webkit-transform: rotate(0deg);
       }
     }
     .stop {
       animation: size 4s linear infinite;
     }
-    @keyframes size{
-      0%{
+    @keyframes size {
+      0% {
         -webkit-transform: scale(1);
       }
-      25%{
+      25% {
         -webkit-transform: scale(1.4);
       }
-      75%{
+      75% {
         -webkit-transform: scale(1);
       }
-      100%{
+      100% {
         -webkit-transform: scale(1);
       }
     }
@@ -95,6 +96,9 @@
       font-weight: 600;
       font-size: 24px;
     }
+    .ant-input-group-addon {
+      width: 95px;
+      background-color: #ffffff00 !important;
+    }
   }
 }
-

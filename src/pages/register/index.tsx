@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { JSEncrypt } from 'jsencrypt';
 import { Form, Input, Button, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  LockOutlined,
+  PhoneOutlined,
+  InsuranceOutlined,
+  SettingOutlined
+} from '@ant-design/icons';
 
 // 资源
 import startIcon from '../../assets/images/audio_start.png';
@@ -14,11 +20,19 @@ import './index.scss';
 const { Item } = Form;
 
 const Register = () => {
+  const [form] = Form.useForm();
   const audioRef: any = useRef(null);
   const [pubKey, setPulKey] = useState<string>('');
   const [play, setPlay] = useState<boolean>(false);
   useEffect(() => {
     getKey();
+    form.setFieldsValue({
+      email: 'abc@163.com',
+      password: '003',
+      confirmPassword: '003',
+      phone: '13212341234',
+      code: '766438'
+    });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const change = () => {
     if (play) {
@@ -49,9 +63,16 @@ const Register = () => {
       message.error(res.message);
     }
   };
+  const props = {
+    style: { width: 320 },
+    labelCol: {
+      span: 6
+    }
+  };
   return (
     <div className="register">
       <Form
+        form={form}
         colon={false}
         className="register-form"
         onFinish={onFinish}
@@ -59,10 +80,7 @@ const Register = () => {
       >
         <div className="title">注册账号</div>
         <Item
-          style={{ width: 340 }}
-          labelCol={{
-            span: 6
-          }}
+          {...props}
           label="登录邮箱"
           name="email"
           rules={[
@@ -76,10 +94,7 @@ const Register = () => {
           <Input prefix={<UserOutlined />} placeholder="请输入登录邮箱" />
         </Item>
         <Item
-          style={{ width: 340 }}
-          labelCol={{
-            span: 6
-          }}
+          {...props}
           label="密码"
           name="password"
           rules={[{ required: true, message: '请输入密码' }]}
@@ -91,41 +106,54 @@ const Register = () => {
           />
         </Item>
         <Item
-          style={{ width: 340 }}
-          labelCol={{
-            span: 6
-          }}
+          {...props}
           label="确定密码"
-          name="password"
+          name="confirmPassword"
           rules={[{ required: true, message: '请再次输入密码' }]}
         >
           <Input
             prefix={<LockOutlined />}
-            type="confirmPassword"
+            type="password"
             placeholder="请再次输入密码"
           />
         </Item>
         <Item
-          style={{ width: 340 }}
-          labelCol={{
-            span: 6
-          }}
+          {...props}
           label="手机号"
           name="phone"
-          rules={[{ required: true, message: '请输入手机号' }]}
+          rules={[
+            {
+              required: true,
+              pattern: new RegExp(/^1[3-9]\d{9}$/, 'g'),
+              message: '请填写正确的手机号'
+            }
+          ]}
         >
           <Input
-            prefix={<LockOutlined />}
-            type="password"
-            placeholder="请输入手机号"
+            prefix={<PhoneOutlined />}
+            placeholder="随便输入手机号"
+            addonAfter={
+              <Button type="text" size="small" style={{ padding: 0 }}>
+                发送验证码
+              </Button>
+            }
           />
         </Item>
         <Item
-          style={{ width: 340 }}
-          labelCol={{
-            span: 6
-          }}
+          {...props}
+          label="验证码"
+          name="code"
+          rules={[
+            {
+              required: true,
+              pattern: new RegExp(/^d{6}$/, 'g'),
+              message: '请填写正确的验证码'
+            }
+          ]}
         >
+          <Input prefix={<InsuranceOutlined />} placeholder="随便6位数字即可" />
+        </Item>
+        <Item {...props}>
           <Button
             block
             size="large"
@@ -153,14 +181,14 @@ const Register = () => {
         ref={audioRef}
         preload="auto"
         className="audio_your_name"
-        src="http://localhost:3000/upload/your_name.mp3"
+        src="http://localhost:8000/upload/your_name.mp3"
       />
       <video
         className="video_your_name"
         autoPlay
         loop
         muted
-        src="http://localhost:3000/upload/your_name.mp4"
+        src="http://localhost:8000/upload/your_name.mp4"
       />
     </div>
   );
