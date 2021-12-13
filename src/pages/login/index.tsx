@@ -42,8 +42,8 @@ const Login = (props: LoginProps) => {
       v = Math.cos;
     let r = 0,
       q;
-    c.width = w * pr;
-    c.height = h * pr;
+    c.width = w * pr - 10;
+    c.height = h * pr - 10;
     x.scale(pr, pr); // Synchronization with devicePixelRatio
     x.globalAlpha = 0.6; // gloabalAlpha set or return the opacity-value of draw
 
@@ -133,17 +133,14 @@ const Login = (props: LoginProps) => {
             }
           ]}
         >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="请输入登录邮箱"
-          />
+          <Input prefix={<UserOutlined />} placeholder="请输入登录邮箱" />
         </Item>
         <Item
           name="password"
           rules={[{ required: true, message: '请输入密码' }]}
         >
           <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
+            prefix={<LockOutlined />}
             type="password"
             placeholder="请输入密码"
           />
@@ -165,7 +162,7 @@ const Login = (props: LoginProps) => {
           >
             登陆
           </Button>
-          <a className="register" href="/register">
+          <a className="register_btn" href="/register">
             没有账号？去注册！
           </a>
         </Item>
