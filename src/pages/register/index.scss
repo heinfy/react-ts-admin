@@ -75,7 +75,7 @@
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 400px;
+    width: 420px;
     z-index: 10;
     display: flex;
     justify-content: center;
@@ -99,6 +99,16 @@
     .ant-input-group-addon {
       width: 95px;
       background-color: #ffffff00 !important;
+    }
+    .ant-statistic {
+      display: inline !important;
+      font-size: 12px !important;
+    }
+    .ant-statistic-content {
+      padding: 0 !important;
+      margin: 0 !important;
+      display: inline !important;
+      font-size: 12px !important;
     }
   }
 }
