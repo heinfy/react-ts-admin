@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -109,7 +110,16 @@ const Login = (props: LoginProps) => {
       message.error(res.message);
     }
   };
-
+  const forget = () => {
+    message.warn(
+      <>
+        <div>
+          因为没有写找回密码的接口，而且和『注册页面』类似，所以就没做这个功能，
+        </div>
+        <div>账号： base@qq.com 或者 admin@qq.com，密码： 003</div>
+      </>
+    );
+  };
   return (
     <div className="login">
       <canvas></canvas>
@@ -149,7 +159,13 @@ const Login = (props: LoginProps) => {
           <Item name="remember" valuePropName="checked" noStyle>
             <Checkbox>记住账号</Checkbox>
           </Item>
-          <a className="login-form-forgot" href="/forget">
+          <a
+            className="login-form-forgot"
+            // eslint-disable-next-line no-script-url
+            href="javascript:void(0);"
+            onClick={forget}
+          >
+            {/* href="/forget" */}
             忘记密码
           </a>
         </Item>

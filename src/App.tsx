@@ -10,7 +10,6 @@ import {
 import Layout from './layout';
 import Login from './pages/login';
 import Register from './pages/register';
-import Forget from './pages/forget';
 import pdfDownload from './pages/pdf-download';
 import NotFound from './pages/not-found';
 // import NotFound from './components/NotFound';
@@ -24,7 +23,6 @@ const App = () => {
         <Route path="/app" component={Layout} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route path="/forget" component={Forget} />
         <Route path="/pdf/download" component={pdfDownload} />
         <Route path="/404" component={NotFound} />
         <Route path="*" render={() => <Redirect to="/404" push />} />
