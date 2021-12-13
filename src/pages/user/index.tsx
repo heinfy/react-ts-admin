@@ -155,7 +155,7 @@ const User = () => {
     dataIndex: 'userid',
     key: 'userid',
     render: (r: string, t: any) => {
-      return (
+      return r === 'eIxvnhH-KY' ? null : (
         <>
           <EditBtn onClick={() => showEditModal(t)} />
           <DelBtn onClick={() => showDelModal(r, t.username)} />
