@@ -60,11 +60,7 @@ const StatisticDemo = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <Countdown
-              title="剩余排期"
-              value={deadline}
-              format="D 天 H 时 m 分 s 秒"
-            />
+            <Countdown title="剩余排期" value={deadline} format="H时m分s秒" />
           </Card>
         </Col>
       </Row>

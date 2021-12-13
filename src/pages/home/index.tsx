@@ -21,12 +21,15 @@ const Home = () => {
         </Col>
       </Row>
       <Divider />
-      <Row gutter={16}>
-        <Col span={12}>
-          <DailyRecommendation />
-        </Col>
-        <Col span={12}>
+      <Row gutter={[16, 24]}>
+        <Col span={24}>
           <WordCloud />
+        </Col>
+      </Row>
+      <Divider />
+      <Row gutter={[16, 24]}>
+        <Col span={24}>
+          <DailyRecommendation />
         </Col>
       </Row>
     </div>

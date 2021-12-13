@@ -72,9 +72,9 @@ const Wordcloud = () => {
   dv.transform({
     type: 'tag-cloud',
     fields: ['x', 'value'],
-    size: [600, 500],
+    size: [900, 400],
     font: 'Verdana',
-    padding: 0,
+    padding: 4,
     timeInterval: 5000, // max execute time
     rotate() {
       let random = ~~(Math.random() * 4) % 4;
@@ -112,7 +112,7 @@ const Wordcloud = () => {
       }
     >
       <Chart
-        width={800}
+        width={900}
         height={400}
         data={dv.rows}
         scale={scale}
