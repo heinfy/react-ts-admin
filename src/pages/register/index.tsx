@@ -292,14 +292,14 @@ const Register = () => {
         ref={audioRef}
         preload="auto"
         className="audio_your_name"
-        src="http://localhost:3000/upload/your_name.mp3"
+        src="https://lightui.top/upload/your_name.mp3"
       />
       <video
         className="video_your_name"
         autoPlay
         loop
         muted
-        src="http://localhost:3000/upload/your_name.mp4"
+        src="https://lightui.top/upload/your_name.mp4"
       />
     </div>
   );
