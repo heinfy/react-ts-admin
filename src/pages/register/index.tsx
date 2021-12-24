@@ -164,6 +164,7 @@ const Register = () => {
             },
             {
               pattern: new RegExp(
+                // eslint-disable-next-line no-useless-escape
                 /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~!@#$%^&*\.]).*$/,
                 'g'
               ),
@@ -188,6 +189,7 @@ const Register = () => {
             },
             {
               pattern: new RegExp(
+                // eslint-disable-next-line no-useless-escape
                 /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[~!@#$%^&*\.]).*$/,
                 'g'
               ),
