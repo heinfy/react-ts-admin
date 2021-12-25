@@ -25,7 +25,8 @@ jobs:
         uses: icrawl/action-tsc@v1
 
       - name: 打包并且部署
-        uses: JamesIves/github-pages-deploy-action@test
+        # uses: JamesIves/github-pages-deploy-action@test
+        uses: jeoy/github-deploy-actions@v1.0.1
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
