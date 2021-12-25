@@ -1,0 +1,39 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ test ]
+
+jobs:
+  install_node_tsc:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '14']
+    name: 安装 Node ${{ matrix.node }} 和 typescript
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: 安装 node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          
+      - name: 运行 npm
+      - run: npm install
+      
+      - run: npm test
+      - name: 安装 tsc
+        uses: icrawl/action-tsc@v1
+
+      - name: 打包并且部署
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build
+          BUILD_SCRIPT: npm install && npm run build
+      # uses: iCrawl/action-tsc@c3f25c126c7805dbbbcbf6f1db0c3be6f5dac069
