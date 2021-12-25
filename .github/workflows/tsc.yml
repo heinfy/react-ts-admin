@@ -15,17 +15,12 @@ jobs:
         node: [ '14']
     name: 安装 Node ${{ matrix.node }} 和 typescript
     steps:
-      - uses: actions/checkout@v2
-      
       - name: 安装 node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-          
-      - name: 运行 npm
-      - run: npm install
-      
-      - run: npm test
+          cache: 'npm'
+
       - name: 安装 tsc
         uses: icrawl/action-tsc@v1
 
