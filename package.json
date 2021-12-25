@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@antv/data-set": "^0.11.8",
+    "@ant-design/icons": "4.7.0",
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
@@ -121,13 +122,6 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ]
   },
   "browserslist": {
     "production": [
