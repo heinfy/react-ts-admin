@@ -23,7 +23,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-
+      - run: npm ci
+      - run: npm install
+      
       - name: 安装 tsc
         uses: icrawl/action-tsc@v1
 
