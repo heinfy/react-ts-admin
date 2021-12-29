@@ -41,7 +41,9 @@ const Register = () => {
     });
     videoRef.current &&
       videoRef.current.addEventListener('canplay', () => {
-        setVideoVisible('show');
+        setTimeout(() => {
+          setVideoVisible('show');
+        }, 5000);
       });
     return () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
