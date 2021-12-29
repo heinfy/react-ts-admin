@@ -1,8 +1,11 @@
 .register {
   width: 100vw;
   height: 100vh;
+  
   position: relative;
   overflow: hidden;
+  background: #f5f5f5 url('../../assets/images//register_bg.png') no-repeat center;
+  background-size: 100%;
   .control {
     width: 40px;
     height: 40px;
@@ -65,6 +68,12 @@
     right: 0;
     top: -10px;
     bottom: 0;
+  }
+  .video_your_name.show {
+    visibility: initial;
+  }
+  .video_your_name.hidden {
+    visibility: hidden;
   }
   .register-form {
     height: 700px;

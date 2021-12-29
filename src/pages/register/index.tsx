@@ -12,6 +12,7 @@ import {
 // 资源
 import startIcon from '../../assets/images/audio_start.png';
 import stopIcon from '../../assets/images/audio_stop.png';
+// import registerBg from '../../assets/images/register_bg.png';
 
 import { register, getPublicKey } from '../../api/user';
 
@@ -23,7 +24,9 @@ const { Countdown } = Statistic;
 const Register = () => {
   const [form] = Form.useForm();
   const audioRef: any = useRef(null);
+  const videoRef: any = useRef(null);
   const [pubKey, setPulKey] = useState<string>('');
+  const [videoVisible, setVideoVisible] = useState<string>('hidden');
   const [play, setPlay] = useState<boolean>(false);
   const [isSend, setIsSend] = useState<boolean>(false);
   useEffect(() => {
@@ -36,6 +39,16 @@ const Register = () => {
       phone: '13212341234',
       code: '766438'
     });
+    videoRef.current &&
+      videoRef.current.addEventListener('canplay', () => {
+        setVideoVisible('show');
+      });
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      videoRef.current.removeEventListener('canplay', () => {
+        setVideoVisible('hidden');
+      });
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const change = () => {
     if (play) {
@@ -297,7 +310,8 @@ const Register = () => {
         src="https://lightui.top/upload/your_name.mp3"
       />
       <video
-        className="video_your_name"
+        ref={videoRef}
+        className={`video_your_name ${videoVisible}`}
         autoPlay
         loop
         muted
