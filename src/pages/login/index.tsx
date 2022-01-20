@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { JSEncrypt } from 'jsencrypt';
+import JSEncrypt from 'jsencrypt';
 
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -92,13 +92,10 @@ const Login = (props: LoginProps) => {
       message.error(res.message);
     }
   };
-  const encrypt = (data) => {
+  const onFinish = async (values: ILogin) => {
     const encryptor = new JSEncrypt();
     encryptor.setPublicKey(pubKey);
-    return encryptor.encrypt(data);
-  };
-  const onFinish = async (values: ILogin) => {
-    const password = encrypt(values.password);
+    const password = encryptor.encrypt(values.password);
     const res = await login({ ...values, password });
     if (res.code === 1) {
       setToken(res.result.token);
