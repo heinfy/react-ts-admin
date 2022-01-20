@@ -100,8 +100,12 @@ const Login = (props: LoginProps) => {
     if (res.code === 1) {
       setToken(res.result.token);
       const queryObject = location.search && urlToObj(location.search);
+      let pathname = queryObject.redirect;
+      if (queryObject.redirect === window.location.pathname) {
+        pathname = '/app/dashboard';
+      }
       history.push({
-        pathname: queryObject.redirect || '/app/dashboard'
+        pathname
       });
     } else {
       message.error(res.message);
@@ -156,12 +160,7 @@ const Login = (props: LoginProps) => {
           <Item name="remember" valuePropName="checked" noStyle>
             <Checkbox>记住账号</Checkbox>
           </Item>
-          <a
-            className="login-form-forgot"
-            // eslint-disable-next-line no-script-url
-            href="javascript:void(0);"
-            onClick={forget}
-          >
+          <a className="login-form-forgot" href="#!" onClick={forget}>
             {/* href="/forget" */}
             忘记密码
           </a>
